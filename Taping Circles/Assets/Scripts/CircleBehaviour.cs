@@ -16,6 +16,7 @@ public class CircleBehaviour : MonoBehaviour {
         if (Input.GetButtonDown("Jump"))
         {
             SpawnRandom();
+
         }    	
 	}
 

@@ -526,11 +526,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 9565032, guid: 4b2eb74d0e8d88648be36190e447a4e2, type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11169434, guid: 4b2eb74d0e8d88648be36190e447a4e2, type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11169434, guid: 4b2eb74d0e8d88648be36190e447a4e2, type: 2}
+      propertyPath: m_Animation
+      value: 
+      objectReference: {fileID: 7400000, guid: e1a3485ffbe2af347968e6591e69190a, type: 2}
+    - target: {fileID: 9565032, guid: 4b2eb74d0e8d88648be36190e447a4e2, type: 2}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ad17b50009b848d4da73f73757031a10, type: 2}
+    - target: {fileID: 11169434, guid: 4b2eb74d0e8d88648be36190e447a4e2, type: 2}
+      propertyPath: m_CullingType
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4b2eb74d0e8d88648be36190e447a4e2, type: 2}
@@ -1149,7 +1161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd041243ee3e8e94faca047de9d2c766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rScreen: 30
 --- !u!1 &2113849316
 GameObject:
   m_ObjectHideFlags: 0
