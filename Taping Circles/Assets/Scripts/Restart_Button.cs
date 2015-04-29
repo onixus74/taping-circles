@@ -10,8 +10,8 @@ public class Restart_Button : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	private void OnGUI() {
-		if (GUI.Button (new Rect (15, 540, 200, 70), "Load Level"))
+	public void restart() {
+
 		Application.LoadLevel (Application.loadedLevel);
 		//GUI.color=Color(1.0,1.0,1.0,1.0);
 	}

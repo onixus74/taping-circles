@@ -413,6 +413,8 @@ GameObject:
   - 92: {fileID: 405992698}
   - 124: {fileID: 405992697}
   - 81: {fileID: 405992696}
+  - 114: {fileID: 405992701}
+  - 114: {fileID: 405992702}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -485,6 +487,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+--- !u!114 &405992701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 405992695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8feb9e63f195a340a511d708267ba0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paused: 0
+--- !u!114 &405992702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 405992695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 709685cf2807fba479ac4610bba9b492, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &542090686
 Prefab:
   m_ObjectHideFlags: 0
@@ -799,7 +824,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: .5, y: 0}
   m_AnchorMax: {x: .5, y: 0}
-  m_AnchoredPosition: {x: 4.5, y: 178}
+  m_AnchoredPosition: {x: 4.5, y: 194.800003}
   m_SizeDelta: {x: 69, y: 87}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1095666034
@@ -1034,7 +1059,7 @@ RectTransform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1666724718}
-  m_LocalRotation: {x: 0, y: 0, z: -.707106829, w: .707106829}
+  m_LocalRotation: {x: 0, y: 0, z: -.707107067, w: -.707106471}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1042,7 +1067,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: .5, y: .433000028}
   m_AnchorMax: {x: .5, y: 1}
-  m_AnchoredPosition: {x: .000896449434, y: 0}
+  m_AnchoredPosition: {x: 0, y: -93.1999969}
   m_SizeDelta: {x: 133.350006, y: 0}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1666724720
@@ -1238,7 +1263,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2113849319}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 405992702}
+        m_MethodName: restart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2113849319
