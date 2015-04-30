@@ -47,6 +47,7 @@ GameObject:
   - 58: {fileID: 5867890}
   - 111: {fileID: 11169434}
   - 95: {fileID: 9565032}
+  - 114: {fileID: 11435786}
   m_Layer: 0
   m_Name: circle
   m_TagString: ball
@@ -61,7 +62,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 194764}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.100000001, y: .200000003, z: 9.19999981}
+  m_LocalPosition: {x: -17.3899994, y: -.540000021, z: 8.65999985}
   m_LocalScale: {x: .729475737, y: .729475737, z: .729475737}
   m_Children:
   - {fileID: 22417042}
@@ -89,7 +90,7 @@ Animator:
   m_GameObject: {fileID: 194764}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 34794bfcff988084d8b344e70405c749, type: 2}
+  m_Controller: {fileID: 9100000, guid: ad17b50009b848d4da73f73757031a10, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -103,15 +104,16 @@ Animation:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 194764}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 9f7acf002faff1b4395b5bf349bc28f9, type: 2}
+  m_Animation: {fileID: 0}
   m_Animations:
-  - {fileID: 7400000, guid: 9f7acf002faff1b4395b5bf349bc28f9, type: 2}
+  - {fileID: 7400000, guid: e1a3485ffbe2af347968e6591e69190a, type: 2}
+  - {fileID: 7400000, guid: c549300d2b108c0409c29a4b70520026, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_CullingType: 1
 --- !u!114 &11403808
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -154,6 +156,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &11435786
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd041243ee3e8e94faca047de9d2c766, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  ballNBR: 0
 --- !u!114 &11498796
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -223,7 +238,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
 --- !u!224 &22417042
 RectTransform:
   m_ObjectHideFlags: 1
