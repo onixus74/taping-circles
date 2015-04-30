@@ -5,10 +5,12 @@ public class CircleBehaviour : MonoBehaviour {
 
 
     float rScreen = 40f;
+    public Animator anim;
+   
     
 	// Use this for initialization
 	void Start () {
-        
+        anim = this.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -16,8 +18,10 @@ public class CircleBehaviour : MonoBehaviour {
         if (Input.GetButtonDown("Jump"))
         {
             SpawnRandom();
-
-        }    	
+           
+        }  
+  	
+        
 	}
 
 
@@ -27,9 +31,21 @@ public class CircleBehaviour : MonoBehaviour {
        
 
         Vector3 screenPosition = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(rScreen, Screen.width-rScreen-100), Random.Range(rScreen, Screen.height-rScreen), Camera.main.farClipPlane / 2));
-       
 
+        anim.SetTrigger("spawn");
         this.gameObject.transform.position = screenPosition;
 
+        
+
     }
+
+    public void OnMouseDown()
+    {
+        anim.SetTrigger("wipe");
+      //  SpawnRandom();
+    }
+
+    
+
+
 }
