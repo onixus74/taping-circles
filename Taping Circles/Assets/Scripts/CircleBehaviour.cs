@@ -31,14 +31,22 @@ public class CircleBehaviour : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if ( this.gameObject.name.Equals("ball_" + gameManager.GetComponent<GameManager>().current.ToString()))
+        if (gameManager.GetComponent<GameManager>().canClick)
         {
-            anim.SetTrigger("wipe");
-            gameManager.GetComponent<GameManager>().current++;
-            Destroy(this.gameObject, 1);
+            if (this.gameObject.name.Equals("ball_" + gameManager.GetComponent<GameManager>().current.ToString()))
+            {
+                anim.SetTrigger("wipe");
+                gameManager.GetComponent<GameManager>().current++;
+                Destroy(this.gameObject, 1);
+            }
+            else
+            {
+
+                Debug.Log("GAME OVER");
+                anim.SetTrigger("mistake");
+            }
         }
-        else
-        Debug.Log("GAME OVER");
+
 
     }
 

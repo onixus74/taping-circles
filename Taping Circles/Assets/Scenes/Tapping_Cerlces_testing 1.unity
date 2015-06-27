@@ -980,6 +980,7 @@ MonoBehaviour:
   startNumber: 0
   seqNumber: 5
   current: 0
+  isReady: 0
   circle: {fileID: 0}
 --- !u!4 &1466310755
 Transform:
