@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public bool isReady = false;
     public bool canClick = false;
     
+    public float health=0.8f;
+    
     // Use this for initialization
 
     public GameObject circle = GameObject.Find("circle");
@@ -47,7 +49,12 @@ public class GameManager : MonoBehaviour
     }
 
     void SpawnCircleRange(int start, int seqRange, bool isNumber)
-    {
+    {   
+        health=health+0.2f;
+        if (health>=1)
+        {
+            health=1.0f;
+        }
         canClick=false;    
         current = start;
         List<int> array = new List<int>();

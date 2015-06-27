@@ -44,6 +44,7 @@ public class CircleBehaviour : MonoBehaviour
 
                 Debug.Log("GAME OVER");
                 anim.SetTrigger("mistake");
+                gameManager.GetComponent<GameManager>().health = gameManager.GetComponent<GameManager>().health - (1.0f/gameManager.GetComponent<GameManager>().seqNumber) ;
             }
         }
 
