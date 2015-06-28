@@ -16,9 +16,12 @@ public class GameManager : MonoBehaviour
     public int current = 0;
     public bool isReady = false;
     public bool canClick = false;
-    
-    public float health=0.8f;
-    
+
+    public int level = 0;
+
+    public float health = 0.8f;
+
+    public float staretime = 2.0f;
     // Use this for initialization
 
     public GameObject circle = GameObject.Find("circle");
@@ -27,13 +30,13 @@ public class GameManager : MonoBehaviour
         current = startNumber;
         SpawnSpawner();
         SpawnCircleRange(startNumber, seqNumber, true);
-        canClick=true;
+        canClick = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (current == seqNumber)
+        if (current == seqNumber+startNumber)
 
         {
             current = -1;
@@ -41,21 +44,25 @@ public class GameManager : MonoBehaviour
         }
         if (isReady)
         {
+            startNumber = Random.Range(1, 90);
+            seqNumber = Random.Range(3, level);
+            staretime = seqNumber;
             SpawnCircleRange(startNumber, seqNumber, true);
-            Invoke("Hide",2.0f);
+            Invoke("Hide", staretime);
         }
 
 
     }
 
     void SpawnCircleRange(int start, int seqRange, bool isNumber)
-    {   
-        health=health+0.2f;
-        if (health>=1)
+    {
+        health = health + 0.2f;
+        level++;
+        if (health >= 1)
         {
-            health=1.0f;
+            health = 1.0f;
         }
-        canClick=false;    
+        canClick = false;
         current = start;
         List<int> array = new List<int>();
         GameObject ballTmp;
@@ -127,15 +134,16 @@ public class GameManager : MonoBehaviour
             isReady = true;
         Debug.Log("wait " + s.ToString());
     }
-    
-void Hide(){
-    for (int i = startNumber; i < startNumber+seqNumber; i++)
-    {   
-        GameObject tmp = GameObject.Find("ball_"+i.ToString());
-        tmp.transform.GetChild(0).GetComponentInChildren<Text>().enabled=false;
+
+    void Hide()
+    {
+        for (int i = startNumber; i < startNumber + seqNumber; i++)
+        {
+            GameObject tmp = GameObject.Find("ball_" + i.ToString());
+            tmp.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
+        }
+        canClick = true;
     }
-    canClick=true;
-}
 
 
 }
