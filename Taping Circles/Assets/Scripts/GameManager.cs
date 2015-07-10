@@ -22,6 +22,12 @@ public class GameManager : MonoBehaviour
     public float health = 0.8f;
 
     public float staretime = 2.0f;
+    
+    int levelProgress ;
+    
+    public int levelShow=0;
+    
+    public bool isGameOver = false;
     // Use this for initialization
 
     public GameObject circle = GameObject.Find("circle");
@@ -45,19 +51,27 @@ public class GameManager : MonoBehaviour
         if (isReady)
         {
             startNumber = Random.Range(1, 90);
-            seqNumber = Random.Range(3, level);
-            staretime = seqNumber;
+      if  (level>3)  {seqNumber = Random.Range(level-3, level);} else {seqNumber = Random.Range(3, 5);};
+            staretime =1+seqNumber-levelProgress/seqNumber;
+            
             SpawnCircleRange(startNumber, seqNumber, true);
             Invoke("Hide", staretime);
         }
 
-
+        checkGameOver();
     }
 
     void SpawnCircleRange(int start, int seqRange, bool isNumber)
     {
         health = health + 0.2f;
-        level++;
+        
+        levelProgress++;
+        levelShow++;
+        if (levelProgress==10)
+        {
+            levelProgress=1;
+            level++;
+        }
         if (health >= 1)
         {
             health = 1.0f;
@@ -117,7 +131,7 @@ public class GameManager : MonoBehaviour
                 count++;
                 GameObject tmpObj = Instantiate(Resources.Load("Spawner", typeof(GameObject))) as GameObject;
                 tmpObj.name = count.ToString();
-                tmpObj.transform.position = new Vector3(j * 1.5f - 5.25f, i * -1.5f + 3, 9);
+                tmpObj.transform.position = new Vector3(j * 1.5f -3.5f, i * -1.5f + 3, 9);
             }
         }
     }
@@ -144,6 +158,17 @@ public class GameManager : MonoBehaviour
         }
         canClick = true;
     }
+    
+    void checkGameOver(){
+         if (health<=0.05f)
+         {
+            isGameOver=true;
+             health=0;
+         }           
+    }
+    
+    
+    
 
 
 }

@@ -23,7 +23,10 @@ public class CircleBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (gameManager.GetComponent<GameManager>().isGameOver==true)
+        {
+           anim.SetTrigger("wipe"); 
+        }
 
 
     }
@@ -51,6 +54,14 @@ public class CircleBehaviour : MonoBehaviour
 
     }
 
-
+    void OrientationRotation(){
+        if (Input.deviceOrientation == DeviceOrientation.Portrait) {
+         this.transform.FindChild("Canvas").FindChild("Text").transform.Rotate(new Vector3(0,0,90));
+        }
+        
+        if (Input.deviceOrientation == DeviceOrientation.LandscapeRight) {
+         this.transform.FindChild("Canvas").FindChild("Text").transform.Rotate(new Vector3(0,0,-90));
+        }
+    }
 
 }

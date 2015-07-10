@@ -1,0 +1,262 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!--
+    	========================================================
+    	Widgets.
+    	======================================================== 
+    -->
+    
+    <style name="NP__.Widget.Button" parent="NP__.Base.Widget.Button">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="NP__.Widget.Dialog.ActionBar.Title.Text" parent="NP__.Base.Widget.Dialog.ActionBar.Title.Text">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <!--
+    	========================================================
+    	Game Stream.
+    	======================================================== 
+    -->
+
+    <style name="NP__.GameStream.Header.Text" parent="NP__.Base.GameStream.Header.Text">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="NP__.GameStream.Item.Header.Text" parent="NP__.Base.GameStream.Item.Header.Text">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="NP__.GameStream.Item.Header.StoryTime" parent="NP__.Base.GameStream.Item.Header.StoryTime">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="NP__.GameStream.Item.Story.Text" parent="NP__.Base.GameStream.Item.Story.Text">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="NP__.GameStream.Item.Footer.Button.Text" parent="NP__.Base.GameStream.Item.Footer.Button.Text">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <style name="NP__.GameStream.Post.Text" parent="NP__.Base.GameStream.Post.Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <style name="NP__.GameStream.NewStories.Text" parent="NP__.Base.GameStream.NewStories.Text">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    <!--
+    	========================================================
+    	User Profile
+    	======================================================== 
+    -->
+    <style name="NP__.Profile.Title.Text" parent="NP__.Base.Profile.Title.Text">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <style name="NP__.Profile.Edit.Description" parent="NP__.Base.Profile.Edit.Description">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <style name="NP__.Profile.Content.Text" parent="NP__.Base.Profile.Content.Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <style name="NP__.Profile.Stream.Title.Text" parent="NP__.Base.Profile.Stream.Title.Text">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <style name="NP__.Profile.Button" parent="NP__.Base.Profile.Button">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <!--
+    	========================================================
+    	Credentials
+    	======================================================== 
+    -->
+    <style name="NP__.Credentials.Title.Text" parent="NP__.Base.Credentials.Title.Text">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <style name="NP__.Credentials.Error.Text" parent="NP__.Base.Credentials.Error.Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <style name="NP__.Credentials.Edit.Text" parent="NP__.Base.Credentials.Edit.Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <style name="NP__.Credentials.Footer.Text" parent="NP__.Base.Credentials.Footer.Text">
+		<item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <!--
+    	========================================================
+    	Leader board
+    	======================================================== 
+    -->
+    <style name="NP__.Leaderboard.Item.Text" parent="NP__.Base.Leaderboard.Item.Text">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+	<style name="NP__.Leaderboard.Title.Text" parent="NP__.Base.Leaderboard.Title.Text">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+	<style name="NP__.Leaderboard.Selector.Text" parent="NP__.Base.Leaderboard.Selector.Text">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="NP__.Leaderboard.EmptyState.Button" parent="NP__.Base.Leaderboard.EmptyState.Button">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    <!--
+    	========================================================
+    	Results
+    	======================================================== 
+    -->
+    
+    <style name="NP__.Results.Item.Text" parent="NP__.Base.Results.Item.Text">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+	<style name="NP__.Results.Item.Position.Text" parent="NP__.Base.Results.Item.Position.Text">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <!--
+    	========================================================
+    	Empty states
+    	======================================================== 
+    -->
+    <style name="NP__.EmptyStates.Text" parent="NP__.Base.EmptyStates.Text">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <!--
+    	========================================================
+    	Challenges
+    	======================================================== 
+    -->
+    <style name="NP__.Challenges.Item.Text" parent="NP__.Base.Challenges.Item.Text">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="NP__.Challenges.Item.Text.Timestamp" parent="NP__.Base.Challenges.Item.Text.Timestamp">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="NP__.Challenges.Item.Text.Players" parent="NP__.Base.Challenges.Item.Text.Players">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="NP__.Challenges.Item.Text.Position" parent="NP__.Base.Challenges.Item.Text.Position">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <style name="NP__.Challenges.Item.Button" parent="NP__.Base.Challenges.Item.Button">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <!--
+    	========================================================
+    	Buddies
+    	======================================================== 
+    -->
+    <style name="NP__.Buddies.Item.Text" parent="NP__.Base.Buddies.Item.Text">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="NP__.Buddies.Item.NewFriendLable.Text" parent="NP__.Base.Buddies.Item.NewFriendLable.Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="NP__.Buddies.Button" parent="NP__.Base.Buddies.Button">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="NP__.Buddies.Search" parent="NP__.Base.Buddies.Search">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <!--
+    	========================================================
+    	More
+    	======================================================== 
+    -->
+    <style name="NP__.More.Item.Profile.Text" parent="NP__.Base.More.Item.Profile.Text">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="NP__.More.Item.Profile.Motto.Text" parent="NP__.Base.More.Item.Profile.Motto.Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <style name="NP__.More.Item.Text" parent="NP__.Base.More.Item.Text">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <!--
+    	========================================================
+    	Settings
+    	======================================================== 
+    -->
+    <style name="NP__.Settings.ToggleButton.Text" parent="NP__.Base.Settings.ToggleButton.Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <style name="NP__.Settings.Button" parent="NP__.Base.Settings.Button">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <!--
+    	========================================================
+    	About
+    	======================================================== 
+    -->
+    
+   <style name="NP__.About.Text" parent="NP__.Base.About.Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+	<style name="NP__.About.Version.Text" parent="NP__.Base.About.Version.Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <!--
+    	========================================================
+    	Report Player
+    	======================================================== 
+    -->
+    
+	<style name="NP__.ReportPlayer.Title.Text" parent="NP__.Base.ReportPlayer.Title.Text">
+		<item name="android:fontFamily">sans-serif</item>
+    </style>    
+    
+    <style name="NP__.ReportPlayer.Description.Text" parent="NP__.Base.ReportPlayer.Description.Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    
+    <style name="NP__.ReportPlayer.Dialog" parent="NP__.Base.ReportPlayer.Dialog">
+    </style>
+    
+    <!--
+    	========================================================
+    	Ads
+    	======================================================== 
+    -->
+    <style name="NP__.Ads.Title" parent="NP__.Base.Ads.Title">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <style name="NP__.Ads.Item.Title" parent="NP__.Base.Ads.Item.Title">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    
+    <style name="NP__.Ads.Item.Text" parent="NP__.Base.Ads.Item.Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+</resources>

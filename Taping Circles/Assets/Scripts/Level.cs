@@ -11,6 +11,6 @@ public class Level : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		this.GetComponent<Text>().text="LEVEL "+gameManager.GetComponent<GameManager>().level;
+		this.GetComponent<Text>().text="LEVEL "+gameManager.GetComponent<GameManager>().levelShow;
 	}
 }
