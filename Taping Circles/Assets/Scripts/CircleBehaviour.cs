@@ -23,9 +23,9 @@ public class CircleBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.GetComponent<GameManager>().isGameOver==true)
+        if (gameManager.GetComponent<GameManager>().isGameOver == true)
         {
-           anim.SetTrigger("wipe"); 
+            anim.SetTrigger("wipe");
         }
 
 
@@ -34,33 +34,36 @@ public class CircleBehaviour : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (gameManager.GetComponent<GameManager>().canClick)
+        if (gameManager.GetComponent<GameManager>().current == gameManager.GetComponent<GameManager>().startNumber)
         {
-            if (this.gameObject.name.Equals("ball_" + gameManager.GetComponent<GameManager>().current.ToString()))
-            {
-                anim.SetTrigger("wipe");
-                gameManager.GetComponent<GameManager>().current++;
-                Destroy(this.gameObject, 1);
-            }
-            else
-            {
-
-                Debug.Log("GAME OVER");
-                anim.SetTrigger("mistake");
-                gameManager.GetComponent<GameManager>().health = gameManager.GetComponent<GameManager>().health - (1.0f/gameManager.GetComponent<GameManager>().seqNumber) ;
-            }
+            gameManager.GetComponent<GameManager>().Hide();
+            gameManager.GetComponent<GameManager>().coins += (gameManager.GetComponent<GameManager>().current - 1);
         }
-
-
+        if (this.gameObject.name.Equals("ball_" + gameManager.GetComponent<GameManager>().current.ToString()))
+        {
+            anim.SetTrigger("wipe");
+            gameManager.GetComponent<GameManager>().current++;
+            gameManager.GetComponent<GameManager>().coins += (gameManager.GetComponent<GameManager>().current - 1) * 2;
+            Destroy(this.gameObject, 1);
+        }
+        else
+        {
+            Debug.Log("GAME OVER");
+            anim.SetTrigger("mistake");
+            gameManager.GetComponent<GameManager>().health = gameManager.GetComponent<GameManager>().health - (1.0f / gameManager.GetComponent<GameManager>().seqNumber);
+        }
     }
 
-    void OrientationRotation(){
-        if (Input.deviceOrientation == DeviceOrientation.Portrait) {
-         this.transform.FindChild("Canvas").FindChild("Text").transform.Rotate(new Vector3(0,0,90));
+    void OrientationRotation()
+    {
+        if (Input.deviceOrientation == DeviceOrientation.Portrait)
+        {
+            this.transform.FindChild("Canvas").FindChild("Text").transform.Rotate(new Vector3(0, 0, 90));
         }
-        
-        if (Input.deviceOrientation == DeviceOrientation.LandscapeRight) {
-         this.transform.FindChild("Canvas").FindChild("Text").transform.Rotate(new Vector3(0,0,-90));
+
+        if (Input.deviceOrientation == DeviceOrientation.LandscapeRight)
+        {
+            this.transform.FindChild("Canvas").FindChild("Text").transform.Rotate(new Vector3(0, 0, -90));
         }
     }
 

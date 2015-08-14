@@ -8,26 +8,21 @@ public class GameManager : MonoBehaviour
 {
 
     public bool paused = false;
-    public GameObject ball;
-    // public Transform proxyBall;
-
+    
     public int startNumber = 0;
     public int seqNumber = 5;
     public int current = 0;
     public bool isReady = false;
-    public bool canClick = false;
-
     public int level = 0;
-
     public float health = 0.8f;
-
     public float staretime = 2.0f;
-    
-    int levelProgress ;
-    
-    public int levelShow=0;
-    
+    int levelProgress;
+
+    public int levelShow = 0;
+
     public bool isGameOver = false;
+    
+    public int coins = 0;
     // Use this for initialization
 
     public GameObject circle = GameObject.Find("circle");
@@ -36,13 +31,13 @@ public class GameManager : MonoBehaviour
         current = startNumber;
         SpawnSpawner();
         SpawnCircleRange(startNumber, seqNumber, true);
-        canClick = true;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (current == seqNumber+startNumber)
+        if (current == seqNumber + startNumber)
 
         {
             current = -1;
@@ -51,9 +46,9 @@ public class GameManager : MonoBehaviour
         if (isReady)
         {
             startNumber = Random.Range(1, 90);
-      if  (level>3)  {seqNumber = Random.Range(level-3, level);} else {seqNumber = Random.Range(3, 5);};
-            staretime =1+seqNumber-levelProgress/seqNumber;
-            
+            if (level > 3) { seqNumber = Random.Range(level - 3, level); } else { seqNumber = Random.Range(3, 5); };
+            staretime = 1 + seqNumber - levelProgress / seqNumber;
+
             SpawnCircleRange(startNumber, seqNumber, true);
             Invoke("Hide", staretime);
         }
@@ -64,19 +59,19 @@ public class GameManager : MonoBehaviour
     void SpawnCircleRange(int start, int seqRange, bool isNumber)
     {
         health = health + 0.2f;
-        
+
         levelProgress++;
         levelShow++;
-        if (levelProgress==10)
+        if (levelProgress == 10)
         {
-            levelProgress=1;
+            levelProgress = 1;
             level++;
         }
         if (health >= 1)
         {
             health = 1.0f;
         }
-        canClick = false;
+        //  canClick = false;
         current = start;
         List<int> array = new List<int>();
         GameObject ballTmp;
@@ -131,7 +126,7 @@ public class GameManager : MonoBehaviour
                 count++;
                 GameObject tmpObj = Instantiate(Resources.Load("Spawner", typeof(GameObject))) as GameObject;
                 tmpObj.name = count.ToString();
-                tmpObj.transform.position = new Vector3(j * 1.5f -3.5f, i * -1.5f + 3, 9);
+                tmpObj.transform.position = new Vector3(j * 1.5f - 3.5f, i * -1.5f + 3, 9);
             }
         }
     }
@@ -149,26 +144,27 @@ public class GameManager : MonoBehaviour
         Debug.Log("wait " + s.ToString());
     }
 
-    void Hide()
+    public void Hide()
     {
         for (int i = startNumber; i < startNumber + seqNumber; i++)
         {
             GameObject tmp = GameObject.Find("ball_" + i.ToString());
             tmp.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
+            Debug.Log("" + i + "is hidden");
         }
-        canClick = true;
     }
-    
-    void checkGameOver(){
-         if (health<=0.05f)
-         {
-            isGameOver=true;
-             health=0;
-         }           
+
+    void checkGameOver()
+    {
+        if (health <= 0.05f)
+        {
+            isGameOver = true;
+            health = 0;
+        }
     }
-    
-    
-    
+
+
+
 
 
 }
