@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
 
     public bool paused = false;
-    
+
     public int startNumber = 0;
     public int seqNumber = 5;
     public int current = 0;
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public int levelShow = 0;
 
     public bool isGameOver = false;
-    
+
     public int coins = 0;
     // Use this for initialization
 
@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
 
             SpawnCircleRange(startNumber, seqNumber, true);
             Invoke("Hide", staretime);
+
         }
 
         checkGameOver();
@@ -153,6 +154,33 @@ public class GameManager : MonoBehaviour
             Debug.Log("" + i + "is hidden");
         }
     }
+
+    public void showSequentially()
+    {
+        for (int i = startNumber; i < startNumber + seqNumber; i++)
+        {
+            GameObject tmp = GameObject.Find("ball_" + i.ToString());
+            //  tmp.GetComponent<CircleBehaviour>().showCircle();
+            tmp.GetComponent<CircleBehaviour>().Invoke("showCircle", Time.deltaTime * (i-startNumber) * 10);
+
+        }
+        
+
+    }
+
+    void NextFrame()
+    {
+        int i = startNumber;
+        do
+        {
+            GameObject tmp = GameObject.Find("ball_" + i.ToString());
+            tmp.GetComponent<CircleBehaviour>().showCircle();
+            i++;
+
+        } while (i < startNumber + seqNumber);
+    }
+
+
 
     void checkGameOver()
     {

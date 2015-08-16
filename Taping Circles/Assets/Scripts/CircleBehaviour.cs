@@ -37,7 +37,7 @@ public class CircleBehaviour : MonoBehaviour
         if (gameManager.GetComponent<GameManager>().current == gameManager.GetComponent<GameManager>().startNumber)
         {
             gameManager.GetComponent<GameManager>().Hide();
-            gameManager.GetComponent<GameManager>().coins += (gameManager.GetComponent<GameManager>().current - 1);
+            gameManager.GetComponent<GameManager>().coins += (gameManager.GetComponent<GameManager>().current);
         }
         if (this.gameObject.name.Equals("ball_" + gameManager.GetComponent<GameManager>().current.ToString()))
         {
@@ -65,6 +65,22 @@ public class CircleBehaviour : MonoBehaviour
         {
             this.transform.FindChild("Canvas").FindChild("Text").transform.Rotate(new Vector3(0, 0, -90));
         }
+    }
+
+    public void showCircle()
+    {
+        
+        this.transform.GetChild(0).GetComponentInChildren<Text>().enabled = true;
+        anim.SetTrigger("spawn");
+        Invoke("hideCircle", 2.0f);
+        
+ 
+    }
+
+    public void hideCircle()
+    {
+       anim.SetTrigger("spawn");
+        this.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
     }
 
 }
