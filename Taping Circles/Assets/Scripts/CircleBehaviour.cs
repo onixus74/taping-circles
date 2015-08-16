@@ -33,6 +33,7 @@ public class CircleBehaviour : MonoBehaviour
 
 
     public void OnMouseDown()
+    {   if (gameManager.GetComponent<GameManager>().canClick)
     {
         if (gameManager.GetComponent<GameManager>().current == gameManager.GetComponent<GameManager>().startNumber)
         {
@@ -52,6 +53,9 @@ public class CircleBehaviour : MonoBehaviour
             anim.SetTrigger("mistake");
             gameManager.GetComponent<GameManager>().health = gameManager.GetComponent<GameManager>().health - (1.0f / gameManager.GetComponent<GameManager>().seqNumber);
         }
+        
+    }
+        
     }
 
     void OrientationRotation()

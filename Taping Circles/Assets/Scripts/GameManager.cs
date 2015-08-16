@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour
 {
 
     public bool paused = false;
-
+    
+    
     public int startNumber = 0;
     public int seqNumber = 5;
     public int current = 0;
@@ -17,12 +18,15 @@ public class GameManager : MonoBehaviour
     public float health = 0.8f;
     public float staretime = 2.0f;
     int levelProgress;
+    
+    public bool canClick=true;
 
     public int levelShow = 0;
 
     public bool isGameOver = false;
 
     public int coins = 0;
+    public float score = 0;
     // Use this for initialization
 
     public GameObject circle = GameObject.Find("circle");
@@ -60,6 +64,7 @@ public class GameManager : MonoBehaviour
     void SpawnCircleRange(int start, int seqRange, bool isNumber)
     {
         health = health + 0.2f;
+        score += health * 100;
 
         levelProgress++;
         levelShow++;
@@ -156,16 +161,16 @@ public class GameManager : MonoBehaviour
     }
 
     public void showSequentially()
-    {
+    {   
+        
         for (int i = startNumber; i < startNumber + seqNumber; i++)
         {
             GameObject tmp = GameObject.Find("ball_" + i.ToString());
             //  tmp.GetComponent<CircleBehaviour>().showCircle();
             tmp.GetComponent<CircleBehaviour>().Invoke("showCircle", Time.deltaTime * (i-startNumber) * 10);
-
+    
         }
         
-
     }
 
     void NextFrame()
