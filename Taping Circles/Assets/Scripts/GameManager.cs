@@ -8,8 +8,8 @@ public class GameManager : MonoBehaviour
 {
 
     public bool paused = false;
-    
-    
+
+
     public int startNumber = 0;
     public int seqNumber = 5;
     public int current = 0;
@@ -18,8 +18,8 @@ public class GameManager : MonoBehaviour
     public float health = 0.8f;
     public float staretime = 2.0f;
     int levelProgress;
-    
-    public bool canClick=true;
+
+    public bool canClick = true;
 
     public int levelShow = 0;
 
@@ -27,20 +27,22 @@ public class GameManager : MonoBehaviour
 
     public int coins = 0;
     public float score = 0;
-    // Use this for initialization
 
     public GameObject circle = GameObject.Find("circle");
+
+    public int rate = 1;
+
     void Start()
     {
         current = startNumber;
         SpawnSpawner();
         SpawnCircleRange(startNumber, seqNumber, true);
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        health -= Time.deltaTime * 0.03f;
         if (current == seqNumber + startNumber)
 
         {
@@ -55,7 +57,6 @@ public class GameManager : MonoBehaviour
 
             SpawnCircleRange(startNumber, seqNumber, true);
             Invoke("Hide", staretime);
-
         }
 
         checkGameOver();
@@ -86,7 +87,6 @@ public class GameManager : MonoBehaviour
         string test2 = "";
         if (isNumber)
         {
-
             for (int i = 0; i < seqRange; i++)
             {
                 do
@@ -161,16 +161,20 @@ public class GameManager : MonoBehaviour
     }
 
     public void showSequentially()
-    {   
-        
-        for (int i = startNumber; i < startNumber + seqNumber; i++)
+    {
+        //  canClick=false;
+        if (coins > 1000)
         {
-            GameObject tmp = GameObject.Find("ball_" + i.ToString());
-            //  tmp.GetComponent<CircleBehaviour>().showCircle();
-            tmp.GetComponent<CircleBehaviour>().Invoke("showCircle", Time.deltaTime * (i-startNumber) * 10);
-    
+            for (int i = startNumber; i < startNumber + seqNumber; i++)
+            {
+                GameObject tmp = GameObject.Find("ball_" + i.ToString());
+                //  tmp.GetComponent<CircleBehaviour>().showCircle();
+                tmp.GetComponent<CircleBehaviour>().Invoke("showCircle", Time.deltaTime * (i - startNumber) * 10);
+            }
+            coins-=1000;
         }
-        
+
+
     }
 
     void NextFrame()
@@ -184,9 +188,6 @@ public class GameManager : MonoBehaviour
 
         } while (i < startNumber + seqNumber);
     }
-
-
-
     void checkGameOver()
     {
         if (health <= 0.05f)
@@ -195,6 +196,9 @@ public class GameManager : MonoBehaviour
             health = 0;
         }
     }
+
+
+
 
 
 

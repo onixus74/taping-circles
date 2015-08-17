@@ -8,14 +8,14 @@ public class CircleBehaviour : MonoBehaviour
 
     float rScreen = 40f;
     public Animator anim;
-    GameObject gameManager;
+    GameManager gameManager;
     public int ballNBR;
 
     // Use this for initialization
     void Start()
     {
         anim = this.GetComponent<Animator>();
-        gameManager = GameObject.FindGameObjectWithTag("game manager");
+        gameManager = GameObject.FindGameObjectWithTag("game manager").GetComponent<GameManager>();
 
     }
 
@@ -23,7 +23,7 @@ public class CircleBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.GetComponent<GameManager>().isGameOver == true)
+        if (gameManager.isGameOver == true)
         {
             anim.SetTrigger("wipe");
         }
@@ -33,29 +33,36 @@ public class CircleBehaviour : MonoBehaviour
 
 
     public void OnMouseDown()
-    {   if (gameManager.GetComponent<GameManager>().canClick)
     {
-        if (gameManager.GetComponent<GameManager>().current == gameManager.GetComponent<GameManager>().startNumber)
+        if (gameManager.canClick)
         {
-            gameManager.GetComponent<GameManager>().Hide();
-            gameManager.GetComponent<GameManager>().coins += (gameManager.GetComponent<GameManager>().current);
+            if (gameManager.current == gameManager.startNumber)
+            {
+                gameManager.Hide();
+                gameManager.coins += (gameManager.current);
+            }
+            if (this.gameObject.name.Equals("ball_" + gameManager.current.ToString()))
+            {
+                anim.SetTrigger("wipe");
+                gameManager.current++;
+                gameManager.rate++;
+                gameManager.coins += 10 * gameManager.rate;
+                Destroy(this.gameObject, 1);
+                if (gameManager.rate > 4)
+                {
+                    gameManager.rate = 4;
+                }
+
+            }
+            else
+            {
+                anim.SetTrigger("mistake");
+                gameManager.rate = 1;
+                gameManager.health = gameManager.health - (1.0f / gameManager.seqNumber);
+            }
+
         }
-        if (this.gameObject.name.Equals("ball_" + gameManager.GetComponent<GameManager>().current.ToString()))
-        {
-            anim.SetTrigger("wipe");
-            gameManager.GetComponent<GameManager>().current++;
-            gameManager.GetComponent<GameManager>().coins += (gameManager.GetComponent<GameManager>().current - 1) * 2;
-            Destroy(this.gameObject, 1);
-        }
-        else
-        {
-            Debug.Log("GAME OVER");
-            anim.SetTrigger("mistake");
-            gameManager.GetComponent<GameManager>().health = gameManager.GetComponent<GameManager>().health - (1.0f / gameManager.GetComponent<GameManager>().seqNumber);
-        }
-        
-    }
-        
+
     }
 
     void OrientationRotation()
@@ -73,18 +80,21 @@ public class CircleBehaviour : MonoBehaviour
 
     public void showCircle()
     {
-        
+
         this.transform.GetChild(0).GetComponentInChildren<Text>().enabled = true;
         anim.SetTrigger("spawn");
         Invoke("hideCircle", 2.0f);
-        
- 
+        if (this.gameObject.name.Equals("ball_" + (gameManager.startNumber + gameManager.seqNumber).ToString()));
+                     gameManager.canClick = false;
+
+
     }
 
     public void hideCircle()
     {
-       anim.SetTrigger("spawn");
+        anim.SetTrigger("spawn");
         this.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
+        gameManager.canClick=true;
     }
 
 }

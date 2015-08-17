@@ -1341,7 +1341,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 1466310755}
   - 114: {fileID: 1466310754}
-  - 114: {fileID: 1466310756}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: game manager
@@ -1374,6 +1373,7 @@ MonoBehaviour:
   coins: 0
   score: 0
   circle: {fileID: 0}
+  rate: 0
 --- !u!4 &1466310755
 Transform:
   m_ObjectHideFlags: 0
@@ -1386,17 +1386,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
---- !u!114 &1466310756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1466310753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 354ae15dd4ef94acb85595b65f5a546d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1649592630
 GameObject:
   m_ObjectHideFlags: 0
