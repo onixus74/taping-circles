@@ -988,6 +988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  admobManager: {fileID: 0}
 --- !u!95 &915987856
 Animator:
   serializedVersion: 3
@@ -1332,6 +1333,49 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1321235531}
+--- !u!1 &1433451016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1433451017}
+  - 114: {fileID: 1433451018}
+  m_Layer: 0
+  m_Name: AdmobManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1433451017
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433451016}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1466310755}
+  m_RootOrder: 0
+--- !u!114 &1433451018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433451016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ca19c9021bfd4bb49bf71651b222990, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Admob_BannerID: ca-app-pub-6553426890037113/3611663387
+  Admob_InterstitialID: ca-app-pub-6553426890037113/2134930188
+  Position: 1
+  LoadBannerOnInit: 1
 --- !u!1 &1466310753
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,7 +1427,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.44846904, y: 1.28060818, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1433451017}
   m_Father: {fileID: 0}
   m_RootOrder: 4
 --- !u!1 &1649592630
