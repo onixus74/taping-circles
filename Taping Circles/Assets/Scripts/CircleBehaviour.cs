@@ -4,9 +4,6 @@ using UnityEngine.UI;
 
 public class CircleBehaviour : MonoBehaviour
 {
-
-
-    float rScreen = 40f;
     public Animator anim;
     GameManager gameManager;
     public int ballNBR;
@@ -84,7 +81,7 @@ public class CircleBehaviour : MonoBehaviour
         this.transform.GetChild(0).GetComponentInChildren<Text>().enabled = true;
         anim.SetTrigger("spawn");
         Invoke("hideCircle", 2.0f);
-        if (this.gameObject.name.Equals("ball_" + (gameManager.startNumber + gameManager.seqNumber).ToString()));
+        if (this.gameObject.name.Equals("ball_" + (gameManager.startNumber + gameManager.seqNumber).ToString()))
                      gameManager.canClick = false;
 
 

@@ -10,7 +10,7 @@ public class GameOver : MonoBehaviour {
 	void Start () {
 		gameManager = GameObject.FindGameObjectWithTag("game manager");
 		anim = this.GetComponent<Animator>();
-		admobManager = GameObject.FindGameObjectWithTag("game manager").transform.GetChild(0).GetComponent<AdmobAdManager>();
+		admobManager = GameObject.FindGameObjectWithTag("game manager").transform.FindChild("AdmobManager").GetComponent<AdmobAdManager>();
 		admobManager.LoadInterstitialAds();
 		
 	}

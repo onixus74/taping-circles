@@ -4,12 +4,12 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 7
-  AndroidProfiler: 0
+  AndroidProfiler: 1
   defaultScreenOrientation: 2
   targetDevice: 2
   targetResolution: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: Carthagames
   productName: Taping Circles
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -19,7 +19,7 @@ PlayerSettings:
   defaultScreenWidthWeb: 960
   defaultScreenHeightWeb: 600
   m_RenderingPath: 1
-  m_MobileRenderingPath: 3
+  m_MobileRenderingPath: 1
   m_ActiveColorSpace: 0
   m_MTRendering: 1
   m_MobileMTRendering: 0
@@ -71,7 +71,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleIdentifier: com.BadViking.NumberSmash
+  bundleIdentifier: com.carthagames.NumberSmash
   bundleVersion: 1.0
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
@@ -385,7 +385,7 @@ PlayerSettings:
   WebGL::audioCompressionFormat: 4
   WebGL::exceptionSupport: 0
   WebGL::memorySize: 256
-  iOS::Architecture: 2
+  iOS::Architecture: 0
   iOS::ScriptingBackend: 0
   boolPropertyNames:
   - WebGL::analyzeBuildSize

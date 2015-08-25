@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public bool isGameOver = false;
     public int coins = 0;
     public float score = 0;
-    public GameObject circle = GameObject.Find("circle");
+    
 
     public int rate = 1;
 

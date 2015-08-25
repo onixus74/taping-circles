@@ -7,6 +7,7 @@ TagManager:
   - ball
   - current
   - game manager
+  - gameover_panel
   layers:
   - Default
   - TransparentFX
