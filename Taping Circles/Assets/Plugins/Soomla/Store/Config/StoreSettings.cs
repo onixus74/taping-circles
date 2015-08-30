@@ -42,8 +42,12 @@ namespace Soomla.Store
 		}
 
 		bool showAndroidSettings = (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android);
+		#if UNITY_4_5 || UNITY_4_6
+		bool showIOSSettings = (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iPhone);
+		#else
 		bool showIOSSettings = (EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS);
-        	bool showWP8Settings = (EditorUserBuildSettings.activeBuildTarget == BuildTarget.WP8Player);
+		#endif
+		bool showWP8Settings = (EditorUserBuildSettings.activeBuildTarget == BuildTarget.WP8Player);
 
 		GUIContent noneBPLabel = new GUIContent("You have your own Billing Service");
 		GUIContent playLabel = new GUIContent("Google Play");
@@ -62,6 +66,7 @@ namespace Soomla.Store
         	GUIContent wp8TestModeLabel = new GUIContent("Simulate Store. (Don't forget to adapt IAPMock.xml to fit your IAPs)");
 
 		GUIContent iosSsvLabel = new GUIContent("Receipt Validation [?]:", "Check if you want your purchases validated with SOOMLA Server Side Protection Service.");
+    	GUIContent iosVerifyOnServerFailureLabel = new GUIContent("Verify On Server Failure [?]:", "Check if you want your purchases get validated if server failure happens.");
 
 		GUIContent frameworkVersion = new GUIContent("Store Version [?]", "The SOOMLA Framework Store Module version. ");
 		GUIContent buildVersion = new GUIContent("Store Build [?]", "The SOOMLA Framework Store Module build.");
@@ -80,7 +85,7 @@ namespace Soomla.Store
 		}
 
 		public void OnInfoGUI() {
-			SoomlaEditorScript.SelectableLabelField(frameworkVersion, "1.8.0");
+			SoomlaEditorScript.SelectableLabelField(frameworkVersion, "1.8.2");
 			SoomlaEditorScript.SelectableLabelField(buildVersion, "1");
 			EditorGUILayout.Space();
 		}
@@ -95,6 +100,14 @@ namespace Soomla.Store
 			if (showIOSSettings)
 			{
 				IosSSV = EditorGUILayout.Toggle(iosSsvLabel, IosSSV);
+
+                if (IosSSV) {
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.Space();
+                    EditorGUILayout.LabelField(SoomlaEditorScript.EmptyContent, SoomlaEditorScript.SpaceWidth, SoomlaEditorScript.FieldHeight);
+                    IosVerifyOnServerFailure = EditorGUILayout.Toggle(iosVerifyOnServerFailureLabel, IosVerifyOnServerFailure);
+                    EditorGUILayout.EndHorizontal();
+                }
 			}
 			EditorGUILayout.Space();
 		}
@@ -157,7 +170,7 @@ namespace Soomla.Store
 						EditorGUILayout.LabelField(playClientIdLabel, SoomlaEditorScript.FieldWidth, SoomlaEditorScript.FieldHeight);
 						PlayClientId = EditorGUILayout.TextField(PlayClientId, SoomlaEditorScript.FieldHeight);
 						EditorGUILayout.EndHorizontal();
-						
+
 						EditorGUILayout.BeginHorizontal();
 						EditorGUILayout.Space();
 						EditorGUILayout.LabelField(playClientSecretLabel, SoomlaEditorScript.FieldWidth, SoomlaEditorScript.FieldHeight);
@@ -215,7 +228,7 @@ namespace Soomla.Store
                 EditorGUILayout.Space();
                 WP8TestMode = EditorGUILayout.ToggleLeft(wp8TestModeLabel, WP8TestMode);
             }
-            
+
         }
 
 
@@ -284,7 +297,7 @@ namespace Soomla.Store
 		public static string PLAY_CLIENT_SECRET_DEFAULT = "YOUR CLIENT SECRET";
 		public static string PLAY_REFRESH_TOKEN_DEFAULT = "YOUR REFRESH TOKEN";
 
-		
+
 		public static string AndroidPublicKey
 		{
 			get {
@@ -320,7 +333,7 @@ namespace Soomla.Store
 				}
 			}
 		}
-		
+
 		public static string PlayClientSecret
 		{
 			get {
@@ -338,7 +351,7 @@ namespace Soomla.Store
 				}
 			}
 		}
-		
+
 		public static string PlayRefreshToken
 		{
 			get {
@@ -374,7 +387,7 @@ namespace Soomla.Store
 				}
 			}
 		}
-		
+
 		public static bool AndroidTestPurchases
 		{
 			get {
@@ -429,7 +442,25 @@ namespace Soomla.Store
 			}
 		}
 
-		public static bool NoneBP
+		public static bool IosVerifyOnServerFailure
+		{
+			get {
+				string value;
+				return SoomlaEditorScript.Instance.SoomlaSettings.TryGetValue("IosVerifyOnServerFailure", out value) ? Convert.ToBoolean(value) : false;
+			}
+			set
+			{
+				string v;
+				SoomlaEditorScript.Instance.SoomlaSettings.TryGetValue("IosVerifyOnServerFailure", out v);
+				if (Convert.ToBoolean(v) != value)
+				{
+					SoomlaEditorScript.Instance.setSettingsValue("IosVerifyOnServerFailure", value.ToString());
+					SoomlaEditorScript.DirtyEditor ();
+				}
+			}
+		}
+
+    	public static bool NoneBP
 		{
 			get {
 				string value;

@@ -1,0 +1,6 @@
+<xcodeproj>
+  <pbxproj linkerFlags="-weak_framework CoreMotion -weak-lSystem">
+  </pbxproj>
+  <plist>
+  </plist>
+</xcodeproj>

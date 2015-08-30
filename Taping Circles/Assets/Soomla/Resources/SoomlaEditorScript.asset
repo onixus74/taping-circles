@@ -16,7 +16,19 @@ MonoBehaviour:
     - name: SoomlaSecret
       value: carthagames
     - name: DebugUnityMessages
-      value: False
+      value: True
+    - name: HighwayGameKey
+      value: '[YOUR GAME KEY]'
+    - name: HighwayEnvKey
+      value: '[YOUR ENV KEY]'
+    - name: FBPermissions
+      value: email,user_birthday,user_photos,user_friends,read_stream
+    - name: TwitterConsumerKey
+      value: YOUR TWITTER CONSUMER KEY
+    - name: TwitterConsumerSecret
+      value: YOUR TWITTER CONSUMER SECRET
+    - name: GPClientId
+      value: YOUR GOOGLE+ CLIENT ID
     - name: GPlayBP
       value: True
     - name: AndroidPublicKey
