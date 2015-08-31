@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Tapping_Cerlces_testing 1.unity
   - enabled: 0
     path: Assets/Examples/MuffinRush/MuffinRush.unity
+  - enabled: 0
+    path: Assets/Examples/Google Game Service Example/Scene.unity

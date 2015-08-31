@@ -10,7 +10,7 @@ PlayerSettings:
   targetResolution: 0
   accelerometerFrequency: 60
   companyName: Carthagames
-  productName: Taping Circles
+  productName: Frog Smash
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_ShowUnitySplashScreen: 1
@@ -121,7 +121,7 @@ PlayerSettings:
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: Assets/keystore.keystore
-  AndroidKeyaliasName: 
+  AndroidKeyaliasName: frog smash
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
   androidEnableBanner: 1
