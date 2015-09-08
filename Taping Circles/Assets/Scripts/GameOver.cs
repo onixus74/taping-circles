@@ -5,13 +5,13 @@ public class GameOver : MonoBehaviour {
 	GameObject gameManager;
 	// Use this for initialization\
 	 public Animator anim;
-	 public AdmobAdManager admobManager;
+	//   public AdmobAdManager admobManager;
 
 	void Start () {
 		gameManager = GameObject.FindGameObjectWithTag("game manager");
 		anim = this.GetComponent<Animator>();
-		admobManager = GameObject.FindGameObjectWithTag("game manager").transform.FindChild("AdmobManager").GetComponent<AdmobAdManager>();
-		admobManager.LoadInterstitialAds();
+		//  admobManager = GameObject.FindGameObjectWithTag("game manager").transform.FindChild("AdmobManager").GetComponent<AdmobAdManager>();
+		//  admobManager.LoadInterstitialAds();
 		
 	}
 	
@@ -20,7 +20,7 @@ public class GameOver : MonoBehaviour {
 		if (gameManager.GetComponent<GameManager>().isGameOver==true)
 		{
 			anim.SetBool("check",true);
-			admobManager.ShowInterstitialAds();
+			//  admobManager.ShowInterstitialAds();
 
 		}
 	}

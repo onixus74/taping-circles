@@ -1,4 +1,7 @@
 lastUpgrade=00921
 proj.AppId=173597230991
-web.ClientId=
+web.ClientId=173597230991-k451af8pas3d4lsds5ni98agt4nfp2v0.apps.googleusercontent.com
 android.SetupDone=true
+ios.ClientId=173597230991-k451af8pas3d4lsds5ni98agt4nfp2v0.apps.googleusercontent.com
+ios.BundleId=com.carthagames.FrogSmash
+ios.SetupDone=true

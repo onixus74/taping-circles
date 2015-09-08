@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
                 count++;
                 GameObject tmpObj = Instantiate(Resources.Load("Spawner", typeof(GameObject))) as GameObject;
                 tmpObj.name = count.ToString();
-                tmpObj.transform.position = new Vector3(j * 1.5f - 3.5f, i * -1.5f + 3, 9);
+                tmpObj.transform.position = new Vector3(j * 1.5f - 6.0f, i * -1.5f + 3, 9);
             }
         }
     }

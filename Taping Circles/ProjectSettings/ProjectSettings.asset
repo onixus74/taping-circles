@@ -8,7 +8,7 @@ PlayerSettings:
   defaultScreenOrientation: 2
   targetDevice: 2
   targetResolution: 0
-  accelerometerFrequency: 60
+  accelerometerFrequency: 0
   companyName: Carthagames
   productName: Frog Smash
   defaultCursor: {fileID: 0}
@@ -91,8 +91,8 @@ PlayerSettings:
   APKExpansionFiles: 0
   preloadShaders: 1
   StripUnusedMeshComponents: 0
-  iPhoneSdkVersion: 988
-  iPhoneTargetOSVersion: 22
+  iPhoneSdkVersion: 989
+  iPhoneTargetOSVersion: 30
   uIPrerenderedIcon: 0
   uIRequiresPersistentWiFi: 0
   uIStatusBarHidden: 1

@@ -12,6 +12,6 @@ public class Coins_Text : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		this.GetComponent<Text>().text = "Coins: "+gameManager.GetComponent<GameManager>().coins.ToString();
+	this.GetComponent<Text>().text = ""+gameManager.GetComponent<GameManager>().coins.ToString();
 	}
 }
