@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System;
 using Soomla;
 
-namespace Soomla.Store.Example
+namespace Soomla.Store.IAP
 {
     public class IAPManager : MonoBehaviour
     {

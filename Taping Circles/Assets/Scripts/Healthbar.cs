@@ -7,14 +7,16 @@ public class Healthbar : MonoBehaviour {
 
 	// Use this for initialization
 	GameObject gameManager;
-	Image image;
+	int health;
+	
 	void Start () {
 		gameManager = GameObject.FindGameObjectWithTag("game manager");
-		image=this.GetComponent<Image>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		image.fillAmount=gameManager.GetComponent<GameManager>().health;
+		health= (int)gameManager.GetComponent<GameManager>().health;
+		this.GetComponent<Text>().text = health.ToString();
+	
 	}
 }

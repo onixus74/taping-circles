@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Soomla.Store.Example                                                                                                                  //Allows for access to Soomla API
+namespace Soomla.Store.IAP                                                                                                                 //Allows for access to Soomla API
 {
     public class IAPAssets : IStoreAssets
     {

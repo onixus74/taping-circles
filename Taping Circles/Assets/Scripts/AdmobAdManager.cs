@@ -1,12 +1,12 @@
-//  using System;
-//  using System.Collections;
-//  using UnityEngine;
+using System;
+using System.Collections;
+using UnityEngine;
 //  using GoogleMobileAds;
 //  using GoogleMobileAds.Api;
 
 //  // Example script showing how to invoke the Google Mobile Ads Unity plugin.
-//  public class AdmobAdManager : MonoBehaviour
-//  {
+public class AdmobAdManager : MonoBehaviour
+{
 //      private BannerView bannerView;
 //      private InterstitialAd interstitial;
 
@@ -247,4 +247,4 @@
 //      }
 
 //      #endregion
-//  }
+}

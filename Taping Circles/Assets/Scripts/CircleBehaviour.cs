@@ -7,13 +7,18 @@ public class CircleBehaviour : MonoBehaviour
     public Animator anim;
     GameManager gameManager;
     public int ballNBR;
-
+    
+    Transform HUD ;
+    Text HUD_text;
+    Image HUD_image;
     // Use this for initialization
     void Start()
     {
         anim = this.GetComponent<Animator>();
         gameManager = GameObject.FindGameObjectWithTag("game manager").GetComponent<GameManager>();
-
+        HUD = gameObject.transform.FindChild("Canvas").FindChild("HUD");   
+        HUD_text = HUD.GetComponent<Text>();  
+        HUD_image = HUD.transform.FindChild("Image").GetComponent<Image>();                                                                                                                                                                                   
     }
 
 
@@ -32,30 +37,39 @@ public class CircleBehaviour : MonoBehaviour
     public void OnMouseDown()
     {
         if (gameManager.canClick)
-        {
+        {   
+            anim.SetTrigger("hud_show");
             if (gameManager.current == gameManager.startNumber)
             {
                 gameManager.Hide();
-                gameManager.coins += (gameManager.current);
+                //  gameManager.coins += (gameManager.current);
+                
             }
             if (this.gameObject.name.Equals("ball_" + gameManager.current.ToString()))
             {
                 anim.SetTrigger("wipe");
                 gameManager.current++;
                 gameManager.rate++;
-                gameManager.coins += 10 * gameManager.rate;
+                gameManager.coins += 1 * gameManager.rate;
                 Destroy(this.gameObject, 1);
                 if (gameManager.rate > 4)
                 {
                     gameManager.rate = 4;
                 }
+                gameManager.health = gameManager.health + 2.0f;
+                HUD_text.text="+" + gameManager.rate + " coins";
+                
 
             }
             else
             {
                 anim.SetTrigger("mistake");
                 gameManager.rate = 1;
-                gameManager.health = gameManager.health - (1.0f / gameManager.seqNumber);
+                gameManager.health = gameManager.health - (1.0f * gameManager.seqNumber);
+                HUD_text.text="-" + gameManager.seqNumber + "s";
+                HUD_image.overrideSprite = Resources.Load<Sprite>("UI/time");
+               
+     
             }
 
         }

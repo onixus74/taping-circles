@@ -8,6 +8,7 @@ TagManager:
   - current
   - game manager
   - gameover_panel
+  - wave
   layers:
   - Default
   - TransparentFX
