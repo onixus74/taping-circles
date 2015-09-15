@@ -57,7 +57,8 @@ public class CircleBehaviour : MonoBehaviour
                     gameManager.rate = 4;
                 }
                 gameManager.health = gameManager.health + 2.0f;
-                HUD_text.text="+" + gameManager.rate + " coins";
+                HUD_image.overrideSprite = Resources.Load<Sprite>("UI/coin");
+                HUD_text.text="+" + gameManager.rate ;
                 
 
             }
@@ -66,8 +67,9 @@ public class CircleBehaviour : MonoBehaviour
                 anim.SetTrigger("mistake");
                 gameManager.rate = 1;
                 gameManager.health = gameManager.health - (1.0f * gameManager.seqNumber);
-                HUD_text.text="-" + gameManager.seqNumber + "s";
+                HUD_text.text="-" + gameManager.seqNumber;
                 HUD_image.overrideSprite = Resources.Load<Sprite>("UI/time");
+                HUD_image.transform.localScale = new Vector3(0.02f,0.02f,0);
                
      
             }

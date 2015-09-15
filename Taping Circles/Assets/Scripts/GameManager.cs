@@ -40,11 +40,15 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
+        //*** Wave touch feedback ***
         if (Input.GetMouseButtonDown(0))
         {
             wave.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y , 8.0f));
             wave_animation.SetTrigger("wave");
         }
+        
+        
+        
         health -= Time.deltaTime * 1.0f;
         if (current == seqNumber + startNumber)
 
@@ -195,11 +199,6 @@ public class GameManager : MonoBehaviour
             isGameOver = true;
             health = 0;
         }
-    }
-
-    void MakeWave()
-    {
-        //  wave.transform.positio
     }
 
     public void OnMouseDown()
