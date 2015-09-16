@@ -1,5 +1,5 @@
-﻿// <copyright file="AppStateClient.cs" company="Google Inc.">
-// Copyright (C) 2014 Google Inc.
+﻿// <copyright file="IClientImpl.cs" company="Google Inc.">
+// Copyright (C) 2015 Google Inc. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,17 +14,22 @@
 //    limitations under the License.
 // </copyright>
 
-#if (UNITY_ANDROID || UNITY_IPHONE)
+#if (UNITY_ANDROID || (UNITY_IPHONE && !NO_GPGS))
 
-namespace GooglePlayGames.Native
+using GooglePlayGames.Native.PInvoke;
+
+namespace GooglePlayGames
 {
-    using GooglePlayGames.BasicApi;
-
-    internal interface AppStateClient
+    /// <summary>
+    /// Interface defining platform specific functionality.
+    /// </summary>
+    internal interface IClientImpl
     {
-        void LoadState(int slot, OnStateLoadedListener listener);
 
-        void UpdateState(int slot, byte[] data, OnStateLoadedListener listener);
+        PlatformConfiguration CreatePlatformConfiguration ();
+
+        TokenClient CreateTokenClient ();
     }
 }
+
 #endif
