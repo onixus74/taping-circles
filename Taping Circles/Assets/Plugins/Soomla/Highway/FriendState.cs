@@ -11,7 +11,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Soomla.Query
+namespace Grow.Leaderboards
 {
 	/// <summary>
 	/// Represents a friend's state in the game.

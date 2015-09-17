@@ -14,7 +14,7 @@ MonoBehaviour:
   SoomlaSettings:
     values:
     - name: SoomlaSecret
-      value: carthagames
+      value: cathagames
     - name: DebugUnityMessages
       value: True
     - name: HighwayGameKey
@@ -35,7 +35,11 @@ MonoBehaviour:
       value: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg7AviujrOCFQ/JvW9eudm6+526KIfIAFoZhAuWIGPSWoA6QmpEsT6FxESWm3gmuAUKg+M4/M7Q8msliDCiABevgupqJOphE7JgShpi7vLbrcHfQDpV0ZLU3OFi+dZbGyLV60ihc7Omv6O2Jr7gG6IlhXWrSdebnmvR7HiOKYvbo6mpTy6ESr1T5QA+Y4ExHpplx+sb4Og7Bkq2Zg7fR67tm5/TLDCPYE4AFmdpVd7d0jMMDfxpiwD0OyIHCsZD3T5LoUcCPgUB0z+7GYnzsWCVaY9UaeDr75u083wppQwB1seDikEdsXtj2ffFIcN5LtrcOdEiFb1AaGjP0oJ5SGtQIDAQAB
     - name: AndroidTestPurchases
       value: True
-    - name: IosSSV
+    - name: PlaySsvValidation
       value: False
-    - name: IosVerifyOnServerFailure
-      value: False
+    - name: PlayClientId
+      value: YOUR CLIENT ID
+    - name: PlayClientSecret
+      value: YOUR CLIENT SECRET
+    - name: PlayRefreshToken
+      value: YOUR REFRESH TOKEN

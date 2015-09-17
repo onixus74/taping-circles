@@ -10,10 +10,10 @@
 using UnityEngine;
 using System.Collections;
 
-namespace Soomla.Insights
+namespace Grow.Insights
 {
 	/// <summary>
-	/// Represents a Genre in SoomlaInsights
+	/// Represents a Genre in GrowInsights
 	/// </summary>
 	public enum Genre {
 		Action,

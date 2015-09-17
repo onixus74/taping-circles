@@ -10,7 +10,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace Soomla.Gifting
+namespace Grow.Gifting
 {
 	/// <summary>
 	/// Represents a gift from one user to the other

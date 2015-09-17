@@ -10,7 +10,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace Soomla.Gifting
+namespace Grow.Gifting
 {
 	/// <summary>
 	/// Represents a gift payload which provides information of actual gift value

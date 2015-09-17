@@ -13,13 +13,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Soomla;
 using System;
-using Soomla.Sync;
-using Soomla.Gifting;
-using Soomla.Query;
-using Soomla.Insights;
+using Grow.Sync;
+using Grow.Gifting;
+using Grow.Leaderboards;
+using Grow.Insights;
 using System.Runtime.InteropServices;
 
-namespace Soomla.Highway {
+namespace Grow.Highway {
 
 	public class HighwayEvents : MonoBehaviour {
 
@@ -64,18 +64,18 @@ namespace Soomla.Highway {
 			#endif
 		}
 
-		public void onSoomlaSyncInitialized() {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onSoomlaSyncInitialized");
-			HighwayEvents.OnSoomlaSyncInitialized();
+		public void onGrowSyncInitialized() {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onGrowSyncInitialized");
+			HighwayEvents.OnGrowSyncInitialized();
 		}
 
-		public void onMetaDataSyncStarted() {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onMetaDataSyncStarted");
-			HighwayEvents.OnMetaDataSyncStarted();
+		public void onModelSyncStarted() {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onModelSyncStarted");
+			HighwayEvents.OnModelSyncStarted();
 		}
 
-		public void onMetaDataSyncFinished(string message) {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onMetaDataSyncFinished: " + message);
+		public void onModelSyncFinished(string message) {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onModelSyncFinished: " + message);
 
 			JSONObject eventJSON = new JSONObject(message);
 			List<JSONObject> changedComponentsJSON = eventJSON["changedComponents"].list;
@@ -85,19 +85,19 @@ namespace Soomla.Highway {
 				changedComponents.Add(changedComponentJSON.str);
 			}
 
-			SoomlaSync.HandleMetaDataSyncFinised();
+			GrowSync.HandleModelSyncFinised();
 
-			HighwayEvents.OnMetaDataSyncFinished(changedComponents);
+			HighwayEvents.OnModelSyncFinished(changedComponents);
 		}
 
-		public void onMetaDataSyncFailed(string message) {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onMetaDataSyncFailed:" + message);
+		public void onModelSyncFailed(string message) {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onModelSyncFailed:" + message);
 			
 			JSONObject eventJSON = new JSONObject(message);
 			int errorCode = (int)eventJSON["errorCode"].n;
 			string errorMessage = eventJSON["errorMessage"].str;
 			
-			HighwayEvents.OnMetaDataSyncFailed((MetaDataSyncErrorCode)errorCode, errorMessage);
+			HighwayEvents.OnModelSyncFailed((ModelSyncErrorCode)errorCode, errorMessage);
 		}
 
 		public void onStateSyncStarted() {
@@ -122,7 +122,7 @@ namespace Soomla.Highway {
 				failedComponents.Add(failedComponentJSON.str);
 			}
 			
-			SoomlaSync.HandleStateSyncFinised();
+			GrowSync.HandleStateSyncFinised();
 			
 			HighwayEvents.OnStateSyncFinished(changedComponents, failedComponents);
 		}
@@ -145,7 +145,7 @@ namespace Soomla.Highway {
 		public void onStateResetFinished() {
 			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onStateResetFinished");
 			
-			SoomlaSync.HandleStateSyncFinised();
+			GrowSync.HandleStateSyncFinised();
 			
 			HighwayEvents.OnStateResetFinished();
 		}
@@ -160,9 +160,9 @@ namespace Soomla.Highway {
 			HighwayEvents.OnStateResetFailed((StateSyncErrorCode)errorCode, errorMessage);
 		}
 
-		public void onSoomlaGiftingInitialized() {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onSoomlaGiftingInitialized");
-			HighwayEvents.OnSoomlaGiftingInitialized();
+		public void onGrowGiftingInitialized() {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onGrowGiftingInitialized");
+			HighwayEvents.OnGrowGiftingInitialized();
 		}
 
 		public void onGiftsRetrieveStarted() {
@@ -240,17 +240,17 @@ namespace Soomla.Highway {
 			HighwayEvents.OnGiftHandOutFailed(gift, errorMessage);
 		}
 		
-		public void onQueryFriendsStatesStarted(string message) {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onQueryFriendsStatesStarted: " + message);
+		public void onFetchFriendsStatesStarted(string message) {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onFetchFriendsStatesStarted: " + message);
 
 			JSONObject eventJSON = new JSONObject(message);
 			int providerId = (int)eventJSON["providerId"].n;
 
-			HighwayEvents.OnQueryFriendsStatesStarted(providerId);
+			HighwayEvents.OnFetchFriendsStatesStarted(providerId);
 		}
 		
-		public void onQueryFriendsStatesFinished(string message) {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onFetchSocialLeaderboardFinished: " + message);
+		public void onFetchFriendsStatesFinished(string message) {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onFetchFriendsStatesFinished: " + message);
 			
 			JSONObject eventJSON = new JSONObject(message);
 
@@ -262,23 +262,23 @@ namespace Soomla.Highway {
 				friendsStates.Add(new FriendState(friendStateJSON));
 			}
 			
-			HighwayEvents.OnQueryFriendsStatesFinished(providerId, friendsStates);
+			HighwayEvents.OnFetchFriendsStatesFinished(providerId, friendsStates);
 		}
 		
-		public void onQueryFriendsStatesFailed(string message) {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onFetchSocialLeaderboardFailed:" + message);
+		public void onFetchFriendsStatesFailed(string message) {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onFetchFriendsStatesFailed:" + message);
 			
 			JSONObject eventJSON = new JSONObject(message);
 			int providerId = (int)eventJSON["providerId"].n;
 			string errorMessage = eventJSON["errorMessage"].str;
 			
-			HighwayEvents.OnQueryFriendsStatesFailed(providerId, errorMessage);
+			HighwayEvents.OnFetchFriendsStatesFailed(providerId, errorMessage);
 		}
 
-		public void onSoomlaDLCInitialized() {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onSoomlaDLCInitialized");
+		public void onGrowDLCInitialized() {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onGrowDLCInitialized");
 
-			HighwayEvents.OnSoomlaDLCInitialized();
+			HighwayEvents.OnGrowDLCInitialized();
 		}
 
 		public void onDLCPackagesStatusUpdate(string message) {
@@ -336,12 +336,12 @@ namespace Soomla.Highway {
 			HighwayEvents.OnDLCPackageSyncFailed(packageId, (DLCSyncErrorCode)errorCode, errorMessage);
 		}
 
-		public void onInsightsInitialized(string message) {
-			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onInsightsInitialized");
+		public void onGrowInsightsInitialized(string message) {
+			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onGrowInsightsInitialized");
 
-			SoomlaInsights.I_SyncWithNative ();
+			GrowInsights.I_SyncWithNative ();
 
-			HighwayEvents.OnInsightsInitialized();
+			HighwayEvents.OnGrowInsightsInitialized();
 		}
 
 		public void onInsightsRefreshFailed(string message) {
@@ -359,29 +359,29 @@ namespace Soomla.Highway {
 		public void onInsightsRefreshFinished(string message) {
 			SoomlaUtils.LogDebug(TAG, "SOOMLA/UNITY onInsightsRefreshFinished");
 
-			SoomlaInsights.I_SyncWithNative ();
+			GrowInsights.I_SyncWithNative ();
 
 			HighwayEvents.OnInsightsRefreshFinished();
 		}
 
 		/// <summary>
-		/// Fired when Soomla Sync is intialized.
+		/// Fired when Grow Sync is intialized.
 		/// </summary>
-		public static Action OnSoomlaSyncInitialized = delegate {};
+		public static Action OnGrowSyncInitialized = delegate {};
 		/// <summary>
-		/// Fired when the meta-data sync process has began.
+		/// Fired when the model sync process has began.
 		/// </summary>
-		public static Action OnMetaDataSyncStarted = delegate {};
+		public static Action OnModelSyncStarted = delegate {};
 		/// <summary>
-		/// Fired when the meta-data sync process has finished.
+		/// Fired when the model sync process has finished.
 		/// Provides a list of modules which were synced.
 		/// </summary>
-		public static Action<IList<string>> OnMetaDataSyncFinished = delegate {};
+		public static Action<IList<string>> OnModelSyncFinished = delegate {};
 		/// <summary>
-		/// Fired when the meta-data sync process has failed.
+		/// Fired when the model sync process has failed.
 		/// Provides an error code and reason.
 		/// </summary>
-		public static Action<MetaDataSyncErrorCode, string> OnMetaDataSyncFailed = delegate {};
+		public static Action<ModelSyncErrorCode, string> OnModelSyncFailed = delegate {};
 		/// <summary>
 		/// Fired when the state sync process has began.
 		/// </summary>
@@ -412,9 +412,9 @@ namespace Soomla.Highway {
 		public static Action<StateSyncErrorCode, string> OnStateResetFailed = delegate {};
 
 		/// <summary>
-		/// Fired when Soomla Gifting is intialized.
+		/// Fired when Grow Gifting is intialized.
 		/// </summary>
-		public static Action OnSoomlaGiftingInitialized = delegate {};
+		public static Action OnGrowGiftingInitialized = delegate {};
 		/// <summary>
 		/// Fired when gifting has started retrieving a list of gifts for the user.
 		/// </summary>
@@ -459,30 +459,30 @@ namespace Soomla.Highway {
 		public static Action<Gift, string> OnGiftHandOutFailed = delegate {};
 
 		/// <summary>
-		/// Fired when soomla query starts querying friends' states for a
+		/// Fired when grow leaderboards starts fetching friends' states for a
 		/// specific social provider.
-		/// Provides the social provider ID for which the query operation started
+		/// Provides the social provider ID for which the fetch operation started
 		/// </summary>
-		public static Action<int> OnQueryFriendsStatesStarted = delegate {};
+		public static Action<int> OnFetchFriendsStatesStarted = delegate {};
 		/// <summary>
-		/// Fired when soomla query fails to query friends' states for a
+		/// Fired when grow leaderboards fails to fetch friends' states for a
 		/// specific social provider.
-		/// Provides the social provider ID for which the query operation failed
+		/// Provides the social provider ID for which the fetch operation failed
 		/// and an error message which is the reason for the failure
 		/// </summary>
-		public static Action<int, string> OnQueryFriendsStatesFailed = delegate {};
+		public static Action<int, string> OnFetchFriendsStatesFailed = delegate {};
 		/// <summary>
-		/// Fired when soomla query finished querying friends' states for a
+		/// Fired when grow leaderboards finished fetching friends' states for a
 		/// specific social provider.
-		/// Provides the social provider ID for which the query operation finished
+		/// Provides the social provider ID for which the fetch operation finished
 		/// Provides a list of <c>FriendState</c>s with the friends' states in the.
 		/// </summary>
-		public static Action<int, IList<FriendState>> OnQueryFriendsStatesFinished = delegate {};
+		public static Action<int, IList<FriendState>> OnFetchFriendsStatesFinished = delegate {};
 
 		/// <summary>
 		/// Fired when the DLC client is initialized.
 		/// </summary>
-		public static Action OnSoomlaDLCInitialized = delegate {};
+		public static Action OnGrowDLCInitialized = delegate {};
 		/// <summary>
 		/// Fired when a package/s update status check has returned from the server.
 		/// Provides a bool to signify if there are changes in any of the requested packages.
@@ -509,7 +509,7 @@ namespace Soomla.Highway {
 		/// </summary>
 		public static Action<string, DLCSyncErrorCode, string> OnDLCPackageSyncFailed = delegate {};
 
-		public static Action OnInsightsInitialized = delegate {};
+		public static Action OnGrowInsightsInitialized = delegate {};
 		public static Action OnInsightsRefreshFailed = delegate {};
 		public static Action OnInsightsRefreshFinished = delegate {};
 		public static Action OnInsightsRefreshStarted = delegate {};
@@ -528,14 +528,14 @@ namespace Soomla.Highway {
 			JSONObject currentState = new JSONObject(currentStateStr);
 			JSONObject stateDiff = new JSONObject(stateDiffStr);
 
-			SoomlaSync.HandleStateSyncConflict(remoteState, currentState, stateDiff);
+			GrowSync.HandleStateSyncConflict(remoteState, currentState, stateDiff);
 		}
 	}
 
 	/// <summary>
-	/// Enumeration of meta-data sync failure codes
+	/// Enumeration of model sync failure codes
 	/// </summary>
-	public enum MetaDataSyncErrorCode
+	public enum ModelSyncErrorCode
 	{
 		/// <summary>
 		/// General error has occured
@@ -546,7 +546,7 @@ namespace Soomla.Highway {
 		/// </summary>
 		ServerError = 1,
 		/// <summary>
-		/// The meta-data model was not able to update
+		/// The model was not able to update
 		/// </summary>
 		UpdateModelError = 2
 	}

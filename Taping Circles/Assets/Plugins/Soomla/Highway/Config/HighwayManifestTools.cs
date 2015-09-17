@@ -15,8 +15,9 @@ using System.IO;
 using System.Xml;
 using System.Text;
 using System.Collections.Generic;
+using Soomla;
 
-namespace Soomla.Highway
+namespace Grow.Highway
 {
 #if UNITY_EDITOR
 	[InitializeOnLoad]

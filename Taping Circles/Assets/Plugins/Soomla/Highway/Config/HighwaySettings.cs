@@ -10,12 +10,13 @@
 using UnityEngine;
 using System.IO;
 using System;
+using Soomla;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace Soomla.Highway
+namespace Grow.Highway
 {
 
 	#if UNITY_EDITOR
@@ -34,10 +35,10 @@ namespace Soomla.Highway
 			SoomlaEditorScript.addSettings(instance);
 		}
 
-		GUIContent highwayGameKeyLabel = new GUIContent("Game Key [?]:", "The SOOMLA Highway game key for your game");
-		GUIContent highwayEnvKeyLabel = new GUIContent("Env Key [?]:", "The SOOMLA Highway environment key for your game");
-		GUIContent frameworkVersion = new GUIContent("Highway Version [?]", "The SOOMLA Framework Highway Module version. ");
-		GUIContent buildVersion = new GUIContent("Highway Build [?]", "The SOOMLA Framework Highway Module build.");
+		GUIContent highwayGameKeyLabel = new GUIContent("Game Key [?]:", "The GROW Highway game key for your game");
+		GUIContent highwayEnvKeyLabel = new GUIContent("Env Key [?]:", "The GROW Highway environment key for your game");
+		GUIContent frameworkVersion = new GUIContent("Highway Version [?]", "The GROW Framework Highway Module version. ");
+		GUIContent buildVersion = new GUIContent("Highway Build [?]", "The GROW Framework Highway Module build.");
 
 		public void OnEnable() {
 			// No enabling, leave empty and let StoreManifestTools do the work
@@ -47,7 +48,7 @@ namespace Soomla.Highway
 		}
 
 		public void OnInfoGUI() {
-			SoomlaEditorScript.SelectableLabelField(frameworkVersion, "1.4.1");
+			SoomlaEditorScript.SelectableLabelField(frameworkVersion, "2.0.0");
 			SoomlaEditorScript.SelectableLabelField(buildVersion, "1");
 			EditorGUILayout.Space();
 		}
