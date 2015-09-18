@@ -4645,7 +4645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paused: 0
-  startNumber: 0
+  startNumber: 1
   seqNumber: 3
   current: 0
   isReady: 0
@@ -4657,7 +4657,8 @@ MonoBehaviour:
   isGameOver: 0
   coins: 0
   score: 0
-  rate: 0
+  isHideClicked: 0
+  rate: 1
 --- !u!4 &1466310755
 Transform:
   m_ObjectHideFlags: 0

@@ -43,3 +43,7 @@ MonoBehaviour:
       value: YOUR CLIENT SECRET
     - name: PlayRefreshToken
       value: YOUR REFRESH TOKEN
+    - name: SocialIntegration
+      value: facebook,0;twitter,0;google,1
+    - name: GoogleAutoLogin
+      value: True

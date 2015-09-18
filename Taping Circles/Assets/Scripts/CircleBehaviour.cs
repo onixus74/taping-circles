@@ -42,6 +42,7 @@ public class CircleBehaviour : MonoBehaviour
             if (gameManager.current == gameManager.startNumber)
             {
                 gameManager.Hide();
+                gameManager.isHideClicked=true;
                 //  gameManager.coins += (gameManager.current);
                 
             }

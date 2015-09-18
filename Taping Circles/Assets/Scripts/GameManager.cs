@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
     public bool isGameOver = false;
     public int coins = 0;
     public float score = 0;
-
+    
+    public bool isHideClicked ;
     GameObject wave;
     Animator wave_animation;
 
@@ -29,7 +30,8 @@ public class GameManager : MonoBehaviour
     public int rate = 1;
 
     void Start()
-    {
+    {   
+        isHideClicked = false;
         current = startNumber;
         SpawnSpawner();
         SpawnCircleRange(startNumber, seqNumber, true);
@@ -47,23 +49,30 @@ public class GameManager : MonoBehaviour
             wave_animation.SetTrigger("wave");
         }
         
-        
-        
         health -= Time.deltaTime * 1.0f;
         if (current == seqNumber + startNumber)
-
         {
             current = -1;
-            StartCoroutine("Wait", 1);
+              StartCoroutine("Wait", 1);
+           
         }
+        
         if (isReady)
         {
-            startNumber = Random.Range(1, 90);
-            if (level > 3) { seqNumber = Random.Range(level - 3, level); } else { seqNumber = Random.Range(3, 5); };
-            staretime = 1 + seqNumber - levelProgress / seqNumber;
+            staretime = 1 + seqNumber;
 
+            if(isHideClicked==false)
+            {
+                Invoke("Hide", staretime);   
+            } 
+            startNumber = Random.Range(1, 90);
+            if (level > 3) { 
+                seqNumber = Random.Range(level - 3, level);
+                 }      
+            else { seqNumber = Random.Range(3, 5); };
             SpawnCircleRange(startNumber, seqNumber, true);
-            Invoke("Hide", staretime);
+           
+
         }
 
         checkGameOver();
@@ -71,8 +80,6 @@ public class GameManager : MonoBehaviour
 
     void SpawnCircleRange(int start, int seqRange, bool isNumber)
     {
-
-        score += health * 100;
 
         levelProgress++;
         levelShow++;
@@ -104,20 +111,17 @@ public class GameManager : MonoBehaviour
                     {
                         array.Add(spawner);
                     }
-
                 } while (array.Contains(spawner) == false);
 
             }
 
             foreach (int a in array)
-
             {
                 test2 = test2 + " , " + a.ToString();
                 ballTmp = Instantiate(Resources.Load("circle", typeof(GameObject)), GameObject.Find(a.ToString()).transform.position, Quaternion.identity) as GameObject;
                 ballTmp.name = "ball_" + counter.ToString();
                 ballTmp.transform.GetChild(0).GetComponentInChildren<Text>().text = counter.ToString();
                 counter++;
-                
             }
             
         }
@@ -167,7 +171,7 @@ public class GameManager : MonoBehaviour
     public void showSequentially()
     {
         //  canClick=false;
-        if (coins > 1000)
+        if (coins > 300)
         {
             for (int i = startNumber; i < startNumber + seqNumber; i++)
             {
@@ -175,10 +179,8 @@ public class GameManager : MonoBehaviour
                 //  tmp.GetComponent<CircleBehaviour>().showCircle();
                 tmp.GetComponent<CircleBehaviour>().Invoke("showCircle", Time.deltaTime * (i - startNumber) * 10);
             }
-            coins -= 1000;
+            coins -= 300;
         }
-
-
     }
 
     void NextFrame()
@@ -205,9 +207,4 @@ public class GameManager : MonoBehaviour
     {
         wave.transform.position = new Vector3(Input.mousePosition.x,Input.mousePosition.y,Input.mousePosition.z);
     }
-
-
-
-
-
 }

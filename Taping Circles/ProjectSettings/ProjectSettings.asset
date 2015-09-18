@@ -5,7 +5,7 @@ PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 7
   AndroidProfiler: 1
-  defaultScreenOrientation: 2
+  defaultScreenOrientation: 3
   targetDevice: 2
   targetResolution: 0
   accelerometerFrequency: 0
@@ -298,7 +298,11 @@ PlayerSettings:
   psp2InfoBarColor: 0
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    1: SOOMLA_GOOGLE
+    2: SOOMLA_GOOGLE
+    4: SOOMLA_GOOGLE
+    7: SOOMLA_GOOGLE
   metroPackageName: Taping Circles
   metroPackageLogo: 
   metroPackageLogo140: 
