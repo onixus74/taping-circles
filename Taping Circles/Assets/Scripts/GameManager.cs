@@ -21,16 +21,17 @@ public class GameManager : MonoBehaviour
     public bool isGameOver = false;
     public int coins = 0;
     public float score = 0;
-    
-    public bool isHideClicked ;
+
+    public bool isHideClicked;
     GameObject wave;
     Animator wave_animation;
+
 
 
     public int rate = 1;
 
     void Start()
-    {   
+    {
         isHideClicked = false;
         current = startNumber;
         SpawnSpawner();
@@ -41,37 +42,45 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
+    {
         //*** Wave touch feedback ***
         if (Input.GetMouseButtonDown(0))
         {
-            wave.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y , 8.0f));
+            wave.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 8.0f));
             wave_animation.SetTrigger("wave");
         }
-        
+
         health -= Time.deltaTime * 1.0f;
         if (current == seqNumber + startNumber)
         {
             current = -1;
-              StartCoroutine("Wait", 1);
-           
+            StartCoroutine("Wait", 1);
+
         }
+
         
+        staretime-= Time.deltaTime;
+
+
+        if (isHideClicked == false && staretime<0)
+        {
+            Hide();
+        }
+
         if (isReady)
         {
             staretime = 1 + seqNumber;
+            isHideClicked = false;
 
-            if(isHideClicked==false)
-            {
-                Invoke("Hide", staretime);   
-            } 
             startNumber = Random.Range(1, 90);
-            if (level > 3) { 
+            if (level > 3)
+            {
                 seqNumber = Random.Range(level - 3, level);
-                 }      
+            }
             else { seqNumber = Random.Range(3, 5); };
+            
             SpawnCircleRange(startNumber, seqNumber, true);
-           
+
 
         }
 
@@ -123,7 +132,7 @@ public class GameManager : MonoBehaviour
                 ballTmp.transform.GetChild(0).GetComponentInChildren<Text>().text = counter.ToString();
                 counter++;
             }
-            
+
         }
         isReady = false;
 
@@ -155,7 +164,7 @@ public class GameManager : MonoBehaviour
         }
         if (s <= 0)
             isReady = true;
-        
+
     }
 
     public void Hide()
@@ -164,7 +173,6 @@ public class GameManager : MonoBehaviour
         {
             GameObject tmp = GameObject.Find("ball_" + i.ToString());
             tmp.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
-            
         }
     }
 
@@ -205,6 +213,6 @@ public class GameManager : MonoBehaviour
 
     public void OnMouseDown()
     {
-        wave.transform.position = new Vector3(Input.mousePosition.x,Input.mousePosition.y,Input.mousePosition.z);
+        wave.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
     }
 }
