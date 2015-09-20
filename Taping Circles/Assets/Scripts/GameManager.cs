@@ -12,12 +12,20 @@ public class GameManager : MonoBehaviour
     public int seqNumber = 5;
     public int current = 0;
     public bool isReady = false;
-    public int level = 0;
     public float health = 10.0f;
     public float staretime = 2.0f;
+
+    // #### This is the level of difficulty  ####
+    public int difficultyLevel = 0;
+
+    // #### level difficulty Counter that increments difficulty level each 10 level Progress ####
     int levelProgress;
-    public bool canClick = true;
+
+    // #### This is the current Level ####
     public int levelShow = 0;
+
+
+    public bool canClick = true;
     public bool isGameOver = false;
     public int coins = 0;
     public float score = 0;
@@ -25,7 +33,6 @@ public class GameManager : MonoBehaviour
     public bool isHideClicked;
     GameObject wave;
     Animator wave_animation;
-
 
 
     public int rate = 1;
@@ -58,33 +65,34 @@ public class GameManager : MonoBehaviour
 
         }
 
-        
-        staretime-= Time.deltaTime;
+
+        staretime -= Time.deltaTime;
 
 
-        if (isHideClicked == false && staretime<0)
+        if (isHideClicked == false && staretime < 0)
         {
             Hide();
         }
 
         if (isReady)
         {
-            staretime = 1 + seqNumber;
+            staretime = 1 + seqNumber - Random.Range(levelProgress / seqNumber, 1);
             isHideClicked = false;
 
             startNumber = Random.Range(1, 90);
-            if (level > 3)
+            if (difficultyLevel > 3)
             {
-                seqNumber = Random.Range(level - 3, level);
+                seqNumber = Random.Range(difficultyLevel, difficultyLevel + 3);
             }
             else { seqNumber = Random.Range(3, 5); };
-            
+
             SpawnCircleRange(startNumber, seqNumber, true);
 
 
         }
 
         checkGameOver();
+
     }
 
     void SpawnCircleRange(int start, int seqRange, bool isNumber)
@@ -95,7 +103,7 @@ public class GameManager : MonoBehaviour
         if (levelProgress == 10)
         {
             levelProgress = 1;
-            level++;
+            difficultyLevel++;
         }
 
         //  canClick = false;
@@ -204,6 +212,8 @@ public class GameManager : MonoBehaviour
     }
     void checkGameOver()
     {
+
+
         if (health <= 0.05f)
         {
             isGameOver = true;

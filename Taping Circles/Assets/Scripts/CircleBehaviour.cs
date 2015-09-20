@@ -7,18 +7,24 @@ public class CircleBehaviour : MonoBehaviour
     public Animator anim;
     GameManager gameManager;
     public int ballNBR;
-    
-    Transform HUD ;
+
+    Transform HUD;
     Text HUD_text;
     Image HUD_image;
+
+    public AudioSource frogAudioSource;
+
+    public AudioClip[] frogAudioClips;
+
     // Use this for initialization
     void Start()
     {
         anim = this.GetComponent<Animator>();
         gameManager = GameObject.FindGameObjectWithTag("game manager").GetComponent<GameManager>();
-        HUD = gameObject.transform.FindChild("Canvas").FindChild("HUD");   
-        HUD_text = HUD.GetComponent<Text>();  
-        HUD_image = HUD.transform.FindChild("Image").GetComponent<Image>();                                                                                                                                                                                   
+        HUD = gameObject.transform.FindChild("Canvas").FindChild("HUD");
+        HUD_text = HUD.GetComponent<Text>();
+        HUD_image = HUD.transform.FindChild("Image").GetComponent<Image>();
+        frogAudioSource = this.GetComponent<AudioSource>();
     }
 
 
@@ -37,14 +43,14 @@ public class CircleBehaviour : MonoBehaviour
     public void OnMouseDown()
     {
         if (gameManager.canClick)
-        {   
+        {
             anim.SetTrigger("hud_show");
             if (gameManager.current == gameManager.startNumber)
             {
                 gameManager.Hide();
-                gameManager.isHideClicked=true;
+                gameManager.isHideClicked = true;
                 //  gameManager.coins += (gameManager.current);
-                
+
             }
             if (this.gameObject.name.Equals("ball_" + gameManager.current.ToString()))
             {
@@ -59,8 +65,10 @@ public class CircleBehaviour : MonoBehaviour
                 }
                 gameManager.health = gameManager.health + 2.0f;
                 HUD_image.overrideSprite = Resources.Load<Sprite>("UI/coin");
-                HUD_text.text="+" + gameManager.rate ;
-                
+                HUD_text.text = "+" + gameManager.rate;
+
+                frogAudioSource.clip = frogAudioClips[0];
+                frogAudioSource.Play();
 
             }
             else
@@ -68,11 +76,14 @@ public class CircleBehaviour : MonoBehaviour
                 anim.SetTrigger("mistake");
                 gameManager.rate = 1;
                 gameManager.health = gameManager.health - (1.0f * gameManager.seqNumber);
-                HUD_text.text="-" + gameManager.seqNumber;
+                HUD_text.text = "-" + gameManager.seqNumber;
                 HUD_image.overrideSprite = Resources.Load<Sprite>("UI/time");
-                HUD_image.transform.localScale = new Vector3(0.02f,0.02f,0);
-               
-     
+                HUD_image.transform.localScale = new Vector3(0.02f, 0.02f, 0);
+
+                frogAudioSource.clip = frogAudioClips[1];
+                frogAudioSource.Play();
+
+
             }
 
         }
@@ -99,7 +110,7 @@ public class CircleBehaviour : MonoBehaviour
         anim.SetTrigger("spawn");
         Invoke("hideCircle", 2.0f);
         if (this.gameObject.name.Equals("ball_" + (gameManager.startNumber + gameManager.seqNumber).ToString()))
-                     gameManager.canClick = false;
+            gameManager.canClick = false;
 
 
     }
@@ -108,7 +119,7 @@ public class CircleBehaviour : MonoBehaviour
     {
         anim.SetTrigger("spawn");
         this.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
-        gameManager.canClick=true;
+        gameManager.canClick = true;
     }
 
 }
