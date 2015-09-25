@@ -465,7 +465,7 @@ PlayerSettings:
   WebGL::template: APPLICATION:Default
   additionalIl2CppArgs::additionalIl2CppArgs: 
   firstStreamedSceneWithResources: 0
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: dca29013-bb89-450b-954b-f61fef4d6c92
+  projectName: Frog Smash
+  organizationId: carthagames
   cloudEnabled: 0
