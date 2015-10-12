@@ -10,13 +10,12 @@ public class UnityAdsManager : MonoBehaviour
     //Just apply this script to an UI Button
 
     public string COIN_ID = "coin_ID";
-    Button btn;
+
     // Use this for initialization
     void Start()
     {
-        btn = GetComponent<Button>();
         Advertisement.Initialize("75747");
-        Advertisement.allowPrecache = true;
+        
     }
 
     void LateUpdate()
@@ -29,7 +28,7 @@ public class UnityAdsManager : MonoBehaviour
     public void ShowAds()
     {
         ShowOptions options = new ShowOptions();
-        options.pause = true;
+        
         //*** Reward ***
         //  options.resultCallback=HandleShowResult;
 

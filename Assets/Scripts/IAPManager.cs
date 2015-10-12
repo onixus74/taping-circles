@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using Soomla;
+using Soomla.Profile;
 
 namespace Soomla.Store.IAP
 {
@@ -100,12 +101,18 @@ namespace Soomla.Store.IAP
                         Debug.Log("SOOMLA/UNITY wants to buy: Remove Ads ");
             try
             {
-                StoreInventory.BuyItem(itemId);
+                if (SoomlaProfile.IsLoggedIn(Provider.GOOGLE)) {
+                 StoreInventory.BuyItem(itemId);
+                }
+                 else{
+                    SoomlaProfile.Login( Provider.GOOGLE);
+                }
             }
             catch (Exception e)
             {
                 Debug.LogError("SOOMLA/UNITY " + e.Message);
             }
+            
         }
 
 
