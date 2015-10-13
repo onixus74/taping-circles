@@ -1,10 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Grow.Highway;
+using Grow.Insights;
+using Grow.Sync;
+using Grow.Gifting;
+using Grow.Leaderboards;
 
-public class MainMenuManager : MonoBehaviour {
 
-public void loadGame(int n){
-	Application.LoadLevel(n);
+public class MainMenuManager : MonoBehaviour
+{
+    AsyncOperation async;
+
+    void Start()
+    {
+        GrowHighway.Initialize();
+        GrowInsights.Initialize();
+        bool modelSync = true;
+        bool stateSync = true;
+        GrowSync.Initialize(modelSync, stateSync);
+        GrowGifting.Initialize();
+        StartCoroutine("loadMainScene");
+
+    }
+    IEnumerator loadMainScene()
+    {
+        async = Application.LoadLevelAsync(1);
+        async.allowSceneActivation = false;
+        yield return async;
+    }
+    public void loadGame()
+    {
+        async.allowSceneActivation = true;
+    }
 }
-	
-}
+
+

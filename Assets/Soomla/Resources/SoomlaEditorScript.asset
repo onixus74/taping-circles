@@ -18,9 +18,9 @@ MonoBehaviour:
     - name: DebugUnityMessages
       value: True
     - name: HighwayGameKey
-      value: '[YOUR GAME KEY]'
+      value: f61c14c4-a058-4960-8516-2d5c4b64b36c
     - name: HighwayEnvKey
-      value: '[YOUR ENV KEY]'
+      value: 5fd2c565-e373-4d01-87ae-5e93e43c6633
     - name: FBPermissions
       value: email,user_birthday,user_photos,user_friends,user_posts
     - name: TwitterConsumerKey
