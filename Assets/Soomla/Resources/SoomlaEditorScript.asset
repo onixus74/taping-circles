@@ -28,7 +28,7 @@ MonoBehaviour:
     - name: TwitterConsumerSecret
       value: YOUR TWITTER CONSUMER SECRET
     - name: GPClientId
-      value: YOUR GOOGLE+ CLIENT ID
+      value: 173597230991-k451af8pas3d4lsds5ni98agt4nfp2v0.apps.googleusercontent.com
     - name: GPlayBP
       value: True
     - name: AndroidPublicKey
@@ -38,4 +38,8 @@ MonoBehaviour:
     - name: AndroidTestPurchases
       value: True
     - name: FBAutoLogin
+      value: False
+    - name: GoogleAutoLogin
       value: True
+    - name: iTunesAppId
+      value: ITUNES APP ID

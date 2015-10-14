@@ -5,6 +5,7 @@ using Grow.Insights;
 using Grow.Sync;
 using Grow.Gifting;
 using Grow.Leaderboards;
+using Soomla.Profile;
 
 
 public class MainMenuManager : MonoBehaviour
@@ -20,6 +21,7 @@ public class MainMenuManager : MonoBehaviour
         GrowSync.Initialize(modelSync, stateSync);
         GrowGifting.Initialize();
         StartCoroutine("loadMainScene");
+        SoomlaProfile.Initialize();
 
     }
     IEnumerator loadMainScene()

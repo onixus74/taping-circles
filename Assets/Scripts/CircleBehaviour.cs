@@ -63,7 +63,7 @@ public class CircleBehaviour : MonoBehaviour
                 {
                     gameManager.rate = 4;
                 }
-                gameManager.health = gameManager.health + 2.0f;
+                gameManager.health = gameManager.health + 1.0f;
                 HUD_image.overrideSprite = Resources.Load<Sprite>("UI/coin");
                 HUD_text.text = "+" + gameManager.rate;
 

@@ -99,19 +99,14 @@ namespace Soomla.Store.IAP
         //Custom Buy Methods
         public void BuyNoAdItem(string itemId ="remove_ads_item_id"){
                         Debug.Log("SOOMLA/UNITY wants to buy: Remove Ads ");
-            try
-            {
+            
+            
                 if (SoomlaProfile.IsLoggedIn(Provider.GOOGLE)) {
                  StoreInventory.BuyItem(itemId);
                 }
                  else{
                     SoomlaProfile.Login( Provider.GOOGLE);
                 }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("SOOMLA/UNITY " + e.Message);
-            }
             
         }
 
