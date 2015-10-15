@@ -95,7 +95,14 @@ public class GPGManager : MonoBehaviour
     }
     
     public void ShowLeaderboard(string leaderboard){
-      ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderboard);
+        if (Social.localUser.authenticated)
+        {
+            ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderboard);
+        }
+        else 
+        {
+            Login();
+        }
     }
     
     public void ShowAchievements(){

@@ -318,10 +318,10 @@ PlayerSettings:
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
   scriptingDefineSymbols:
-    1: SOOMLA_FACEBOOK;SOOMLA_GOOGLE
-    2: SOOMLA_FACEBOOK;SOOMLA_GOOGLE
-    4: SOOMLA_FACEBOOK;SOOMLA_GOOGLE
-    7: SOOMLA_FACEBOOK;SOOMLA_GOOGLE
+    1: SOOMLA_FACEBOOK
+    2: SOOMLA_FACEBOOK
+    4: SOOMLA_FACEBOOK
+    7: SOOMLA_FACEBOOK
   metroPackageName: Taping Circles
   metroPackageLogo: 
   metroPackageLogo140: 

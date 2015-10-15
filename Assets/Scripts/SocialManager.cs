@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
+using Soomla;
 using Soomla.Profile;
+using Soomla.Store;
+using Soomla.Levelup;
+using Grow.Highway;
+using Grow.Sync;
+using Grow.Leaderboards;
 
 public class SocialManager : MonoBehaviour {
 
 	// Use this for initialization
-	void Start () {
-		SoomlaProfile.Initialize();
-	}
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -27,5 +32,13 @@ public class SocialManager : MonoBehaviour {
 			Provider.GOOGLE                        // Social Provider
 			//  new BadgeReward("loggedIn", "Logged In!") // Reward
 		);
+	}
+	public void Showleaderboard(){
+		
+
+
+	}
+	void Start () {
+			 
 	}
 }

@@ -6,8 +6,9 @@ using Grow.Sync;
 using Grow.Gifting;
 using Grow.Leaderboards;
 using Soomla.Profile;
-
-
+using Soomla;
+namespace Soomla.Store.IAP
+{
 public class MainMenuManager : MonoBehaviour
 {
     AsyncOperation async;
@@ -22,6 +23,7 @@ public class MainMenuManager : MonoBehaviour
         GrowGifting.Initialize();
         StartCoroutine("loadMainScene");
         SoomlaProfile.Initialize();
+        SoomlaStore.Initialize(new IAPAssets());
 
     }
     IEnumerator loadMainScene()
@@ -34,6 +36,7 @@ public class MainMenuManager : MonoBehaviour
     {
         async.allowSceneActivation = true;
     }
+}
 }
 
 

@@ -80,11 +80,11 @@ public class GameManager : MonoBehaviour
             isHideClicked = false;
 
             startNumber = Random.Range(1, 90);
-            if (difficultyLevel > 3)
+            if (difficultyLevel > 4)
             {
                 seqNumber = Random.Range(difficultyLevel, difficultyLevel + 3);
             }
-            else { seqNumber = Random.Range(3, 5); };
+            else { seqNumber = Random.Range(4, 7); };
 
             SpawnCircleRange(startNumber, seqNumber, true);
 

@@ -8,7 +8,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using Soomla;
-using Soomla.Profile;
 
 namespace Soomla.Store.IAP
 {
@@ -20,7 +19,7 @@ namespace Soomla.Store.IAP
             StoreEvents.OnSoomlaStoreInitialized += onSoomlaStoreInitialized;
             StoreEvents.OnCurrencyBalanceChanged += onCurrencyBalanceChanged;
             StoreEvents.OnUnexpectedStoreError += onUnexpectedStoreError;
-            SoomlaStore.Initialize(new IAPAssets());
+
         }
 
         public void onUnexpectedStoreError(int errorCode)
@@ -100,13 +99,9 @@ namespace Soomla.Store.IAP
         public void BuyNoAdItem(string itemId ="remove_ads_item_id"){
                         Debug.Log("SOOMLA/UNITY wants to buy: Remove Ads ");
             
-            
-                if (SoomlaProfile.IsLoggedIn(Provider.GOOGLE)) {
+      
                  StoreInventory.BuyItem(itemId);
-                }
-                 else{
-                    SoomlaProfile.Login( Provider.GOOGLE);
-                }
+                
             
         }
 

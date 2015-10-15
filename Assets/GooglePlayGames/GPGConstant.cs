@@ -27,8 +27,8 @@ public static class GPGConstant
 {
         public const string leaderboard_highest_level = "CgkIj4_O2YYFEAIQBg"; // <GPGSID>
         public const string achievement_heavy_weight_frog_slayer_champion = "CgkIj4_O2YYFEAIQBQ"; // <GPGSID>
+        public const string package_name = "com.carthagames.FrogSmash"; // <GPGSID>
         public const string achievement_frog_slayer = "CgkIj4_O2YYFEAIQAw"; // <GPGSID>
-        public const string BUNDLE_ID = "com.carthagames.FrogSmash"; // <GPGSID>
         public const string achievement_smasher = "CgkIj4_O2YYFEAIQAQ"; // <GPGSID>
         public const string achievement_hunter_x_frogs = "CgkIj4_O2YYFEAIQBA"; // <GPGSID>
         public const string achievement_perfection_reflection = "CgkIj4_O2YYFEAIQAg"; // <GPGSID>

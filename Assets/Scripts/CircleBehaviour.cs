@@ -63,7 +63,7 @@ public class CircleBehaviour : MonoBehaviour
                 {
                     gameManager.rate = 4;
                 }
-                gameManager.health = gameManager.health + 1.0f;
+                gameManager.health = gameManager.health + 1.5f;
                 HUD_image.overrideSprite = Resources.Load<Sprite>("UI/coin");
                 HUD_text.text = "+" + gameManager.rate;
 
@@ -75,8 +75,14 @@ public class CircleBehaviour : MonoBehaviour
             {
                 anim.SetTrigger("mistake");
                 gameManager.rate = 1;
-                gameManager.health = gameManager.health - (1.0f * gameManager.seqNumber);
-                HUD_text.text = "-" + gameManager.seqNumber;
+                if(gameManager.difficultyLevel==0){
+                    gameManager.health = gameManager.health - 1.0f;
+                    HUD_text.text = "-" + 1;    
+                }
+                else{
+                    gameManager.health = gameManager.health - (1.0f* gameManager.difficultyLevel);
+                    HUD_text.text = "-" + gameManager.difficultyLevel;  
+                }
                 HUD_image.overrideSprite = Resources.Load<Sprite>("UI/time");
                 HUD_image.transform.localScale = new Vector3(0.02f, 0.02f, 0);
 
