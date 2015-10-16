@@ -2,7 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 
-
+namespace Soomla.Store.IAP
+{
 public class Healthbar : MonoBehaviour {
 
 	// Use this for initialization
@@ -19,4 +20,5 @@ public class Healthbar : MonoBehaviour {
 		this.GetComponent<Text>().text = health.ToString();
 	
 	}
+}
 }

@@ -14,7 +14,7 @@ namespace Soomla.Store.IAP                                                      
 
         public VirtualCurrency[] GetCurrencies()
         {                                                                              // Get/Setup Virtual Currencies
-            return new VirtualCurrency[] { };
+            return new VirtualCurrency[] { COIN_CURRENCY };
         }
 
         public VirtualGood[] GetGoods()
@@ -24,7 +24,7 @@ namespace Soomla.Store.IAP                                                      
 
         public VirtualCurrencyPack[] GetCurrencyPacks()
         {                                                               // Get/Setup Currency Packs
-            return new VirtualCurrencyPack[] { };
+            return new VirtualCurrencyPack[] {ONE_THUNS_COIN_PACK ,FIVE_THUNS_COIN_PACK ,TEN_THUNS_COIN_PACK};
         }
 
         public VirtualCategory[] GetCategories()
@@ -52,11 +52,61 @@ namespace Soomla.Store.IAP                                                      
         //                  1.                                      2.                                              3.
         new PurchaseWithMarket(TURN_GREEN_PRODUCT_ID, 0.99)
     );
+
+
+        // Frog Smash IAP Goods
+        
         public static VirtualGood REMOVE_ADS = new LifetimeVG(
                 "remove_ads",                         // Name of IAP
                 "This will remove the ads",     // Description of IAP
                 "remove_ads_item_id",                 // Item ID (different from 'product id" used by itunes, this is used by soomla                                             3.
             new PurchaseWithMarket(REMOVE_ADS_ITEM_ID, 0.99)
         );
+        
+
+        
+        //Virtual Currency
+        public static VirtualCurrency COIN_CURRENCY = new VirtualCurrency(
+            "Coin",                               // Name
+            "Coin currency",                      // Description
+            "coin_currency_id"                    // Item ID
+        );  
+        
+        public static VirtualCurrencyPack ONE_THUNS_COIN_PACK = new VirtualCurrencyPack(
+             "1000 Coins",                          // Name
+             "1000 coin currency units",            // Description
+             "coin_currency_id",                       // Item ID
+             1000,                                  // Number of currencies in the pack
+             "coin_currency_id",                    // ID of the currency associated with this pack
+             new PurchaseWithMarket(                // Purchase type (with real money $)
+                "coins_1000_prod_id",               // Product ID
+                0.99                                // Price (in real money $)
+                )
+        );
+        
+        public static VirtualCurrencyPack FIVE_THUNS_COIN_PACK = new VirtualCurrencyPack(
+             "5000 Coins",                          // Name
+             "5000 coin currency units",            // Description
+             "coin_currency_id",                       // Item ID
+             5000,                                  // Number of currencies in the pack
+             "coin_currency_id",                    // ID of the currency associated with this pack
+             new PurchaseWithMarket(                // Purchase type (with real money $)
+                "coins_5000_prod_id",               // Product ID
+                2.99                                // Price (in real money $)
+                )
+        );
+        
+        public static VirtualCurrencyPack TEN_THUNS_COIN_PACK = new VirtualCurrencyPack(
+             "10000 Coins",                          // Name
+             "10000 coin currency units",            // Description
+             "coin_currency_id",                     // Item ID
+             10000,                                  // Number of currencies in the pack
+             "coin_currency_id",                     // ID of the currency associated with this pack
+             new PurchaseWithMarket(                 // Purchase type (with real money $)
+                "coins_10000_prod_id",               // Product ID
+                4.99                                 // Price (in real money $)
+                )
+        );
+   
     }
 }

@@ -9,6 +9,7 @@ TagManager:
   - game manager
   - gameover_panel
   - wave
+  - balls
   layers:
   - Default
   - TransparentFX

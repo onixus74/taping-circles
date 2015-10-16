@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 
+namespace Soomla.Store.IAP
+{
 public class CircleBehaviour : MonoBehaviour
 {
     public Animator anim;
@@ -128,4 +130,5 @@ public class CircleBehaviour : MonoBehaviour
         gameManager.canClick = true;
     }
 
+}
 }

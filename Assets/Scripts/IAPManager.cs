@@ -97,12 +97,8 @@ namespace Soomla.Store.IAP
         
         //Custom Buy Methods
         public void BuyNoAdItem(string itemId ="remove_ads_item_id"){
-                        Debug.Log("SOOMLA/UNITY wants to buy: Remove Ads ");
-            
-      
-                 StoreInventory.BuyItem(itemId);
-                
-            
+            Debug.Log("SOOMLA/UNITY wants to buy: Remove Ads ");
+            StoreInventory.BuyItem(itemId);    
         }
 
 

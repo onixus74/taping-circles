@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 
+namespace Soomla.Store.IAP
+{
 public class PanelManager : MonoBehaviour {
 
 	// Use this for initialization
@@ -37,4 +39,5 @@ public class PanelManager : MonoBehaviour {
 	public void hideShopPanel(){
 		animShop.SetBool("isShowing",false);
 	}
+}
 }

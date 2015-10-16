@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+namespace Soomla.Store.IAP
+{
 public class GameOver : MonoBehaviour {
 	GameObject gameManager;
 	// Use this for initialization\
@@ -24,4 +26,5 @@ public class GameOver : MonoBehaviour {
 
 		}
 	}
+}
 }

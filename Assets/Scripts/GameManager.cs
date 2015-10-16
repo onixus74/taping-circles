@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
+using Soomla;
 
-
+namespace Soomla.Store.IAP
+{
 public class GameManager : MonoBehaviour
 {
 
@@ -14,6 +16,8 @@ public class GameManager : MonoBehaviour
     public bool isReady = false;
     public float health = 10.0f;
     public float staretime = 2.0f;
+    
+    public GameObject ballsPrefab ; 
 
     // #### This is the level of difficulty  ####
     public int difficultyLevel = 0;
@@ -39,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        ballsPrefab = GameObject.FindGameObjectWithTag("balls");
         isHideClicked = false;
         current = startNumber;
         SpawnSpawner();
@@ -49,7 +54,8 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+        //  coins =  StoreInventory.GetItemBalance("coin_currency_id");
         //*** Wave touch feedback ***
         if (Input.GetMouseButtonDown(0))
         {
@@ -78,7 +84,11 @@ public class GameManager : MonoBehaviour
         {
             staretime = 1 + seqNumber - Random.Range(levelProgress / seqNumber, 1);
             isHideClicked = false;
-
+            //  StoreInventory.GiveItem("coin_currency_id",  Mathf.Abs(coins-StoreInventory.GetItemBalance(StoreInfo.Currencies[0].ItemId)));    
+            //  StoreInventory.GiveItem("coin_currency_id",5);
+            //How to give currency
+            //  StoreInventory.GiveItem(StoreInfo.Currencies[0].ItemId,4000);
+            
             startNumber = Random.Range(1, 90);
             if (difficultyLevel > 4)
             {
@@ -139,6 +149,8 @@ public class GameManager : MonoBehaviour
                 ballTmp.name = "ball_" + counter.ToString();
                 ballTmp.transform.GetChild(0).GetComponentInChildren<Text>().text = counter.ToString();
                 counter++;
+                //  ballTmp.transform.parent = ballsPrefab.transform;
+                ballTmp.transform.SetParent(ballsPrefab.transform);
             }
 
         }
@@ -176,11 +188,11 @@ public class GameManager : MonoBehaviour
     }
 
     public void Hide()
-    {
-        for (int i = startNumber; i < startNumber + seqNumber; i++)
-        {
-            GameObject tmp = GameObject.Find("ball_" + i.ToString());
-            tmp.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
+    {   
+        Transform[] allChildren = ballsPrefab.transform.GetComponentsInChildren<Transform>();
+        foreach (Transform child in allChildren) {
+            if(child.name=="Canvas")
+              child.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
         }
     }
 
@@ -225,4 +237,8 @@ public class GameManager : MonoBehaviour
     {
         wave.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
     }
+    public void GiveCoin(int amount){
+        StoreInventory.GiveItem("currency_coin", amount);
+    }
+}
 }
