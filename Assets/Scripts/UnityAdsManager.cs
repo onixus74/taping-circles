@@ -5,6 +5,8 @@ using UnityEngine.Advertisements;
 using Soomla;
 using Soomla.Store;
 
+namespace Soomla.Store.IAP
+{
 public class UnityAdsManager : MonoBehaviour
 {
     //Just apply this script to an UI Button
@@ -43,6 +45,7 @@ public class UnityAdsManager : MonoBehaviour
         }
     }
 
+}
 }
 
 

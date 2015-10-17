@@ -100,7 +100,26 @@ namespace Soomla.Store.IAP
             Debug.Log("SOOMLA/UNITY wants to buy: Remove Ads ");
             StoreInventory.BuyItem(itemId);    
         }
-
+        
+        public void BuyItemId(string itemId){
+            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
+            StoreInventory.BuyItem(itemId);    
+        }
+        
+        public void BuyOneThousId(string itemId="coins_1000_prod"){
+            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
+            StoreInventory.BuyItem(itemId);    
+        }
+        
+        public void BuyFiveThousId(string itemId="coins_5000_prod"){
+            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
+            StoreInventory.BuyItem(itemId);    
+        }
+        
+        public void BuyTenThousId(string itemId="coins_10000_prod"){
+            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
+            StoreInventory.BuyItem(itemId);    
+        }
 
     }
 

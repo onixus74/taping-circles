@@ -10,6 +10,7 @@ TagManager:
   - gameover_panel
   - wave
   - balls
+  - unityads manager
   layers:
   - Default
   - TransparentFX

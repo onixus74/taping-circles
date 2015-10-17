@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public bool isHideClicked;
     GameObject wave;
     Animator wave_animation;
+    public int gameOverCounter;
 
 
     public int rate = 1;
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour
         SpawnCircleRange(startNumber, seqNumber, true);
         wave = GameObject.FindGameObjectWithTag("wave");
         wave_animation = wave.GetComponent<Animator>();
+        
     }
 
     // Update is called once per frame

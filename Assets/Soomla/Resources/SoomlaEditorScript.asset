@@ -20,7 +20,7 @@ MonoBehaviour:
     - name: SoomlaSecret
       value: carthagames
     - name: DebugUnityMessages
-      value: True
+      value: False
     - name: HighwayGameKey
       value: f61c14c4-a058-4960-8516-2d5c4b64b36c
     - name: HighwayEnvKey
