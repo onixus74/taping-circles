@@ -242,5 +242,16 @@ public class GameManager : MonoBehaviour
     public void GiveCoin(int amount){
         StoreInventory.GiveItem("currency_coin", amount);
     }
+    
+    
+    //quit application on back button
+    public void BackButtonAndroid(){
+        if (Application.platform == RuntimePlatform.Android) {
+			if (Input.GetKeyUp(KeyCode.Escape)) {
+				Application.Quit();
+				return;
+			}
+		}
+    }
 }
 }

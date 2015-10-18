@@ -21,9 +21,9 @@ public class MainMenuManager : MonoBehaviour
         bool stateSync = true;
         GrowSync.Initialize(modelSync, stateSync);
         GrowGifting.Initialize();
-        StartCoroutine("loadMainScene");
         SoomlaProfile.Initialize();
         SoomlaStore.Initialize(new IAPAssets());
+        StartCoroutine("loadMainScene");
 
     }
     IEnumerator loadMainScene()

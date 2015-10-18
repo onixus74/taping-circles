@@ -86,14 +86,14 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: com.carthagames.FrogSmash
-  bundleVersion: 1.0
+  bundleVersion: 2.0
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   metroEnableLowLatencyPresentationAPI: 0
   xboxOneDisableKinectGpuReservation: 0
   virtualRealitySupported: 0
   productGUID: c6d30a6053528054284b5ad6a81f2692
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 2
   AndroidMinSdkVersion: 10
   AndroidPreferredInstallLocation: 0
   aotOptions: 
@@ -318,10 +318,10 @@ PlayerSettings:
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
   scriptingDefineSymbols:
-    1: SOOMLA_FACEBOOK
-    2: SOOMLA_FACEBOOK
-    4: SOOMLA_FACEBOOK
-    7: SOOMLA_FACEBOOK
+    1: SOOMLA_FACEBOOK;SOOMLA_TWITTER
+    2: SOOMLA_FACEBOOK;SOOMLA_TWITTER
+    4: SOOMLA_FACEBOOK;SOOMLA_TWITTER
+    7: SOOMLA_FACEBOOK;SOOMLA_TWITTER
   metroPackageName: Taping Circles
   metroPackageLogo: 
   metroPackageLogo140: 
