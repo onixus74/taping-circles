@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public bool isHideClicked;
     GameObject wave;
     Animator wave_animation;
+    
     public int gameOverCounter;
 
 
@@ -51,6 +52,8 @@ public class GameManager : MonoBehaviour
         SpawnCircleRange(startNumber, seqNumber, true);
         wave = GameObject.FindGameObjectWithTag("wave");
         wave_animation = wave.GetComponent<Animator>();
+        
+        gameOverCounter = PlayerPrefs.GetInt("gameOverCounter");
         
     }
 
@@ -239,8 +242,9 @@ public class GameManager : MonoBehaviour
     {
         wave.transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
     }
+    
     public void GiveCoin(int amount){
-        StoreInventory.GiveItem("currency_coin", amount);
+        StoreInventory.GiveItem("coin_currency_id", amount);
     }
     
     

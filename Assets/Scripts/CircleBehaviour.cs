@@ -59,7 +59,8 @@ public class CircleBehaviour : MonoBehaviour
                 anim.SetTrigger("wipe");
                 gameManager.current++;
                 gameManager.rate++;
-                gameManager.coins += 1 * gameManager.rate;
+                //  gameManager.coins += 1 * gameManager.rate;
+                StoreInventory.GiveItem("coin_currency_id", 1 * gameManager.rate);
                 Destroy(this.gameObject, 1);
                 if (gameManager.rate > 4)
                 {

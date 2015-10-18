@@ -39,5 +39,6 @@ public class PanelManager : MonoBehaviour {
 	public void hideShopPanel(){
 		animShop.SetBool("isShowing",false);
 	}
+
 }
 }

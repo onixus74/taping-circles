@@ -14,8 +14,8 @@ public class Coins_Text : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	this.GetComponent<Text>().text = ""+gameManager.GetComponent<GameManager>().coins.ToString();
-	//    this.GetComponent<Text>().text = StoreInventory.GetItemBalance("coin_currency_id").ToString();
+	//  this.GetComponent<Text>().text = ""+gameManager.GetComponent<GameManager>().coins.ToString();
+	  this.GetComponent<Text>().text = StoreInventory.GetItemBalance("coin_currency_id").ToString();
 	}
 }
 }

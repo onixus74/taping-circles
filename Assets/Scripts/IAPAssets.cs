@@ -51,7 +51,7 @@ namespace Soomla.Store.IAP                                                      
                 "remove_ads",                         // Name of IAP
                 "This will remove the ads",     // Description of IAP
                 "remove_ads_item_id",                 // Item ID (different from 'product id" used by itunes, this is used by soomla                                             3.
-            new PurchaseWithMarket(REMOVE_ADS_ITEM_ID, 0.99)
+            new PurchaseWithVirtualItem(COIN_CURRENCY_ITEM_ID, 50000)
         );
         
 

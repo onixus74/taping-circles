@@ -9,6 +9,8 @@ public class GameOver : MonoBehaviour {
 	 public Animator anim;
 	//   public AdmobAdManager admobManager;
 	public UnityAdsManager unityAdsManager;
+	
+	bool isGameOverCounted;
 
 	void Start () {
 		gameManager = GameObject.FindGameObjectWithTag("game manager").GetComponent<GameManager>();
@@ -17,30 +19,35 @@ public class GameOver : MonoBehaviour {
 		//  admobManager = GameObject.FindGameObjectWithTag("game manager").transform.FindChild("AdmobManager").GetComponent<AdmobAdManager>();
 		//  admobManager.LoadInterstitialAds();
 		 
-		 gameManager.gameOverCounter=PlayerPrefs.GetInt("GameOverCounter");
-		 print(PlayerPrefs.GetInt("GameOverCounter"));
-		
+		isGameOverCounted = false;
 	}
-	void OnLevelWasLoaded(int level) {
-        if (level == 1){
-			gameManager.gameOverCounter++;
-			if(gameManager.gameOverCounter==3){
-				unityAdsManager.ShowAds();
-				gameManager.gameOverCounter=1;
-			}
-		}
-            
-        
-    }
+
 	// Update is called once per frame
 	void Update () {
 		if (gameManager.isGameOver==true)
-		{
-			anim.SetBool("check",true);
-			PlayerPrefs.SetInt("GameOverCounter",gameManager.gameOverCounter);
-			//  admobManager.ShowInterstitialAds();
+		{	
 			
+			
+			
+			anim.SetBool("check",true);
+			//  admobManager.ShowInterstitialAds();
+		
 		}
+	}
+	
+	public void gameOverCounter(){
+		gameManager.gameOverCounter++;
+			
+			
+			if(gameManager.gameOverCounter>=3){
+				gameManager.gameOverCounter=0;
+				if (StoreInventory.GetItemBalance("remove_ads_item_id")==0)
+				{
+					unityAdsManager.ShowAds();					
+				}
+			}
+			PlayerPrefs.SetInt("gameOverCounter",gameManager.gameOverCounter);
+			
 	}
 }
 }
