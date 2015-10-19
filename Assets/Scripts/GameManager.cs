@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
         {
             Hide();
         }
+        
 
         if (isReady)
         {
@@ -207,18 +208,46 @@ public class GameManager : MonoBehaviour
     public void showSequentially()
     {
         //  canClick=false;
-        if (coins > 300)
-        {
-            for (int i = startNumber; i < startNumber + seqNumber; i++)
-            {
-                GameObject tmp = GameObject.Find("ball_" + i.ToString());
-                //  tmp.GetComponent<CircleBehaviour>().showCircle();
-                tmp.GetComponent<CircleBehaviour>().Invoke("showCircle", Time.deltaTime * (i - startNumber) * 10);
-            }
-            coins -= 300;
+        isHideClicked = true;
+        StoreInventory.TakeItem("reveal_frogs",1);
+            //  for (int i = startNumber; i < startNumber + seqNumber; i++)
+            //  {
+            //      GameObject tmp = GameObject.Find("ball_" + i.ToString());
+            //      //  tmp.GetComponent<CircleBehaviour>().showCircle();
+            //      tmp.GetComponent<CircleBehaviour>().Invoke("showCircle", Time.deltaTime * (i - startNumber) * 10);
+            //  }
+        int i = 0 ;
+        CircleBehaviour[] allChildren = ballsPrefab.transform.GetComponentsInChildren<CircleBehaviour>();
+        foreach (CircleBehaviour child in allChildren) {
+               i++;
+            //    child.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
+              child.Invoke("showCircle", Time.deltaTime * (i-startNumber) * 10);
+            
         }
+        
     }
-
+    
+    public void ResetLevel(){
+        if(StoreInventory.GetItemBalance("reset_level")>0)
+        {
+            StoreInventory.TakeItem("reset_level",1);
+            Animator[] allChildren = ballsPrefab.transform.GetComponentsInChildren<Animator>();
+           
+            foreach (Animator child in allChildren) {
+                //    child.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
+                child.SetTrigger("wipe");     
+            }
+            
+            SpawnCircleRange(startNumber, seqNumber, true);
+            levelProgress--;
+            levelShow--;
+            health+=10;
+            StoreInventory.GiveItem("reveal_frogs",1);
+            showSequentially();
+        }
+       
+    }
+    
     void NextFrame()
     {
         int i = startNumber;
