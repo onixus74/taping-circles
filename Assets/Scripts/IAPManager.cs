@@ -39,6 +39,10 @@ namespace Soomla.Store.IAP
                     //How to give currency
                     //StoreInventory.GiveItem(StoreInfo.Currencies[0].ItemId,4000);
                     SoomlaUtils.LogDebug("SOOMLA ExampleEventHandler", "Currency balance:" + StoreInventory.GetItemBalance(StoreInfo.Currencies[0].ItemId));
+                    
+                    //[REMOVE] WHEN PUBLISH
+                    StoreInventory.TakeItem("remove_ads_item_id", 1);
+               
                 }
                 catch (VirtualItemNotFoundException ex)
                 {
@@ -117,6 +121,16 @@ namespace Soomla.Store.IAP
         }
         
         public void BuyTenThousId(string itemId="coins_10000_prod"){
+            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
+            StoreInventory.BuyItem(itemId);    
+        }
+        
+        public void BuyRevealFrogs(string itemId="reveal_frogs"){
+            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
+            StoreInventory.BuyItem(itemId);    
+        }
+        
+        public void BuyResetLevel(string itemId="reset_level"){
             Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
             StoreInventory.BuyItem(itemId);    
         }

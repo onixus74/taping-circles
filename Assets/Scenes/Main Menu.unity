@@ -491,7 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -762,6 +762,54 @@ Prefab:
     - target: {fileID: 11479472, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
       propertyPath: m_PreserveAspect
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11442506, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2145112839}
+    - target: {fileID: 11442506, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyResetLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 11448718, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2145112839}
+    - target: {fileID: 11448718, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyRevealFrogs
+      objectReference: {fileID: 0}
+    - target: {fileID: 11420430, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2145112839}
+    - target: {fileID: 11420430, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyNoAdItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 11457200, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2145112839}
+    - target: {fileID: 11457200, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyOneThousId
+      objectReference: {fileID: 0}
+    - target: {fileID: 11466484, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2145112839}
+    - target: {fileID: 11466484, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyFiveThousId
+      objectReference: {fileID: 0}
+    - target: {fileID: 11405664, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2145112839}
+    - target: {fileID: 11405664, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyOneThousId
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
@@ -1382,6 +1430,7 @@ Transform:
   - {fileID: 1953228686}
   - {fileID: 840039361}
   - {fileID: 1382822603}
+  - {fileID: 2145112840}
   m_Father: {fileID: 0}
   m_RootOrder: 4
 --- !u!82 &1923646694
@@ -1536,3 +1585,55 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6d6a8cf90bf4c485988384736ee94169, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &2145112838
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1923646693}
+    m_Modifications:
+    - target: {fileID: 474554, guid: 070b2b1182b5e4318833eb54726f2dbb, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 474554, guid: 070b2b1182b5e4318833eb54726f2dbb, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 474554, guid: 070b2b1182b5e4318833eb54726f2dbb, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 474554, guid: 070b2b1182b5e4318833eb54726f2dbb, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 474554, guid: 070b2b1182b5e4318833eb54726f2dbb, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 474554, guid: 070b2b1182b5e4318833eb54726f2dbb, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 474554, guid: 070b2b1182b5e4318833eb54726f2dbb, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 474554, guid: 070b2b1182b5e4318833eb54726f2dbb, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 070b2b1182b5e4318833eb54726f2dbb, type: 2}
+  m_IsPrefabParent: 0
+--- !u!114 &2145112839 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11405782, guid: 070b2b1182b5e4318833eb54726f2dbb,
+    type: 2}
+  m_PrefabInternal: {fileID: 2145112838}
+  m_Script: {fileID: 11500000, guid: 325bcbd661ad24f15abfd98f21e7ed9f, type: 3}
+--- !u!4 &2145112840 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 474554, guid: 070b2b1182b5e4318833eb54726f2dbb, type: 2}
+  m_PrefabInternal: {fileID: 2145112838}

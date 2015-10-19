@@ -19,7 +19,7 @@ namespace Soomla.Store.IAP                                                      
 
         public VirtualGood[] GetGoods()
         {                                                                                               // Add "TURN_GREEN" IAP to GetGoods
-            return new VirtualGood[] { REMOVE_ADS };
+            return new VirtualGood[] { REMOVE_ADS,REVEAL_FROGS,RESET_LEVEL};
         }
 
         public VirtualCurrencyPack[] GetCurrencyPacks()
@@ -42,7 +42,11 @@ namespace Soomla.Store.IAP                                                      
 
 	    public const string TEN_THUNS_COIN_PACK_ID     = "coins_10000_prod_id";
 
-        public const string REMOVE_ADS_ITEM_ID         = "remove_ads";                            
+        public const string REMOVE_ADS_ITEM_ID         = "remove_ads";
+        
+        public const string REVEAL_FROGS_ITEM_ID         = "reveal_frogs";
+        
+        public const string RESET_LEVEL_ITEM_ID         = "reset_level";                            
 
 
         // Frog Smash IAP Goods
@@ -51,8 +55,19 @@ namespace Soomla.Store.IAP                                                      
                 "remove_ads",                         // Name of IAP
                 "This will remove the ads",     // Description of IAP
                 "remove_ads_item_id",                 // Item ID (different from 'product id" used by itunes, this is used by soomla                                             3.
-            new PurchaseWithVirtualItem(COIN_CURRENCY_ITEM_ID, 50000)
-        );
+            new PurchaseWithVirtualItem(COIN_CURRENCY_ITEM_ID, 50000));
+        
+        public static VirtualGood REVEAL_FROGS = new SingleUseVG(
+            "Reveal Frogs",         // Name
+            "Reveal Frogs",         // Description
+            "reveal_frogs",   // Item ID
+            new PurchaseWithVirtualItem(COIN_CURRENCY_ITEM_ID,300));
+            
+        public static VirtualGood RESET_LEVEL = new SingleUseVG(
+            "Reveal Frogs",         // Name
+            "Reveal Frogs",         // Description
+            "reset_level",    // Item ID
+            new PurchaseWithVirtualItem(COIN_CURRENCY_ITEM_ID,1000));
         
 
 
