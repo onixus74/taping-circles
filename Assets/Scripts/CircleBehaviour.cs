@@ -117,7 +117,7 @@ public class CircleBehaviour : MonoBehaviour
 
         this.transform.GetChild(0).GetComponentInChildren<Text>().enabled = true;
         anim.SetTrigger("spawn");
-        Invoke("hideCircle", 2.0f);
+        Invoke("hideCircle", 4.0f);
         //  if (this.gameObject.name.Equals("ball_" + (gameManager.startNumber + gameManager.seqNumber).ToString()))
         //      gameManager.canClick = false;
 

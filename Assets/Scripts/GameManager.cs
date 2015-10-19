@@ -207,7 +207,7 @@ public class GameManager : MonoBehaviour
 
     public void showSequentially()
     {
-        //  canClick=false;
+        canClick=false;
         isHideClicked = true;
         StoreInventory.TakeItem("reveal_frogs",1);
             //  for (int i = startNumber; i < startNumber + seqNumber; i++)
@@ -235,17 +235,24 @@ public class GameManager : MonoBehaviour
            
             foreach (Animator child in allChildren) {
                 //    child.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
-                child.SetTrigger("wipe");     
+                child.SetTrigger("wipe");  
+                //  Destroy(this.gameObject, 1);
+                Destroy(child.transform.parent);   
             }
-            
-            SpawnCircleRange(startNumber, seqNumber, true);
+
             levelProgress--;
             levelShow--;
             health+=10;
             StoreInventory.GiveItem("reveal_frogs",1);
-            showSequentially();
+            //  showSequentially();
+            Invoke("ResetLevelSpawn",1.0f);
         }
        
+    }
+    public void ResetLevelSpawn(){
+            //  SpawnCircleRange(startNumber, seqNumber, true);
+            //  showSequentially();
+            isReady=true;
     }
     
     void NextFrame()
