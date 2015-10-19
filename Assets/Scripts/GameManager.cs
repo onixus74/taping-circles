@@ -55,6 +55,9 @@ public class GameManager : MonoBehaviour
         
         gameOverCounter = PlayerPrefs.GetInt("gameOverCounter");
         
+                   //[REMOVE] WHEN PUBLISH
+                    StoreInventory.TakeItem("remove_ads_item_id", 1);
+        
     }
 
     // Update is called once per frame

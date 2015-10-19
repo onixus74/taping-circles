@@ -40,8 +40,7 @@ namespace Soomla.Store.IAP
                     //StoreInventory.GiveItem(StoreInfo.Currencies[0].ItemId,4000);
                     SoomlaUtils.LogDebug("SOOMLA ExampleEventHandler", "Currency balance:" + StoreInventory.GetItemBalance(StoreInfo.Currencies[0].ItemId));
                     
-                    //[REMOVE] WHEN PUBLISH
-                    StoreInventory.TakeItem("remove_ads_item_id", 1);
+         
                
                 }
                 catch (VirtualItemNotFoundException ex)
