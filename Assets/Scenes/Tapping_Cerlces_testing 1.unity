@@ -760,9 +760,9 @@ RectTransform:
   - {fileID: 2042553187}
   m_Father: {fileID: 1595259408}
   m_RootOrder: 2
-  m_AnchorMin: {x: .5, y: .5}
-  m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 2.6500001, y: -147.100006}
+  m_AnchorMin: {x: .515625, y: .203351796}
+  m_AnchorMax: {x: .515625, y: .203351796}
+  m_AnchoredPosition: {x: .649999619, y: .899993896}
   m_SizeDelta: {x: 103.300003, y: 103.300003}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &287447730
@@ -1013,6 +1013,7 @@ GameObject:
   - 81: {fileID: 405992696}
   - 114: {fileID: 405992702}
   - 114: {fileID: 405992703}
+  - 95: {fileID: 405992701}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1087,6 +1088,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+--- !u!95 &405992701
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 405992695}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 21ddd6ffe443c4a35922529666127f86, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &405992702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2914,6 +2932,33 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1321235531}
+--- !u!1 &1331895006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1331895007}
+  m_Layer: 0
+  m_Name: spawners
+  m_TagString: spawners
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1331895007
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1331895006}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
 --- !u!1 &1367951487
 GameObject:
   m_ObjectHideFlags: 0
@@ -3316,6 +3361,7 @@ MonoBehaviour:
   isHideClicked: 0
   gameOverCounter: 0
   rate: 1
+  spawners: {fileID: 1331895006}
 --- !u!4 &1466310755
 Transform:
   m_ObjectHideFlags: 0
@@ -4574,6 +4620,7 @@ GameObject:
   - 4: {fileID: 2060669288}
   - 82: {fileID: 2060669290}
   - 114: {fileID: 2060669289}
+  - 95: {fileID: 2060669291}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -4588,7 +4635,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2060669287}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -.74000001, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1466310755}
@@ -4608,6 +4655,9 @@ MonoBehaviour:
   audioClips:
   - {fileID: 8300000, guid: 58491552f7e7f4d8982385481f6c49db, type: 3}
   - {fileID: 8300000, guid: 060bbb51455b24a6f84a35ba167cc282, type: 3}
+  - {fileID: 8300000, guid: 060bbb51455b24a6f84a35ba167cc282, type: 3}
+  - {fileID: 8300000, guid: 2ac159fd32ece464abf1735519f5e30f, type: 3}
+  levelPassAudio: {fileID: 0}
 --- !u!82 &2060669290
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4678,6 +4728,23 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+--- !u!95 &2060669291
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2060669287}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e891bc208e7cd46febc8c15464edb437, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &2086067225
 GameObject:
   m_ObjectHideFlags: 0
@@ -4858,8 +4925,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 405992702}
-        m_MethodName: restart
+      - m_Target: {fileID: 2060669289}
+        m_MethodName: levelPass
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

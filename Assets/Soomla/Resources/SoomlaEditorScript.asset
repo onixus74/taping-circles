@@ -26,7 +26,7 @@ MonoBehaviour:
     - name: HighwayEnvKey
       value: 9d9ff9ef-57a2-48de-8457-20499d9c3216
     - name: iTunesAppId
-      value: ITUNES APP ID
+      value: 1035284486
     - name: FBPermissions
       value: email,user_birthday,user_photos,user_friends,user_posts,publish_actions,user_location,user_likes
     - name: TwitterConsumerKey

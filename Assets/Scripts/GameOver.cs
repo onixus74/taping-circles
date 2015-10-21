@@ -31,6 +31,7 @@ public class GameOver : MonoBehaviour {
 			
 			anim.SetBool("check",true);
 			//  admobManager.ShowInterstitialAds();
+			gameManager.canClick=false;
 		
 		}
 	}

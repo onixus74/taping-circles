@@ -39,24 +39,35 @@ public class GameManager : MonoBehaviour
     Animator wave_animation;
     
     public int gameOverCounter;
-
-
-    public int rate = 1;
+    
+    Animator cameraAnim;
+    public int rate = 0;
+    
+    public GameObject spawners;
+    
+    GameObject spawnerTmp ;
+    
+    public int frogCounter;
+    public int frogSmashed;
 
     void Start()
-    {
+    {   
+        
+        cameraAnim = Camera.main.GetComponent<Animator>();
         ballsPrefab = GameObject.FindGameObjectWithTag("balls");
         isHideClicked = false;
         current = startNumber;
         SpawnSpawner();
-        SpawnCircleRange(startNumber, seqNumber, true);
+        SpawnCircleRange(startNumber, seqNumber);
         wave = GameObject.FindGameObjectWithTag("wave");
         wave_animation = wave.GetComponent<Animator>();
         
         gameOverCounter = PlayerPrefs.GetInt("gameOverCounter");
         
+        spawners= GameObject.FindGameObjectWithTag("spawners");
+        
                    //[REMOVE] WHEN PUBLISH
-                    StoreInventory.TakeItem("remove_ads_item_id", 1);
+                    //  StoreInventory.TakeItem("remove_ads_item_id", 1);
         
     }
 
@@ -72,12 +83,22 @@ public class GameManager : MonoBehaviour
         }
 
         health -= Time.deltaTime * 1.0f;
-        if (current == seqNumber + startNumber)
+       
+       
+       //When Level finished
+        if (frogCounter==frogSmashed)
         {
-            current = -1;
-            StartCoroutine("Wait", 1);
+            //  current = -1;
+            //  //  StartCoroutine("Wait", 1);
+            //  //   isReady = true;
+           
+           
+            //  Invoke("SetIsReadyTrue",1.0f);
+            frogSmashed=0;
+            nextLevel();
 
         }
+         
 
 
         staretime -= Time.deltaTime;
@@ -105,20 +126,26 @@ public class GameManager : MonoBehaviour
             }
             else { seqNumber = Random.Range(4, 7); };
 
-            SpawnCircleRange(startNumber, seqNumber, true);
+            SpawnCircleRange(startNumber, seqNumber);
 
-
+            isReady = false;
         }
 
         checkGameOver();
 
     }
-
-    void SpawnCircleRange(int start, int seqRange, bool isNumber)
+    
+    void SetIsReadyTrue(){
+        isReady=true;
+    }
+    void SpawnCircleRange(int start, int seqRange)
     {
-
+        frogCounter = 0;
         levelProgress++;
         levelShow++;
+        
+        current = start;
+        
         if (levelProgress == 10)
         {
             levelProgress = 1;
@@ -126,14 +153,14 @@ public class GameManager : MonoBehaviour
         }
 
         //  canClick = false;
-        current = start;
+        Debug.Log("seqRange value: "+seqRange);
+        Debug.Log("current value: "+current);
         List<int> array = new List<int>();
         GameObject ballTmp;
         int spawner;
         int counter = start;
         string test2 = "";
-        if (isNumber)
-        {
+
             for (int i = 0; i < seqRange; i++)
             {
                 do
@@ -152,18 +179,19 @@ public class GameManager : MonoBehaviour
             }
 
             foreach (int a in array)
-            {
+            {   
                 test2 = test2 + " , " + a.ToString();
-                ballTmp = Instantiate(Resources.Load("circle", typeof(GameObject)), GameObject.Find(a.ToString()).transform.position, Quaternion.identity) as GameObject;
+                ballTmp = Instantiate(Resources.Load("circle", typeof(GameObject)), spawners.transform.FindChild(a.ToString()).position, Quaternion.identity) as GameObject;
                 ballTmp.name = "ball_" + counter.ToString();
+                frogCounter++;
                 ballTmp.transform.GetChild(0).GetComponentInChildren<Text>().text = counter.ToString();
                 counter++;
                 //  ballTmp.transform.parent = ballsPrefab.transform;
                 ballTmp.transform.SetParent(ballsPrefab.transform);
             }
 
-        }
-        isReady = false;
+        
+         
 
 
     }
@@ -176,7 +204,9 @@ public class GameManager : MonoBehaviour
             for (int j = 0; j < 7; j++)
             {
                 count++;
+                
                 GameObject tmpObj = Instantiate(Resources.Load("Spawner", typeof(GameObject))) as GameObject;
+                tmpObj.transform.parent=spawners.transform;
                 tmpObj.name = count.ToString();
                 tmpObj.transform.position = new Vector3(j * 1.5f - 6.0f, i * -1.5f + 3, 9);
             }
@@ -295,6 +325,19 @@ public class GameManager : MonoBehaviour
 				return;
 			}
 		}
+    }
+    
+    public void ShakeCamera(){
+        cameraAnim.SetTrigger("shake");
+    }
+    
+    void nextLevel(){
+        current = -1;
+            //  StartCoroutine("Wait", 1);
+            //   isReady = true;
+           
+           
+            Invoke("SetIsReadyTrue",1.0f);
     }
 }
 }

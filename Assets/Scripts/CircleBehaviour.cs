@@ -58,25 +58,32 @@ public class CircleBehaviour : MonoBehaviour
             {
                 anim.SetTrigger("wipe");
                 gameManager.current++;
-                gameManager.rate++;
+                gameManager.frogSmashed++;
                 //  gameManager.coins += 1 * gameManager.rate;
                 StoreInventory.GiveItem("coin_currency_id", 1 * gameManager.rate);
                 Destroy(this.gameObject, 1);
-                if (gameManager.rate > 4)
-                {
-                    gameManager.rate = 4;
-                }
                 gameManager.health = gameManager.health + 1.5f;
                 HUD_image.overrideSprite = Resources.Load<Sprite>("UI/coin");
-                HUD_text.text = "+" + gameManager.rate;
-
+                HUD_text.text = "+" + (gameManager.rate);
+                
                 frogAudioSource.clip = frogAudioClips[0];
                 frogAudioSource.Play();
+                gameManager.rate++;
+                if (gameManager.rate > 3)
+                {
+                    gameManager.rate = 3;
+                }
+                
+                if (this.gameObject.name.Equals("ball_" + gameManager.current.ToString()))
+                { 
+                    
+                }
 
             }
             else
             {
                 anim.SetTrigger("mistake");
+                gameManager.ShakeCamera();
                 gameManager.rate = 1;
                 if(gameManager.difficultyLevel==0){
                     gameManager.health = gameManager.health - 1.0f;
@@ -129,6 +136,10 @@ public class CircleBehaviour : MonoBehaviour
         anim.SetTrigger("spawn");
         this.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
         gameManager.canClick = true;
+    }
+    
+    void SetIsReadyTrue(){
+        gameManager.isReady=true;
     }
 
 }

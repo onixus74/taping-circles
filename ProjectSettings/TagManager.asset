@@ -11,6 +11,7 @@ TagManager:
   - wave
   - balls
   - unityads manager
+  - spawners
   layers:
   - Default
   - TransparentFX
