@@ -28,7 +28,6 @@ GameObject:
   - 222: {fileID: 22285152}
   - 114: {fileID: 11479472}
   - 95: {fileID: 9517884}
-  - 114: {fileID: 11497890}
   m_Layer: 5
   m_Name: Shop_Panel
   m_TagString: Untagged
@@ -220,7 +219,6 @@ GameObject:
   - 222: {fileID: 22216054}
   - 114: {fileID: 11495114}
   - 114: {fileID: 11448718}
-  - 114: {fileID: 11429662}
   m_Layer: 5
   m_Name: NoAd_Button
   m_TagString: Untagged
@@ -530,7 +528,6 @@ GameObject:
   - 222: {fileID: 22247182}
   - 114: {fileID: 11424860}
   - 114: {fileID: 11442506}
-  - 114: {fileID: 11474532}
   m_Layer: 5
   m_Name: NoAd_Button
   m_TagString: Untagged
@@ -549,7 +546,6 @@ GameObject:
   - 222: {fileID: 22248082}
   - 114: {fileID: 11477004}
   - 114: {fileID: 11420430}
-  - 114: {fileID: 11471562}
   m_Layer: 5
   m_Name: NoAd_Button
   m_TagString: Untagged
@@ -1219,20 +1215,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11429662
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 139210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55c70137a127249bd9390d12d147f8d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isLifeTime: 0
-  price: 300
-  lifeTimeItemId: 
 --- !u!114 &11432328
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2026,20 +2008,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d70a1cefb1c84d36ac59b52e3a49c49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11471562
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 177616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55c70137a127249bd9390d12d147f8d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isLifeTime: 1
-  price: 50000
-  lifeTimeItemId: remove_ads_item_id
 --- !u!114 &11472944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2104,20 +2072,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: x1
---- !u!114 &11474532
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 176804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55c70137a127249bd9390d12d147f8d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isLifeTime: 0
-  price: 1000
-  lifeTimeItemId: 
 --- !u!114 &11477004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2420,17 +2374,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11497890
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11498824
 MonoBehaviour:
   m_ObjectHideFlags: 1
