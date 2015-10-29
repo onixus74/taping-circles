@@ -8,13 +8,13 @@ public class GameOver : MonoBehaviour {
 	// Use this for initialization\
 	 public Animator anim;
 	//   public AdmobAdManager admobManager;
-	public UnityAdsManager unityAdsManager;
+	//  public UnityAdsManager unityAdsManager;
 	
 	bool isGameOverCounted;
 
 	void Start () {
 		gameManager = GameObject.FindGameObjectWithTag("game manager").GetComponent<GameManager>();
-		unityAdsManager = GameObject.FindGameObjectWithTag("unityads manager").GetComponent<UnityAdsManager>();
+		//  unityAdsManager = GameObject.FindGameObjectWithTag("unityads manager").GetComponent<UnityAdsManager>();
 		anim = this.GetComponent<Animator>();
 		//  admobManager = GameObject.FindGameObjectWithTag("game manager").transform.FindChild("AdmobManager").GetComponent<AdmobAdManager>();
 		//  admobManager.LoadInterstitialAds();
@@ -44,7 +44,7 @@ public class GameOver : MonoBehaviour {
 				gameManager.gameOverCounter=0;
 				if (StoreInventory.GetItemBalance("remove_ads_item_id")==0)
 				{
-					unityAdsManager.ShowAds();					
+					//  unityAdsManager.ShowAds();					
 				}
 			}
 			PlayerPrefs.SetInt("gameOverCounter",gameManager.gameOverCounter);

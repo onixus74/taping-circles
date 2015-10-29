@@ -55,7 +55,7 @@ namespace Grow.Highway
 			growHighway_start();
 #else
 			SoomlaUtils.LogError(TAG, "Highway only works on Android or iOS devices !");
-			UnityEditor.EditorApplication.isPlaying = false;
+			//  UnityEditor.EditorApplication.isPlaying = false;
 #endif
 		}
 
