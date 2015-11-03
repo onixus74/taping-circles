@@ -37,6 +37,8 @@ public class CircleBehaviour : MonoBehaviour
         {
             anim.SetTrigger("wipe");
         }
+        
+        anim.speed=Random.RandomRange(0.5f,1.2f);
 
 
     }
