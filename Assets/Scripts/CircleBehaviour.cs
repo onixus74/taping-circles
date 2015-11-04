@@ -56,7 +56,7 @@ public class CircleBehaviour : MonoBehaviour
                 //  gameManager.coins += (gameManager.current);
 
             }
-            if (this.gameObject.name.Equals("ball_" + gameManager.current.ToString()))
+            if (this.gameObject.name == "ball_" + gameManager.current.ToString())
             {
                 anim.SetTrigger("wipe");
                 gameManager.current++;
