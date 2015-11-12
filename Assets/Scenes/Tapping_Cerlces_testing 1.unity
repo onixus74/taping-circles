@@ -550,6 +550,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   unityAdsManager: {fileID: 0}
+  charboostAdsManager: {fileID: 0}
 --- !u!95 &246508046
 Animator:
   serializedVersion: 3
@@ -1900,6 +1901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   unityAdsManager: {fileID: 0}
+  charboostAdsManager: {fileID: 0}
 --- !u!95 &915987856
 Animator:
   serializedVersion: 3
@@ -2824,6 +2826,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   unityAdsManager: {fileID: 0}
+  charboostAdsManager: {fileID: 0}
 --- !u!1 &1389205315
 GameObject:
   m_ObjectHideFlags: 0
@@ -3129,6 +3132,7 @@ Transform:
   - {fileID: 416089820}
   - {fileID: 2060669288}
   - {fileID: 1489341759}
+  - {fileID: 2105105733}
   m_Father: {fileID: 0}
   m_RootOrder: 4
 --- !u!1 &1483271371
@@ -3288,7 +3292,7 @@ RectTransform:
   m_RootOrder: 6
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 22.75, y: -198}
+  m_AnchoredPosition: {x: -1.8119812e-05, y: -144}
   m_SizeDelta: {x: 123.5, y: 88}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1501273877
@@ -4514,6 +4518,49 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2086067225}
+--- !u!1 &2105105732
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2105105733}
+  - 114: {fileID: 2105105734}
+  m_Layer: 0
+  m_Name: CharboostAdsManager
+  m_TagString: charboostads manager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2105105733
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2105105732}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1466310755}
+  m_RootOrder: 6
+--- !u!114 &2105105734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2105105732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b81f185282df484bb90a5ae04a0b169, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autocache: 1
+  showInterstitial: 1
+  showMoreApps: 1
+  showRewardedVideo: 1
 --- !u!1 &2113849316
 GameObject:
   m_ObjectHideFlags: 0

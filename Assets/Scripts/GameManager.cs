@@ -67,7 +67,7 @@ namespace Soomla.Store.IAP
             spawners = GameObject.FindGameObjectWithTag("spawners");
 
             //[REMOVE] WHEN PUBLISH
-            //  StoreInventory.TakeItem("remove_ads_item_id", 1);
+            StoreInventory.TakeItem("remove_ads_item_id", 1);
 
         }
 

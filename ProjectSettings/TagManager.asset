@@ -12,6 +12,7 @@ TagManager:
   - balls
   - unityads manager
   - spawners
+  - charboostads manager
   layers:
   - Default
   - TransparentFX
