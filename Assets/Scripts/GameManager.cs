@@ -363,7 +363,7 @@ namespace Soomla.Store.IAP
             Invoke("SetIsReadyTrue", 1.0f);
         }
         public void BacktoMenu(){
-            Application.LoadLevel(0);
+            Application.LoadLevelAdditive(0);
         }
     }
 }

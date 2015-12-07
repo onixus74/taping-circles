@@ -7,7 +7,7 @@ namespace Soomla.Store.IAP
 public class CircleBehaviour : MonoBehaviour
 {
     public Animator anim;
-    GameManager gameManager;
+    GameManager GameManager.instance;
     public int ballNBR;
 
     Transform HUD;
@@ -24,7 +24,6 @@ public class CircleBehaviour : MonoBehaviour
     void Start()
     {
         anim = this.GetComponent<Animator>();
-        gameManager = GameManager.instance;
         HUD = gameObject.transform.FindChild("Canvas").FindChild("HUD");
         HUD_text = HUD.GetComponent<Text>();
         HUD_image = HUD.transform.FindChild("Image").GetComponent<Image>();
@@ -36,7 +35,7 @@ public class CircleBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.isGameOver == true)
+        if (GameManager.instance.isGameOver == true)
         {
             anim.SetTrigger("wipe");
         }
@@ -49,38 +48,38 @@ public class CircleBehaviour : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (gameManager.canClick && canClickOnCircle==true)
+        if (GameManager.instance.canClick && canClickOnCircle==true)
         {
             anim.SetTrigger("hud_show");
-            if (gameManager.current == gameManager.startNumber)
+            if (GameManager.instance.current == GameManager.instance.startNumber)
             {
-                gameManager.Hide();
-                gameManager.isHideClicked = true;
-                //  gameManager.coins += (gameManager.current);
+                GameManager.instance.Hide();
+                GameManager.instance.isHideClicked = true;
+                //  GameManager.instance.coins += (GameManager.instance.current);
 
             }
-            if (this.gameObject.name == "ball_" + gameManager.current.ToString())
+            if (this.gameObject.name == "ball_" + GameManager.instance.current.ToString())
             {
                 anim.SetTrigger("wipe");
                 canClickOnCircle = false;
-                gameManager.current++;
-                gameManager.frogSmashed++;
-                //  gameManager.coins += 1 * gameManager.rate;
-                StoreInventory.GiveItem("coin_currency_id", 1 * gameManager.rate);
+                GameManager.instance.current++;
+                GameManager.instance.frogSmashed++;
+                //  GameManager.instance.coins += 1 * GameManager.instance.rate;
+                StoreInventory.GiveItem("coin_currency_id", 1 * GameManager.instance.rate);
                 Destroy(this.gameObject, 1);
-                gameManager.health = gameManager.health + 1.5f;
+                GameManager.instance.health = GameManager.instance.health + 1.5f;
                 HUD_image.overrideSprite = Resources.Load<Sprite>("UI/coin");
-                HUD_text.text = "+" + (gameManager.rate);
+                HUD_text.text = "+" + (GameManager.instance.rate);
                 
                 frogAudioSource.clip = frogAudioClips[0];
                 frogAudioSource.Play();
-                gameManager.rate++;
-                if (gameManager.rate > 3)
+                GameManager.instance.rate++;
+                if (GameManager.instance.rate > 3)
                 {
-                    gameManager.rate = 3;
+                    GameManager.instance.rate = 3;
                 }
                 
-                if (this.gameObject.name.Equals("ball_" + gameManager.current.ToString()))
+                if (this.gameObject.name.Equals("ball_" + GameManager.instance.current.ToString()))
                 { 
                     
                 }
@@ -89,15 +88,15 @@ public class CircleBehaviour : MonoBehaviour
             else
             {   
                 anim.SetTrigger("mistake");
-                gameManager.ShakeCamera();
-                gameManager.rate = 1;
-                if(gameManager.difficultyLevel==0){
-                    gameManager.health = gameManager.health - 1.0f;
+                GameManager.instance.ShakeCamera();
+                GameManager.instance.rate = 1;
+                if(GameManager.instance.difficultyLevel==0){
+                    GameManager.instance.health = GameManager.instance.health - 1.0f;
                     HUD_text.text = "-" + 1;    
                 }
                 else{
-                    gameManager.health = gameManager.health - (1.0f* gameManager.difficultyLevel);
-                    HUD_text.text = "-" + gameManager.difficultyLevel;  
+                    GameManager.instance.health = GameManager.instance.health - (1.0f* GameManager.instance.difficultyLevel);
+                    HUD_text.text = "-" + GameManager.instance.difficultyLevel;  
                 }
                 HUD_image.overrideSprite = Resources.Load<Sprite>("UI/time");
                 HUD_image.transform.localScale = new Vector3(0.02f, 0.02f, 0);
@@ -131,8 +130,8 @@ public class CircleBehaviour : MonoBehaviour
         this.transform.GetChild(0).GetComponentInChildren<Text>().enabled = true;
         anim.SetTrigger("spawn");
         Invoke("hideCircle", 4.0f);
-        //  if (this.gameObject.name.Equals("ball_" + (gameManager.startNumber + gameManager.seqNumber).ToString()))
-        //      gameManager.canClick = false;
+        //  if (this.gameObject.name.Equals("ball_" + (GameManager.instance.startNumber + GameManager.instance.seqNumber).ToString()))
+        //      GameManager.instance.canClick = false;
 
 
     }
@@ -141,11 +140,11 @@ public class CircleBehaviour : MonoBehaviour
     {
         anim.SetTrigger("spawn");
         this.transform.GetChild(0).GetComponentInChildren<Text>().enabled = false;
-        gameManager.canClick = true;
+        GameManager.instance.canClick = true;
     }
     
     void SetIsReadyTrue(){
-        gameManager.isReady=true;
+        GameManager.instance.isReady=true;
     }
 
 }

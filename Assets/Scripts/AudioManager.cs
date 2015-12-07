@@ -8,7 +8,6 @@ namespace Soomla.Store.IAP
         public AudioSource backgroundMusicAudioSource;
         public AudioSource gameOverAudioSource;
         public AudioSource levelPassAudioSource;
-        GameManager gameManager;
         public AudioClip[] audioClips;
         public AudioClip passage;
         public AudioSource levelPassAudio;
@@ -20,7 +19,7 @@ namespace Soomla.Store.IAP
 
         void Start()
         {
-            gameManager = GameManager.instance;
+
             backgroundMusicAudioSource = this.GetComponent<AudioSource>();
             anim = this.GetComponent<Animator>();
             backgroundMusicAudioSource.clip = audioClips[0];
@@ -43,7 +42,7 @@ namespace Soomla.Store.IAP
         // Update is called once per frame
         void Update()
         {
-            if (gameManager.frogSmashed == gameManager.frogCounter)
+            if (GameManager.instance.frogSmashed == GameManager.instance.frogCounter)
             {
                 //  levelPassAudio.PlayOneShot()
                 // anim.SetTrigger("levelpass");

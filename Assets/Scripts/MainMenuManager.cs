@@ -48,6 +48,9 @@ namespace Soomla.Store.IAP
         {
             async.allowSceneActivation = true;
         }
+        public void loadGameNotAsync(){
+            Application.LoadLevel(1);
+        }
 
         public void onUnexpectedStoreError(int errorCode)
         {
