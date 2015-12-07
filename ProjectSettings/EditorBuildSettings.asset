@@ -13,3 +13,7 @@ EditorBuildSettings:
     path: Assets/Examples/MuffinRush/MuffinRush.unity
   - enabled: 0
     path: Assets/Examples/Google Game Service Example/Scene.unity
+  - enabled: 0
+    path: Assets/Examples/scene.unity
+  - enabled: 0
+    path: Assets/Chartboost/Examples/ChartboostExample/ChartboostExample.unity

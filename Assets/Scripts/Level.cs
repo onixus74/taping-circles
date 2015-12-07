@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+
+namespace Soomla.Store.IAP
+{
 public class Level : MonoBehaviour {
 
 	// Use this for initialization
@@ -13,4 +16,5 @@ public class Level : MonoBehaviour {
 	void Update () {
 		this.GetComponent<Text>().text=""+gameManager.GetComponent<GameManager>().levelShow;
 	}
+}
 }
