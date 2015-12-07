@@ -8,7 +8,7 @@ namespace Soomla.Store.IAP
 {
     public class GameManager : MonoBehaviour
     {
-
+        public static GameManager instance = null;
         public bool paused = false;
         public int startNumber = 0;
         public int seqNumber = 5;
@@ -70,7 +70,16 @@ namespace Soomla.Store.IAP
             StoreInventory.TakeItem("remove_ads_item_id", 1);
 
         }
-
+        void Awake(){
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else if (instance != this)
+            {
+                Destroy(gameObject);
+            }
+        }
         // Update is called once per frame
         void Update()
         {
@@ -238,7 +247,7 @@ namespace Soomla.Store.IAP
         }
 
         public void showSequentially()
-        {
+        {  
                 canClick = false;
                 isHideClicked = true;
             if (StoreInventory.GetItemBalance("reveal_frogs") > 0)

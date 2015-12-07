@@ -17,16 +17,19 @@ public class CircleBehaviour : MonoBehaviour
     public AudioSource frogAudioSource;
 
     public AudioClip[] frogAudioClips;
+    
+    bool canClickOnCircle;
 
     // Use this for initialization
     void Start()
     {
         anim = this.GetComponent<Animator>();
-        gameManager = GameObject.FindGameObjectWithTag("game manager").GetComponent<GameManager>();
+        gameManager = GameManager.instance;
         HUD = gameObject.transform.FindChild("Canvas").FindChild("HUD");
         HUD_text = HUD.GetComponent<Text>();
         HUD_image = HUD.transform.FindChild("Image").GetComponent<Image>();
         frogAudioSource = this.GetComponent<AudioSource>();
+        canClickOnCircle =true;
     }
 
 
@@ -46,7 +49,7 @@ public class CircleBehaviour : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (gameManager.canClick)
+        if (gameManager.canClick && canClickOnCircle==true)
         {
             anim.SetTrigger("hud_show");
             if (gameManager.current == gameManager.startNumber)
@@ -59,6 +62,7 @@ public class CircleBehaviour : MonoBehaviour
             if (this.gameObject.name == "ball_" + gameManager.current.ToString())
             {
                 anim.SetTrigger("wipe");
+                canClickOnCircle = false;
                 gameManager.current++;
                 gameManager.frogSmashed++;
                 //  gameManager.coins += 1 * gameManager.rate;
@@ -83,7 +87,7 @@ public class CircleBehaviour : MonoBehaviour
 
             }
             else
-            {
+            {   
                 anim.SetTrigger("mistake");
                 gameManager.ShakeCamera();
                 gameManager.rate = 1;

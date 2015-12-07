@@ -53,5 +53,8 @@ public class GameOver : MonoBehaviour {
 			PlayerPrefs.SetInt("gameOverCounter",gameManager.gameOverCounter);
 			
 	}
+	public void playGameOver(){
+		AudioManager.instance.GameOver();
+	}
 }
 }
