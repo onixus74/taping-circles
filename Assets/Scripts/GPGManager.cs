@@ -117,7 +117,7 @@ public class GPGManager : MonoBehaviour
     {
         PlayGamesPlatform.Activate();
         
-            Login();       
+            // Login();       
     }
     
 }

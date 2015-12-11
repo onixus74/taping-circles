@@ -67,6 +67,8 @@ namespace GooglePlayGames.Native
         private volatile bool mSilentAuthFailed = false;
         private volatile bool friendsLoading = false;
 
+        private string rationale;
+
         private int webclientWarningFreq = 100000;
         private int noWebClientIdWarningCount = 0;
 
@@ -76,6 +78,7 @@ namespace GooglePlayGames.Native
             PlayGamesHelperObject.CreateObject();
             this.mConfiguration = Misc.CheckNotNull(configuration);
             this.clientImpl = clientImpl;
+            this.rationale = configuration.PermissionRationale;
         }
 
         private GameServices GameServices()
@@ -151,7 +154,7 @@ namespace GooglePlayGames.Native
 
             PlayGamesHelperObject.RunOnGameThread(() =>
                 {
-                    Logger.d("Invoking user callback on game thread");
+                    OurUtils.Logger.d("Invoking user callback on game thread");
                     callback(data);
                 });
         }
@@ -207,7 +210,7 @@ namespace GooglePlayGames.Native
                         }
 
                         mAuthState = AuthState.SilentPending;
-                        mTokenClient = clientImpl.CreateTokenClient();
+                        mTokenClient = clientImpl.CreateTokenClient(false);
                     }
                 }
             }
@@ -222,14 +225,14 @@ namespace GooglePlayGames.Native
 
             if (currentHandler == null)
             {
-                Logger.d("Received " + eventType + " for invitation "
+                OurUtils.Logger.d("Received " + eventType + " for invitation "
                     + invitationId + " but no handler was registered.");
                 return;
             }
 
             if (eventType == Types.MultiplayerEvent.REMOVED)
             {
-                Logger.d("Ignoring REMOVED for invitation " + invitationId);
+                OurUtils.Logger.d("Ignoring REMOVED for invitation " + invitationId);
                 return;
             }
 
@@ -260,7 +263,7 @@ namespace GooglePlayGames.Native
                 }
                 return null;
             }
-
+            mTokenClient.SetRationale(rationale);
             return mTokenClient.GetEmail();
         }
 
@@ -285,7 +288,7 @@ namespace GooglePlayGames.Native
                 }
                 return null;
             }
-
+            mTokenClient.SetRationale(rationale);
             return mTokenClient.GetAccessToken();
         }
 
@@ -312,6 +315,7 @@ namespace GooglePlayGames.Native
                 }
                 return null;
             }
+            mTokenClient.SetRationale(rationale);
             return mTokenClient.GetIdToken(GameInfo.WebClientId);
         }
 
@@ -330,7 +334,7 @@ namespace GooglePlayGames.Native
 
             if (!IsAuthenticated())
             {
-                Logger.d("Cannot loadFriends when not authenticated");
+                OurUtils.Logger.d("Cannot loadFriends when not authenticated");
                 callback(false);
                 return;
             }
@@ -345,7 +349,7 @@ namespace GooglePlayGames.Native
                     else
                     {
                         mFriends = new List<Player>();
-                        Logger.e("Got " + status + " loading friends");
+                        OurUtils.Logger.e("Got " + status + " loading friends");
                         callback(false);
                     }
                 });
@@ -355,11 +359,11 @@ namespace GooglePlayGames.Native
         {
             if (mFriends == null && !friendsLoading)
             {
-                Logger.w("Getting friends before they are loaded!!!");
+                OurUtils.Logger.w("Getting friends before they are loaded!!!");
                 friendsLoading = true;
                 LoadFriends((ok) =>
                     {
-                        Logger.d("loading: " + ok + " mFriends = " + mFriends);
+                        OurUtils.Logger.d("loading: " + ok + " mFriends = " + mFriends);
                         friendsLoading = false;
                     });
             }
@@ -372,17 +376,17 @@ namespace GooglePlayGames.Native
 
             if (authGeneration != mAuthGeneration)
             {
-                Logger.d("Received achievement callback after signout occurred, ignoring");
+                OurUtils.Logger.d("Received achievement callback after signout occurred, ignoring");
                 return;
             }
 
-            Logger.d("Populating Achievements, status = " + response.Status());
+            OurUtils.Logger.d("Populating Achievements, status = " + response.Status());
             lock (AuthStateLock)
             {
                 if (response.Status() != Status.ResponseStatus.VALID &&
                     response.Status() != Status.ResponseStatus.VALID_BUT_STALE)
                 {
-                    Logger.e("Error retrieving achievements - check the log for more information. " +
+                    OurUtils.Logger.e("Error retrieving achievements - check the log for more information. " +
                         "Failing signin.");
                     var localLoudAuthCallbacks = mPendingAuthCallbacks;
                     mPendingAuthCallbacks = null;
@@ -403,11 +407,11 @@ namespace GooglePlayGames.Native
                         achievements[achievement.Id()] = achievement.AsAchievement();
                     }
                 }
-                Logger.d("Found " + achievements.Count + " Achievements");
+                OurUtils.Logger.d("Found " + achievements.Count + " Achievements");
                 mAchievements = achievements;
             }
 
-            Logger.d("Maybe finish for Achievements");
+            OurUtils.Logger.d("Maybe finish for Achievements");
             MaybeFinishAuthentication();
         }
 
@@ -421,11 +425,11 @@ namespace GooglePlayGames.Native
                 // completed.
                 if (mUser == null || mAchievements == null)
                 {
-                    Logger.d("Auth not finished. User=" + mUser + " achievements=" + mAchievements);
+                    OurUtils.Logger.d("Auth not finished. User=" + mUser + " achievements=" + mAchievements);
                     return;
                 }
 
-                Logger.d("Auth finished. Proceeding.");
+                OurUtils.Logger.d("Auth finished. Proceeding.");
                 // Null out the pending callbacks - we will be invoking any pending ones.
                 localCallbacks = mPendingAuthCallbacks;
                 mPendingAuthCallbacks = null;
@@ -434,18 +438,18 @@ namespace GooglePlayGames.Native
 
             if (localCallbacks != null)
             {
-                Logger.d("Invoking Callbacks: " + localCallbacks);
+                OurUtils.Logger.d("Invoking Callbacks: " + localCallbacks);
                 InvokeCallbackOnGameThread(localCallbacks, true);
             }
         }
 
         void PopulateUser(uint authGeneration, PlayerManager.FetchSelfResponse response)
         {
-            Logger.d("Populating User");
+            OurUtils.Logger.d("Populating User");
 
             if (authGeneration != mAuthGeneration)
             {
-                Logger.d("Received user callback after signout occurred, ignoring");
+                OurUtils.Logger.d("Received user callback after signout occurred, ignoring");
                 return;
             }
 
@@ -454,7 +458,7 @@ namespace GooglePlayGames.Native
                 if (response.Status() != Status.ResponseStatus.VALID &&
                     response.Status() != Status.ResponseStatus.VALID_BUT_STALE)
                 {
-                    Logger.e("Error retrieving user, signing out");
+                    OurUtils.Logger.e("Error retrieving user, signing out");
                     var localCallbacks = mPendingAuthCallbacks;
                     mPendingAuthCallbacks = null;
 
@@ -469,14 +473,14 @@ namespace GooglePlayGames.Native
                 mUser = response.Self().AsPlayer();
                 mFriends = null;
             }
-            Logger.d("Found User: " + mUser);
-            Logger.d("Maybe finish for User");
+            OurUtils.Logger.d("Found User: " + mUser);
+            OurUtils.Logger.d("Maybe finish for User");
             MaybeFinishAuthentication();
         }
 
         private void HandleAuthTransition(Types.AuthOperation operation, Status.AuthStatus status)
         {
-            Logger.d("Starting Auth Transition. Op: " + operation + " status: " + status);
+            OurUtils.Logger.d("Starting Auth Transition. Op: " + operation + " status: " + status);
             lock (AuthStateLock)
             {
                 switch (operation)
@@ -534,7 +538,7 @@ namespace GooglePlayGames.Native
                         ToUnauthenticated();
                         break;
                     default:
-                        Logger.e("Unknown AuthOperation " + operation);
+                        OurUtils.Logger.e("Unknown AuthOperation " + operation);
                         break;
                 }
             }
@@ -548,6 +552,7 @@ namespace GooglePlayGames.Native
                 mFriends = null;
                 mAchievements = null;
                 mAuthState = AuthState.Unauthenticated;
+                mTokenClient = clientImpl.CreateTokenClient(true);
                 mAuthGeneration++;
             }
         }
@@ -681,19 +686,19 @@ namespace GooglePlayGames.Native
 
             if (achievement == null)
             {
-                Logger.d("Could not " + updateType + ", no achievement with ID " + achId);
+                OurUtils.Logger.d("Could not " + updateType + ", no achievement with ID " + achId);
                 callback(false);
                 return;
             }
 
             if (alreadyDone(achievement))
             {
-                Logger.d("Did not need to perform " + updateType + ": " + "on achievement " + achId);
+                OurUtils.Logger.d("Did not need to perform " + updateType + ": " + "on achievement " + achId);
                 callback(true);
                 return;
             }
 
-            Logger.d("Performing " + updateType + " on " + achId);
+            OurUtils.Logger.d("Performing " + updateType + " on " + achId);
             updateAchievment(achievement);
 
             GameServices().AchievementManager().Fetch(achId, rsp =>
@@ -706,7 +711,7 @@ namespace GooglePlayGames.Native
                     }
                     else
                     {
-                        Logger.e("Cannot refresh achievement " + achId + ": " +
+                        OurUtils.Logger.e("Cannot refresh achievement " + achId + ": " +
                             rsp.Status());
                         callback(false);
                     }
@@ -725,21 +730,21 @@ namespace GooglePlayGames.Native
             var achievement = GetAchievement(achId);
             if (achievement == null)
             {
-                Logger.e("Could not increment, no achievement with ID " + achId);
+                OurUtils.Logger.e("Could not increment, no achievement with ID " + achId);
                 callback(false);
                 return;
             }
 
             if (!achievement.IsIncremental)
             {
-                Logger.e("Could not increment, achievement with ID " + achId + " was not incremental");
+                OurUtils.Logger.e("Could not increment, achievement with ID " + achId + " was not incremental");
                 callback(false);
                 return;
             }
 
             if (steps < 0)
             {
-                Logger.e("Attempted to increment by negative steps");
+                OurUtils.Logger.e("Attempted to increment by negative steps");
                 callback(false);
                 return;
             }
@@ -755,7 +760,7 @@ namespace GooglePlayGames.Native
                     }
                     else
                     {
-                        Logger.e("Cannot refresh achievement " + achId + ": " +
+                        OurUtils.Logger.e("Cannot refresh achievement " + achId + ": " +
                             rsp.Status());
                         callback(false);
                     }
@@ -774,14 +779,14 @@ namespace GooglePlayGames.Native
             var achievement = GetAchievement(achId);
             if (achievement == null)
             {
-                Logger.e("Could not increment, no achievement with ID " + achId);
+                OurUtils.Logger.e("Could not increment, no achievement with ID " + achId);
                 callback(false);
                 return;
             }
 
             if (!achievement.IsIncremental)
             {
-                Logger.e("Could not increment, achievement with ID " +
+                OurUtils.Logger.e("Could not increment, achievement with ID " +
                     achId + " is not incremental");
                 callback(false);
                 return;
@@ -789,7 +794,7 @@ namespace GooglePlayGames.Native
 
             if (steps < 0)
             {
-                Logger.e("Attempted to increment by negative steps");
+                OurUtils.Logger.e("Attempted to increment by negative steps");
                 callback(false);
                 return;
             }
@@ -805,7 +810,7 @@ namespace GooglePlayGames.Native
                     }
                     else
                     {
-                        Logger.e("Cannot refresh achievement " + achId + ": " +
+                        OurUtils.Logger.e("Cannot refresh achievement " + achId + ": " +
                             rsp.Status());
                         callback(false);
                     }
