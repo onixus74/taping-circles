@@ -232,10 +232,10 @@ namespace GooglePlayGames
             {
                 // treat null as unitialized, empty as no email.  This can
                 // happen when the web client is not initialized.
-                if (authenticated && string.IsNullOrEmpty(emailAddress))
+                if (authenticated && emailAddress == null)
                 {
                     emailAddress = mPlatform.GetUserEmail();
-                    emailAddress = emailAddress ?? string.Empty;
+                    emailAddress = emailAddress != null ? emailAddress : string.Empty;
                 }
                 return authenticated ? emailAddress : string.Empty;
             }
@@ -270,38 +270,22 @@ namespace GooglePlayGames
             /// <summary>
             /// The number of in-app purchases.
             /// </summary>
-            public int NumberOfPurchases
-            {
-                get;
-                set;
-            }
+            private int numberOfPurchases;
 
             /// <summary>
             /// The length of the avg sesson in minutes.
             /// </summary>
-            public float AvgSessonLength
-            {
-                get;
-                set;
-            }
+            private float avgSessonLength;
 
             /// <summary>
             /// The days since last played.
             /// </summary>
-            public int DaysSinceLastPlayed
-            {
-                get;
-                set;
-            }
+            private int daysSinceLastPlayed;
 
             /// <summary>
             /// The number of sessions based on sign-ins.
             /// </summary>
-            public int NumOfSessions
-            {
-                get;
-                set;
-            }
+            private int numOfSessions;
 
             /// <summary>
             /// The approximation of sessions percentile for the player,
@@ -309,13 +293,8 @@ namespace GooglePlayGames
             /// This value indicates how many sessions the current player has
             /// played in comparison to the rest of this game's player base.
             /// Higher numbers indicate that this player has played more sessions.
-            /// A return value  less than zero indicates this value is not available.
             /// </summary>
-            public float SessPercentile
-            {
-                get;
-                set;
-            }
+            private float sessPercentile;
 
             /// <summary>
             /// The approximate spend percentile of the player,
@@ -323,21 +302,40 @@ namespace GooglePlayGames
             /// value indicates how much the current player has spent in
             /// comparison to the rest of this game's player base. Higher
             /// numbers indicate that this player has spent more.
-            /// A return value  less than zero indicates this value is not available.
             /// </summary>
-            public float SpendPercentile
+            private float spendPercentile;
+
+            public int NumberOfPurchases
             {
                 get;
                 set;
             }
 
-            /// <summary>
-            /// The approximate probability of the player not returning
-            /// to play the game. Higher values indicate that a player
-            /// is less likely to return.
-            /// A return value  less than zero indicates this value is not available.
-            /// </summary>
-            public float ChurnProbability
+            public float AvgSessonLength
+            {
+                get;
+                set;
+            }
+
+            public int DaysSinceLastPlayed
+            {
+                get;
+                set;
+            }
+
+            public int NumOfSessions
+            {
+                get;
+                set;
+            }
+
+            public float SessPercentile
+            {
+                get;
+                set;
+            }
+
+            public float SpendPercentile
             {
                 get;
                 set;

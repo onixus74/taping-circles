@@ -27,7 +27,6 @@ namespace GooglePlayGames
         private string mBundleId = string.Empty;
         private string mWebClientId = string.Empty;
         private string mClassName = "GooglePlayGames.GPGSIds";
-        private string mClassDirectory = "Assets";
         private string mConfigData = string.Empty;
         private Vector2 scroll;
 
@@ -44,7 +43,6 @@ namespace GooglePlayGames
             mBundleId = GPGSProjectSettings.Instance.Get(GPGSUtil.IOSBUNDLEIDKEY);
 
             mWebClientId = GPGSProjectSettings.Instance.Get(GPGSUtil.WEBCLIENTIDKEY);
-            mClassDirectory = GPGSProjectSettings.Instance.Get(GPGSUtil.CLASSDIRECTORYKEY, mClassDirectory);
             mClassName = GPGSProjectSettings.Instance.Get(GPGSUtil.CLASSNAMEKEY);
             mConfigData = GPGSProjectSettings.Instance.Get(GPGSUtil.IOSRESOURCEKEY);
 
@@ -71,29 +69,11 @@ namespace GooglePlayGames
 
         public void OnGUI()
         {
-            GUIStyle link = new GUIStyle(GUI.skin.label);
-            link.normal.textColor = new Color(.7f, .7f, 1f);
-
             // Title
             GUILayout.BeginVertical();
             GUILayout.Space(10);
             GUILayout.Label(GPGSStrings.IOSSetup.Blurb);
             GUILayout.Space(10);
-
-            if (GUILayout.Button("Open Play Games Console", link, GUILayout.ExpandWidth(false)))
-            {
-                Application.OpenURL("https://play.google.com/apps/publish");
-            }
-
-            Rect last = GUILayoutUtility.GetLastRect();
-            last.y += last.height - 2;
-            last.x += 3;
-            last.width -= 6;
-            last.height = 2;
-
-            GUI.Box(last, string.Empty);
-
-            GUILayout.Space(15);
 
             // Bundle ID field
             GUILayout.Label(GPGSStrings.IOSSetup.BundleIdTitle, EditorStyles.boldLabel);
@@ -116,8 +96,7 @@ namespace GooglePlayGames
             GUILayout.Label("Constants class name", EditorStyles.boldLabel);
             GUILayout.Label("Enter the fully qualified name of the class to create containing the constants");
             GUILayout.Space(10);
-            mClassDirectory = EditorGUILayout.TextField("Directory to save constants",
-                mClassDirectory, GUILayout.Width(480));
+
             mClassName = EditorGUILayout.TextField("Constants class name",
                 mClassName, GUILayout.Width(480));
 
@@ -167,7 +146,7 @@ namespace GooglePlayGames
         /// </summary>
         internal void DoSetup()
         {
-            if (PerformSetup(mClassDirectory, mClassName, mConfigData, mWebClientId, mBundleId, null))
+            if (PerformSetup(mClassName, mConfigData, mWebClientId, mBundleId, null))
             {
                 GPGSUtil.Alert(GPGSStrings.Success, GPGSStrings.IOSSetup.SetupComplete);
                 Close();
@@ -190,10 +169,10 @@ namespace GooglePlayGames
         /// <param name="bundleId">Bundle identifier.</param>
         /// <param name="nearbySvcId">Nearby svc identifier.</param>
         public static bool PerformSetup(
-            string classDirectory, string className, string resourceXmlData, 
+            string className, string resourceXmlData, 
             string webClientId, string bundleId,  string nearbySvcId)
         {
-            if (ParseResources(classDirectory, className, resourceXmlData))
+            if (ParseResources(className, resourceXmlData))
             {
                 GPGSProjectSettings.Instance.Set(GPGSUtil.CLASSNAMEKEY, className);
                 GPGSProjectSettings.Instance.Set(GPGSUtil.IOSRESOURCEKEY, resourceXmlData);
@@ -205,7 +184,7 @@ namespace GooglePlayGames
             return false;
         }
 
-        private static bool ParseResources(string classDirectory, string className, string res)
+        private static bool ParseResources(string className, string res)
         {
            // parse the resources, they keys are in the form of
             // #define <KEY> @"<VALUE>"
@@ -274,7 +253,7 @@ namespace GooglePlayGames
             reader.Close();
             if (resourceKeys.Count > 0)
             {
-                GPGSUtil.WriteResourceIds(classDirectory, className, resourceKeys);
+                GPGSUtil.WriteResourceIds(className, resourceKeys);
             }
 
             return !string.IsNullOrEmpty(clientId);

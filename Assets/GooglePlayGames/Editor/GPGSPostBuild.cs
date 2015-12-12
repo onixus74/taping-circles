@@ -47,12 +47,6 @@ namespace GooglePlayGames
 #if UNITY_5
             if (target != BuildTarget.iOS)
             {
-                if (!GPGSProjectSettings.Instance.GetBool(GPGSUtil.ANDROIDSETUPDONEKEY, false))
-                {
-                    EditorUtility.DisplayDialog("Google Play Games not configured!",
-                        "Warning!!  Google Play Games was not configured, Game Services will not work correctly.",
-                        "OK");
-                }
                 return;
             }
 #else
@@ -92,13 +86,6 @@ namespace GooglePlayGames
             File.WriteAllText(pbxprojPath, proj.WriteToString());
 
             #else
-
-            if (!GPGSProjectSettings.Instance.GetBool(GPGSUtil.IOSSETUPDONEKEY, false))
-            {
-                EditorUtility.DisplayDialog("Google Play Games not configured!",
-                    "Warning!!  Google Play Games was not configured, Game Services will not work correctly.",
-                    "OK");
-            }
 
             if (GetBundleId() == null)
             {

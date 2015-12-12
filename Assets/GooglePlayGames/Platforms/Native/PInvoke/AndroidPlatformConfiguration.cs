@@ -40,6 +40,10 @@ sealed class AndroidPlatformConfiguration : PlatformConfiguration {
             InternalIntentHandler, Callbacks.ToIntPtr(intentHandler));
     }
 
+    internal void EnableAppState() {
+        InternalHooks.InternalHooks_EnableAppState(SelfPtr());
+    }
+
     protected override void CallDispose(HandleRef selfPointer) {
         C.AndroidPlatformConfiguration_Dispose(selfPointer);
     }

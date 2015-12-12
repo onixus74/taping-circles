@@ -30,16 +30,17 @@ namespace GooglePlayGames.Android
 
     internal class AndroidClient : IClientImpl
     {
-        internal const string BridgeActivityClass = "com.google.games.bridge.NativeBridgeActivity";
+        private const string BridgeActivityClass = "com.google.games.bridge.NativeBridgeActivity";
         private const string LaunchBridgeMethod = "launchBridgeIntent";
         private const string LaunchBridgeSignature =
             "(Landroid/app/Activity;Landroid/content/Intent;)V";
 
-        private TokenClient tokenClient;
+        private AndroidTokenClient tokenClient;
 
         public PlatformConfiguration CreatePlatformConfiguration()
         {
             var config = AndroidPlatformConfiguration.Create();
+            config.EnableAppState();
             using (var activity = AndroidTokenClient.GetActivity())
             {
                 config.SetActivity(activity.GetRawObject());
@@ -71,9 +72,9 @@ namespace GooglePlayGames.Android
         }
 
 
-        public TokenClient CreateTokenClient(bool reset)
+        public TokenClient CreateTokenClient()
         {
-            if (tokenClient == null || reset)
+            if (tokenClient == null)
             {
                 tokenClient = new AndroidTokenClient();
             }
@@ -104,11 +105,6 @@ namespace GooglePlayGames.Android
                     }
                 }
             }
-            catch (Exception e)
-            {
-                OurUtils.Logger.e("Exception launching bridge intent: " + e.Message);
-                OurUtils.Logger.e(e.ToString());
-            }
             finally
             {
                 AndroidJNIHelper.DeleteJNIArgArray(objectArray, jArgs);
@@ -121,28 +117,25 @@ namespace GooglePlayGames.Android
             GoogleApiClient client = new GoogleApiClient(apiClient);
             StatsResultCallback resCallback;
 
-            try
-            {
+            try  {
                 resCallback = new StatsResultCallback((result, stats) =>
+                {
+                    Debug.Log("Result for getStats: " + result);
+                    PlayGamesLocalUser.PlayerStats s = null;
+                    if (stats != null)
                     {
-                        Debug.Log("Result for getStats: " + result);
-                        PlayGamesLocalUser.PlayerStats s = null;
-                        if (stats != null)
-                        {
-                            s = new PlayGamesLocalUser.PlayerStats();
-                            s.AvgSessonLength = stats.getAverageSessionLength();
-                            s.DaysSinceLastPlayed = stats.getDaysSinceLastPlayed();
-                            s.NumberOfPurchases = stats.getNumberOfPurchases();
-                            s.NumOfSessions = stats.getNumberOfSessions();
-                            s.SessPercentile = stats.getSessionPercentile();
-                            s.SpendPercentile = stats.getSpendPercentile();
-                            s.ChurnProbability = stats.getChurnProbability();
-                        }
-                        callback((CommonStatusCodes)result, s);
-                    });
+                        s = new PlayGamesLocalUser.PlayerStats();
+                        s.AvgSessonLength = stats.getAverageSessionLength();
+                        s.DaysSinceLastPlayed = stats.getDaysSinceLastPlayed();
+                        s.NumberOfPurchases = stats.getNumberOfPurchases();
+                        s.NumOfSessions = stats.getNumberOfSessions();
+                        s.SessPercentile = stats.getSessionPercentile();
+                        s.SpendPercentile = stats.getSpendPercentile();
+                    }
+                    callback((CommonStatusCodes)result, s);
+                });
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Debug.LogException(e);
                 callback(CommonStatusCodes.DeveloperError, null);
                 return;

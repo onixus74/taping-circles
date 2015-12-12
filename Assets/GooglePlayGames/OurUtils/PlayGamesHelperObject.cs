@@ -83,7 +83,7 @@ namespace GooglePlayGames.OurUtils
         {
             if (instance != null)
             {
-                RunOnGameThread(()=>instance.StartCoroutine(action));
+                instance.StartCoroutine(action);
             }
         }
 

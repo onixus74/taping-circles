@@ -31,6 +31,9 @@ namespace GooglePlayGames.Native.Cwrapper
         #if UNITY_ANDROID
         [DllImport(SymbolLocation.NativeSymbolLocation)]
         internal static extern IntPtr InternalHooks_GetApiClient(HandleRef services);
+
+        [DllImport(SymbolLocation.NativeSymbolLocation)]
+        internal static extern void InternalHooks_EnableAppState(HandleRef config);
         #endif
     }
 }

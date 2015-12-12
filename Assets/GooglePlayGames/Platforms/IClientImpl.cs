@@ -30,7 +30,7 @@ namespace GooglePlayGames
 
         PlatformConfiguration CreatePlatformConfiguration ();
 
-        TokenClient CreateTokenClient (bool reset);
+        TokenClient CreateTokenClient ();
 
         void GetPlayerStats(IntPtr apiClient, Action<CommonStatusCodes, PlayGamesLocalUser.PlayerStats> callback);
     }
