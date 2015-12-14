@@ -25,13 +25,28 @@ namespace GooglePlayGames
 {
 public static class GPGConstant
 {
+        public const string achievement_gold_smasher = "CgkIj4_O2YYFEAIQEw"; // <GPGSID>
+        public const string achievement_gold_frog_fragger = "CgkIj4_O2YYFEAIQFA"; // <GPGSID>
+        public const string achievement_sliver_frog_champion = "CgkIj4_O2YYFEAIQEg"; // <GPGSID>
         public const string leaderboard_highest_level = "CgkIj4_O2YYFEAIQBg"; // <GPGSID>
-        public const string achievement_heavy_weight_frog_slayer_champion = "CgkIj4_O2YYFEAIQBQ"; // <GPGSID>
+        public const string achievement_sliver_frog_slayer = "CgkIj4_O2YYFEAIQEA"; // <GPGSID>
+        public const string package_name = "com.carthagames.FrogSmash"; // <GPGSID>
+        public const string achievement_gold_frog_champion = "CgkIj4_O2YYFEAIQFw"; // <GPGSID>
         public const string achievement_frog_slayer = "CgkIj4_O2YYFEAIQAw"; // <GPGSID>
-        public const string BUNDLE_ID = "com.carthagames.FrogSmash"; // <GPGSID>
+        public const string achievement_bronze_frog_hunter = "CgkIj4_O2YYFEAIQDA"; // <GPGSID>
+        public const string achievement_bronze_smasher = "CgkIj4_O2YYFEAIQCQ"; // <GPGSID>
+        public const string achievement_sliver_frog_fragger = "CgkIj4_O2YYFEAIQDw"; // <GPGSID>
+        public const string achievement_bronze_frog_champion = "CgkIj4_O2YYFEAIQDQ"; // <GPGSID>
+        public const string achievement_bronze_frog_slayer = "CgkIj4_O2YYFEAIQCw"; // <GPGSID>
+        public const string achievement_frog_champion = "CgkIj4_O2YYFEAIQBQ"; // <GPGSID>
+        public const string achievement_frog_hunter = "CgkIj4_O2YYFEAIQBA"; // <GPGSID>
+        public const string achievement_gold_frog_slayer = "CgkIj4_O2YYFEAIQFQ"; // <GPGSID>
         public const string achievement_smasher = "CgkIj4_O2YYFEAIQAQ"; // <GPGSID>
-        public const string achievement_hunter_x_frogs = "CgkIj4_O2YYFEAIQBA"; // <GPGSID>
-        public const string achievement_perfection_reflection = "CgkIj4_O2YYFEAIQAg"; // <GPGSID>
+        public const string achievement_sliver_smasher = "CgkIj4_O2YYFEAIQDg"; // <GPGSID>
+        public const string achievement_sliver_frog_hunter = "CgkIj4_O2YYFEAIQEQ"; // <GPGSID>
+        public const string achievement_bronze_frog_fragger = "CgkIj4_O2YYFEAIQCg"; // <GPGSID>
+        public const string achievement_gold_frog_hunter = "CgkIj4_O2YYFEAIQFg"; // <GPGSID>
+        public const string achievement_frog_fragger = "CgkIj4_O2YYFEAIQAg"; // <GPGSID>
         public const string leaderboard_coins_frogs_farmers = "CgkIj4_O2YYFEAIQBw"; // <GPGSID>
 
 }

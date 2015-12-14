@@ -50,6 +50,8 @@ namespace Soomla.Store.IAP
         public int frogCounter;
         public int frogSmashed;
 
+        public GameObject pausePanel;
+
         void Start()
         {
 
@@ -70,7 +72,8 @@ namespace Soomla.Store.IAP
             StoreInventory.TakeItem("remove_ads_item_id", 1);
 
         }
-        void Awake(){
+        void Awake()
+        {
             if (instance == null)
             {
                 instance = this;
@@ -247,9 +250,9 @@ namespace Soomla.Store.IAP
         }
 
         public void showSequentially()
-        {  
-                canClick = false;
-                isHideClicked = true;
+        {
+            canClick = false;
+            isHideClicked = true;
             if (StoreInventory.GetItemBalance("reveal_frogs") > 0)
             {
                 StoreInventory.TakeItem("reveal_frogs", 1);
@@ -302,7 +305,7 @@ namespace Soomla.Store.IAP
             //  showSequentially();
             isReady = true;
         }
-    void NextFrame()
+        void NextFrame()
         {
             int i = startNumber;
             do
@@ -362,8 +365,136 @@ namespace Soomla.Store.IAP
 
             Invoke("SetIsReadyTrue", 1.0f);
         }
-        public void BacktoMenu(){
+        public void BacktoMenu()
+        {
             Application.LoadLevelAdditive(0);
+        }
+        public void pause()
+        {
+            pausePanel.SetActive(!paused);
+            paused = !paused;
+            Time.timeScale = paused ? 0 : 1;
+            if (paused == true)
+                AudioManager.instance.backgroundMusicAudioSource.Pause();
+            else if (paused == false)
+            {
+                AudioManager.instance.backgroundMusicAudioSource.Play();
+            }
+        }
+        public void unPause()
+        {
+
+        }
+
+        void Achievements()
+        {
+            switch (levelShow)
+            {
+                case 10:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQAQ");
+                    }
+                    break;
+
+                case 20:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQAg");
+                    }
+                    break;
+
+                case 30:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQAw");
+                    }
+                    break;
+
+                case 40:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQBA");
+                    }
+                    break;
+                case 50:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQBQ");
+                    }
+                    break;
+                case 60:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQCQ");
+                    }
+                    break;
+                case 70:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQCg");
+                    }
+                    break;
+                case 80:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQCw");
+                    }
+                    break;
+                case 90:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQDA");
+                    }
+                    break;
+                case 100:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQDQ");
+                    }
+                    break;
+                case 120:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQDg");
+                    }
+                    break;
+                case 140:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQDw");
+                    }
+                    break;
+                case 160:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQEA");
+                    }
+                    break;
+                case 180:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQEQ");
+                    }
+                    break;
+                case 200:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQEg");
+                    }
+                    break;
+                case 230:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQEw");
+                    }
+                    break;
+                case 260:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQFA");
+                    }
+                    break;
+                case 290:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQFQ");
+                    }
+                    break;
+                case 320:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQFg");
+                    }
+                    break;
+                case 350:
+                    {
+                        GPGManager.instance.UnlockAchievement("CgkIj4_O2YYFEAIQFw");
+                    }
+                    break;
+            }
+
         }
     }
 }
