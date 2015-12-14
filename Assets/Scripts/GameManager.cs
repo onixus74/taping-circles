@@ -359,16 +359,14 @@ namespace Soomla.Store.IAP
         void nextLevel()
         {
             current = -1;
-            //  StartCoroutine("Wait", 1);
-            //   isReady = true;
-
-
             Invoke("SetIsReadyTrue", 1.0f);
         }
         public void BacktoMenu()
         {
-            Application.LoadLevelAdditive(0);
+            Application.LoadLevel(1);
+           pause();
         }
+
         public void pause()
         {
             pausePanel.SetActive(!paused);
@@ -383,7 +381,7 @@ namespace Soomla.Store.IAP
         }
         public void unPause()
         {
-
+           paused = false;
         }
 
         void Achievements()
