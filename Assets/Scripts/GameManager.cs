@@ -364,7 +364,7 @@ namespace Soomla.Store.IAP
         public void BacktoMenu()
         {
             Application.LoadLevel(1);
-           pause();
+            pause();
         }
 
         public void pause()
