@@ -9,7 +9,7 @@ using Soomla.Levelup;
 using Grow.Highway;
 using Grow.Sync;
 using Grow.Leaderboards;
-
+using Soomla.Store.IAP;
 public class SocialManager : MonoBehaviour {
 	
 	
@@ -69,7 +69,7 @@ public class SocialManager : MonoBehaviour {
 	}
 	public void MultiShare(){
 		SoomlaProfile.MultiShare(
-    		"I'm happy. I can be shared everywhere.",
+    		"I Reached Level "+GameManager.instance.levelShow+" On Frog Smash !",
     		""
 		);
 	}

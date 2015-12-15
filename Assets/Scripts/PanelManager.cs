@@ -19,9 +19,9 @@ public class PanelManager : MonoBehaviour {
 		// gameManager = GameObject.FindGameObjectWithTag("game manager").GetComponent<GameManager>();
 		// gamePanel = GameObject.Find("Game_Panel");
 		// shopPanel = GameObject.Find("Shop_Panel");
-		// gameOverPanel = GameObject.FindGameObjectWithTag("gameover_panel");
+		gameOverPanel = GameObject.FindGameObjectWithTag("gameover_panel");
 		
-		// animGameOver = gameOverPanel.GetComponent<Animator>();
+		animGameOver = gameOverPanel.GetComponent<Animator>();
 		// animShop = shopPanel.GetComponent<Animator>();
 	}
 	
