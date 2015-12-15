@@ -39,9 +39,9 @@ namespace Soomla.Store.IAP
                     //How to give currency
                     //StoreInventory.GiveItem(StoreInfo.Currencies[0].ItemId,4000);
                     SoomlaUtils.LogDebug("SOOMLA ExampleEventHandler", "Currency balance:" + StoreInventory.GetItemBalance(StoreInfo.Currencies[0].ItemId));
-                    
-         
-               
+
+
+
                 }
                 catch (VirtualItemNotFoundException ex)
                 {
@@ -96,42 +96,55 @@ namespace Soomla.Store.IAP
                 Debug.LogError("SOOMLA/UNITY " + e.Message);
             }
         }
-        
-        
+
+
         //Custom Buy Methods
-        public void BuyNoAdItem(string itemId ="remove_ads_item_id"){
+        public void BuyNoAdItem(string itemId = "remove_ads_item_id")
+        {
             Debug.Log("SOOMLA/UNITY wants to buy: Remove Ads ");
-            StoreInventory.BuyItem(itemId);    
+            StoreInventory.BuyItem(itemId);
         }
-        
-        public void BuyItemId(string itemId){
-            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
-            StoreInventory.BuyItem(itemId);    
+
+        public void BuyNoAdMItem(string itemId = "remove_adsm_item_id")
+        {
+            Debug.Log("SOOMLA/UNITY wants to buy: Remove Ads ");
+            StoreInventory.BuyItem(itemId);
         }
-        
-        public void BuyOneThousId(string itemId="coins_1000_prod"){
-            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
-            StoreInventory.BuyItem(itemId);    
+
+        public void BuyItemId(string itemId)
+        {
+            Debug.Log("SOOMLA/UNITY wants to buy: " + itemId);
+            StoreInventory.BuyItem(itemId);
         }
-        
-        public void BuyFiveThousId(string itemId="coins_5000_prod"){
-            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
-            StoreInventory.BuyItem(itemId);    
+
+        public void BuyOneThousId(string itemId = "coins_1000_prod")
+        {
+            Debug.Log("SOOMLA/UNITY wants to buy: " + itemId);
+            StoreInventory.BuyItem(itemId);
         }
-        
-        public void BuyTenThousId(string itemId="coins_10000_prod"){
-            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
-            StoreInventory.BuyItem(itemId);    
+
+        public void BuyFiveThousId(string itemId = "coins_5000_prod")
+        {
+            Debug.Log("SOOMLA/UNITY wants to buy: " + itemId);
+            StoreInventory.BuyItem(itemId);
         }
-        
-        public void BuyRevealFrogs(string itemId="reveal_frogs"){
-            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
-            StoreInventory.BuyItem(itemId);    
+
+        public void BuyTenThousId(string itemId = "coins_10000_prod")
+        {
+            Debug.Log("SOOMLA/UNITY wants to buy: " + itemId);
+            StoreInventory.BuyItem(itemId);
         }
-        
-        public void BuyResetLevel(string itemId="reset_level"){
-            Debug.Log("SOOMLA/UNITY wants to buy: "+itemId);
-            StoreInventory.BuyItem(itemId);    
+
+        public void BuyRevealFrogs(string itemId = "reveal_frogs")
+        {
+            Debug.Log("SOOMLA/UNITY wants to buy: " + itemId);
+            StoreInventory.BuyItem(itemId);
+        }
+
+        public void BuyResetLevel(string itemId = "reset_level")
+        {
+            Debug.Log("SOOMLA/UNITY wants to buy: " + itemId);
+            StoreInventory.BuyItem(itemId);
         }
 
     }

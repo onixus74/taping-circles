@@ -138,7 +138,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 93ceb0eb537bd468cbcdbacc757a6f97, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &18422509
@@ -182,7 +182,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 5d7ca41be100c45cea22b70dd8665c37, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &18422511
@@ -234,7 +234,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 441716, guid: 33ad1456590bad5449b6152818c023c7, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 21266888, guid: 33ad1456590bad5449b6152818c023c7, type: 2}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 33ad1456590bad5449b6152818c023c7, type: 2}
@@ -507,15 +511,15 @@ Prefab:
       propertyPath: m_Pivot.y
       value: .5
       objectReference: {fileID: 0}
-    - target: {fileID: 11448718, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2145112839}
-    - target: {fileID: 11405664, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2145112839}
     - target: {fileID: 11420430, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2145112839}
+    - target: {fileID: 11466484, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2145112839}
+    - target: {fileID: 11457200, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2145112839}
@@ -523,7 +527,7 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1382822604}
-    - target: {fileID: 11466484, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+    - target: {fileID: 11448718, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2145112839}
@@ -531,7 +535,11 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2145112839}
-    - target: {fileID: 11457200, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+    - target: {fileID: 11415166, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2145112839}
+    - target: {fileID: 11405664, guid: 27222cb344fbe4aa99450bc7980023dc, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2145112839}
@@ -624,6 +632,22 @@ Prefab:
     - target: {fileID: 21264002, guid: ec041ec82352648c6934b471bb86f808, type: 2}
       propertyPath: m_Sprite
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 484752, guid: ec041ec82352648c6934b471bb86f808, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 925.900024
+      objectReference: {fileID: 0}
+    - target: {fileID: 423038, guid: ec041ec82352648c6934b471bb86f808, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 925.900024
+      objectReference: {fileID: 0}
+    - target: {fileID: 21277604, guid: ec041ec82352648c6934b471bb86f808, type: 2}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 21283106, guid: ec041ec82352648c6934b471bb86f808, type: 2}
+      propertyPath: m_SortingOrder
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ec041ec82352648c6934b471bb86f808, type: 2}
@@ -813,13 +837,13 @@ Canvas:
   serializedVersion: 2
   m_RenderMode: 1
   m_Camera: {fileID: 95825829}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 7
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
 --- !u!224 &548862788
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1056,7 +1080,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -3
   m_Sprite: {fileID: 21300000, guid: 5cea7a3ff315346729b8061dc1ec2627, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!95 &1225015230
