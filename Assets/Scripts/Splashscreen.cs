@@ -23,7 +23,7 @@ namespace Soomla.Store.IAP
 
             StoreEvents.OnUnexpectedStoreError += onUnexpectedStoreError;
 
-           
+
             GrowHighway.Initialize();
             bool modelSync = true;
             bool stateSync = true;
@@ -33,7 +33,7 @@ namespace Soomla.Store.IAP
             GrowInsights.Initialize();
             SoomlaStore.Initialize(new IAPAssets());
             StartCoroutine("loadMainScene");
-            Invoke("loadGameNotAsync",4);
+            Invoke("loadGameNotAsync", 4);
         }
         IEnumerator loadMainScene()
         {
@@ -42,13 +42,19 @@ namespace Soomla.Store.IAP
             yield return async;
         }
 
+        public void OnMouseDown()
+        {
+            loadGame();
+        }
+
         //[LINKED to Button]
         //Start Game when button Play CLicked
         public void loadGame()
         {
             async.allowSceneActivation = true;
         }
-        public void loadGameNotAsync(){
+        public void loadGameNotAsync()
+        {
             Application.LoadLevel(1);
         }
 
