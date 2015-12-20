@@ -35,36 +35,66 @@ namespace Soomla.Store
 			SoomlaManifestTools.ManTools.Add(instance);
 		}
 
+		public void ClearManifest(){
+			RemoveGPlayBPFromManifest();
+			RemoveAmazonBPFromManifest ();
+		}
 		public void UpdateManifest() {
-			if (StoreSettings.GPlayBP) {
-				SoomlaManifestTools.SetPermission("com.android.vending.BILLING");
-				SoomlaManifestTools.AddActivity("com.soomla.store.billing.google.GooglePlayIabService$IabActivity",
-				                             new Dictionary<string, string>() { 
-													{"theme", "@android:style/Theme.Translucent.NoTitleBar.Fullscreen"} 
-											 });
-				SoomlaManifestTools.AddMetaDataTag("billing.service", "google.GooglePlayIabService");
-			} else {
-				// removing BILLING permission
-				SoomlaManifestTools.RemovePermission("com.android.vending.BILLING");
-				// removing Iab Activity
-				SoomlaManifestTools.RemoveActivity("com.soomla.store.billing.google.GooglePlayIabService$IabActivity");
-			}
+			HandleGPlayBPManifest ();
+			HandleAmazonBP ();
+		}
 
-			if (StoreSettings.AmazonBP) {
-				XmlElement receiverElement = SoomlaManifestTools.AppendApplicationElement("receiver", "com.amazon.device.iap.ResponseReceiver", null);
-				receiverElement.InnerText = "\n    ";
-				XmlElement intentElement = SoomlaManifestTools.AppendElementIfMissing("intent-filter", null, null, receiverElement);
-				XmlElement actionElement = SoomlaManifestTools.AppendElementIfMissing("action", "com.amazon.inapp.purchasing.NOTIFY", 
-                                                new Dictionary<string, string>() {
-													{"permission", "com.amazon.inapp.purchasing.Permission.NOTIFY"}
-												}, 
-												intentElement);
-				actionElement.InnerText = "\n    ";
-				SoomlaManifestTools.AddMetaDataTag("billing.service", "amazon.AmazonIabService");
+		public void HandleGPlayBPManifest(){
+			if (StoreSettings.GPlayBP) {
+				AddGPlayBPToManifest();
 			} else {
-				SoomlaManifestTools.RemoveApplicationElement("receiver", "com.amazon.inapp.purchasing.ResponseReceiver");
+				RemoveGPlayBPFromManifest();
 			}
 		}
+
+		private void AddGPlayBPToManifest(){
+			SoomlaManifestTools.SetPermission("com.android.vending.BILLING");
+			SoomlaManifestTools.AddActivity("com.soomla.store.billing.google.GooglePlayIabService$IabActivity",
+			                                new Dictionary<string, string>() { 
+				{"theme", "@android:style/Theme.Translucent.NoTitleBar.Fullscreen"} 
+			});
+			SoomlaManifestTools.AddMetaDataTag("billing.service", "google.GooglePlayIabService");
+		}
+
+		private void RemoveGPlayBPFromManifest(){
+			// removing BILLING permission
+			SoomlaManifestTools.RemovePermission("com.android.vending.BILLING");
+			// removing Iab Activity
+			SoomlaManifestTools.RemoveActivity("com.soomla.store.billing.google.GooglePlayIabService$IabActivity");
+			
+			SoomlaManifestTools.RemoveApplicationElement("meta-data", "billing.service");
+		}
+
+		public void HandleAmazonBP(){
+			if (StoreSettings.AmazonBP) {
+				AddAmazonToManifest();
+			} else {
+				RemoveAmazonBPFromManifest();
+			}
+		}
+
+		private void AddAmazonToManifest(){
+			XmlElement receiverElement = SoomlaManifestTools.AppendApplicationElement("receiver", "com.amazon.device.iap.ResponseReceiver", null);
+			receiverElement.InnerText = "\n    ";
+			XmlElement intentElement = SoomlaManifestTools.AppendElementIfMissing("intent-filter", null, null, receiverElement);
+			XmlElement actionElement = SoomlaManifestTools.AppendElementIfMissing("action", "com.amazon.inapp.purchasing.NOTIFY", 
+			                                                                      new Dictionary<string, string>() {
+				{"permission", "com.amazon.inapp.purchasing.Permission.NOTIFY"}
+			}, 
+			intentElement);
+			actionElement.InnerText = "\n    ";
+			SoomlaManifestTools.AddMetaDataTag("billing.service", "amazon.AmazonIabService");
+		}
+
+		private void RemoveAmazonBPFromManifest(){
+			SoomlaManifestTools.RemoveApplicationElement("receiver", "com.amazon.device.iap.ResponseReceiver");
+		}
+
 
 #endif
 	}

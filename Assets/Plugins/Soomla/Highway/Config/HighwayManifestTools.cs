@@ -38,6 +38,10 @@ namespace Grow.Highway
 			//google-play-services.jar version
 			SoomlaManifestTools.AddMetaDataTag("com.google.android.gms.version", "@integer/google_play_services_version");
 		}
+
+		public void ClearManifest() {
+			SoomlaManifestTools.RemoveApplicationElement("meta-data", "com.google.android.gms.version");
+		}
 #endif
 	}
 }

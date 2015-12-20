@@ -50,6 +50,7 @@ namespace Soomla.Store
 		/// <param name="storeAssets">Your game's economy.</param>
 		/// <exception cref="ExitGUIException">Thrown if soomlaSecret is missing or has not been changed.</exception>
 		public static bool Initialize(IStoreAssets storeAssets) {
+			StoreEvents.Initialize();
 			if (string.IsNullOrEmpty(CoreSettings.SoomlaSecret)) {
 				SoomlaUtils.LogError(TAG, "MISSING SoomlaSecret !!! Stopping here !!");
 				throw new ExitGUIException();

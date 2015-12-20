@@ -16,8 +16,8 @@ using System;
 namespace Soomla.Profile
 {
 	/// <summary>
-	/// A string enumeration of available social providers. Currently, the only Provider available 
-	/// with SOOMLA is Facebook, but in the future more providers will be supported. 
+	/// A string enumeration of available social providers. Currently, the only Provider available
+	/// with SOOMLA is Facebook, but in the future more providers will be supported.
 	/// </summary>
 	public sealed class Provider
 	{
@@ -26,6 +26,9 @@ namespace Soomla.Profile
 		public static readonly Provider FACEBOOK = new Provider ("facebook");
 		public static readonly Provider GOOGLE = new Provider ("google");
 		public static readonly Provider TWITTER = new Provider ("twitter");
+		public static readonly Provider GAME_CENTER = new Provider ("gameCenter");
+
+		public static readonly int NUM_OF_PROVIDERS = 14; // Must be last provider (currently twitter) + 1
 
 		/// <summary>
 		/// Constructor.
@@ -36,7 +39,7 @@ namespace Soomla.Profile
 		}
 
 		//// <summary>
-		/// Converts this provider into a string. 
+		/// Converts this provider into a string.
 		/// </summary>
 		/// <returns>A string representation of the current <c>Provider</c>.</returns>
 		public override string ToString(){
@@ -44,7 +47,7 @@ namespace Soomla.Profile
 		}
 
 		//// <summary>
-		/// Converts this provider into an int. 
+		/// Converts this provider into an int.
 		/// </summary>
 		/// <returns>A int representation of the current <c>Provider</c>.</returns>
 		public int toInt(){
@@ -55,6 +58,8 @@ namespace Soomla.Profile
 				return 2;
 			case("twitter"):
 				return 5;
+			case("gameCenter"):
+				return 13;
 			default:
 				return -1;
 			}
@@ -73,6 +78,8 @@ namespace Soomla.Profile
 				return GOOGLE;
 			case("twitter"):
 				return TWITTER;
+			case ("gameCenter"):
+				return GAME_CENTER;
 			default:
 				return null;
 			}
@@ -91,10 +98,11 @@ namespace Soomla.Profile
 				return GOOGLE;
 			case 5:
 				return TWITTER;
+			case 13:
+				return GAME_CENTER;
 			default:
 				return null;
 			}
 		}
 	}
 }
-

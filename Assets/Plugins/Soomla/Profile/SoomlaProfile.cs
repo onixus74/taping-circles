@@ -31,6 +31,9 @@ namespace Soomla.Profile
 	public class SoomlaProfile
 	{
 		static SoomlaProfile _instance = null;
+
+		internal static bool nativeModulesInitialized = false;
+
 		static SoomlaProfile instance {
 			get {
 				if(_instance == null) {
@@ -47,38 +50,56 @@ namespace Soomla.Profile
 		}
 
 		/// <summary>
-		/// The various providers available (currently, only Facebook is available). The functions 
-		/// in this class use this <c>providers</c> <c>Dictionary</c> to call the relevant functions 
+		/// The various providers available (currently, only Facebook is available). The functions
+		/// in this class use this <c>providers</c> <c>Dictionary</c> to call the relevant functions
 		/// in each <c>SocialProvider</c> (i.e. Facebook) class.
 		/// </summary>
-		static Dictionary<Provider, SocialProvider> providers = new Dictionary<Provider, SocialProvider>();
+		static Dictionary<Provider, AuthProvider> providers = new Dictionary<Provider, AuthProvider>();
 
 		static private int unreadyProviders = 0;
 
 		/// <summary>
 		/// Initializes the SOOMLA Profile Module.
-		/// 
+		///
 		/// NOTE: This function must be called before any of the class methods can be used.
 		/// </summary>
 		public static void Initialize() {
+			ProfileEvents.Initialize();
 			Dictionary<Provider, Dictionary<string, string>> customParams = GetCustomParamsDict();
+
 			instance._initialize(GetCustomParamsJson(customParams)); //add parameters
 
+			/// NOTE: we splitted `unreadyProviders` incrementation with adding to `providers` dictionary
+			/// because other case produces firing of OnSoomlaProfileInitialized several times,
+			/// when only native social providers is using
 #if SOOMLA_FACEBOOK
 			unreadyProviders++;
-			providers.Add(Provider.FACEBOOK, new FBSocialProvider());
 #endif
 #if SOOMLA_GOOGLE
 			unreadyProviders++;
-			providers.Add(Provider.GOOGLE, new GPSocialProvider());
 #endif
 #if SOOMLA_TWITTER
 			unreadyProviders++;
+#endif
+#if SOOMLA_GAMECENTER
+			unreadyProviders++;
+#endif
+
+#if SOOMLA_FACEBOOK
+			providers.Add(Provider.FACEBOOK, new FBSocialProvider());
+#endif
+#if SOOMLA_GOOGLE
+			providers.Add(Provider.GOOGLE, new GPSocialProvider());
+#endif
+#if SOOMLA_TWITTER
 			providers.Add(Provider.TWITTER, new TwitterSocialProvider());
+#endif
+#if SOOMLA_GAMECENTER
+			providers.Add(Provider.GAME_CENTER, new GameCenterGSProvider());
 #endif
 
 			// pass params to non-native providers
-			foreach (KeyValuePair<Provider, SocialProvider> entry in providers) {
+			foreach (KeyValuePair<Provider, AuthProvider> entry in providers) {
 				if (!entry.Value.IsNativelyImplemented()) {
 					entry.Value.Configure(customParams[entry.Key]);
 				}
@@ -86,7 +107,7 @@ namespace Soomla.Profile
 
 			ProfileEvents.OnSoomlaProfileInitialized += () => {
                 // auto login non-native providers
-                foreach (KeyValuePair<Provider, SocialProvider> entry in providers) {
+                foreach (KeyValuePair<Provider, AuthProvider> entry in providers) {
                     if (!entry.Value.IsNativelyImplemented()) {
                         if (entry.Value.IsAutoLogin()) {
                             Provider provider = entry.Key;
@@ -97,14 +118,17 @@ namespace Soomla.Profile
                                     entry.Value.GetUserProfile((UserProfile userProfile) => {
                                         setLoggedInForProvider(provider, false);
 										ProfileEvents.OnLoginStarted(provider, true, payload);
+										//ProfileEvents.OnLoginStarted(new LoginStartedEvent(provider, true, payload));
                                         StoreUserProfile(userProfile);
                                         setLoggedInForProvider(provider, true);
-                                        ProfileEvents.OnLoginFinished(userProfile, true, payload);
+										ProfileEvents.OnLoginFinished(userProfile, true, payload);
+										//ProfileEvents.OnLoginFinished(new LoginFinishedEvent(userProfile, true, payload));
                                         if (reward != null) {
                                             reward.Give();
                                         }
-                                    }, (string message) => {  
-                                        ProfileEvents.OnLoginFailed(provider, message, true, payload);
+                                    }, (string message) => {
+										ProfileEvents.OnLoginFailed(provider, message, true, payload);
+										//ProfileEvents.OnLoginFailed(new LoginFailedEvent( provider, message, true, payload) );
                                     });
                                 } else {
 									login(provider, true, payload, reward);
@@ -114,12 +138,8 @@ namespace Soomla.Profile
                     }
                 }
             };
-
-            #if UNITY_EDITOR
-            TryFireProfileInitialized();
-            #endif
         }
-        
+
 		/// <summary>
 		/// Logs the user into the given provider.
 		/// Supported platforms: Facebook, Twitter, Google+
@@ -133,7 +153,7 @@ namespace Soomla.Profile
 
 		private static void login(Provider provider, bool autoLogin, string payload="", Reward reward = null) {
 			SoomlaUtils.LogDebug (TAG, "Trying to login with provider " + provider.ToString ());
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			AuthProvider targetProvider = GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 			if (targetProvider == null)
 			{
@@ -148,44 +168,49 @@ namespace Soomla.Profile
 				instance._login(provider, ProfilePayload.ToJSONObj(userPayload, rewardId).ToString());
 			}
 
-			else 
+			else
 			{
 				setLoggedInForProvider(provider, false);
 				ProfileEvents.OnLoginStarted(provider, autoLogin, userPayload);
+				//ProfileEvents.OnLoginStarted(new LoginStartedEvent(provider, autoLogin, userPayload) );
 				targetProvider.Login(
 					/* success */	() => {
 					targetProvider.GetUserProfile((UserProfile userProfile) => {
 						StoreUserProfile(userProfile);
 						setLoggedInForProvider(provider, true);
-						ProfileEvents.OnLoginFinished(userProfile, autoLogin, userPayload);
+							ProfileEvents.OnLoginFinished(userProfile, autoLogin, userPayload);
+							//ProfileEvents.OnLoginFinished(new LoginFinishedEvent( userProfile, autoLogin, userPayload) );
 						if (reward != null) {
 							reward.Give();
 						}
-					}, (string message) => {  
-						ProfileEvents.OnLoginFailed (provider, message, autoLogin, userPayload);
+					}, (string message) => {
+							ProfileEvents.OnLoginFailed (provider, message, autoLogin, userPayload);
+							//ProfileEvents.OnLoginFailed (new LoginFailedEvent(provider, message, autoLogin, userPayload) );
 					});
 				},
-				/* fail */		(string message) => {  ProfileEvents.OnLoginFailed (provider, message, autoLogin, userPayload); },
-				/* cancel */	() => {  ProfileEvents.OnLoginCancelled(provider, autoLogin, userPayload); }
+					/* fail */		(string message) => {  ProfileEvents.OnLoginFailed (provider, message, autoLogin, userPayload); },
+					/* cancel */	() => {  ProfileEvents.OnLoginCancelled(provider, autoLogin, userPayload); }
+					///* fail */		(string message) => {  ProfileEvents.OnLoginFailed (new LoginFailedEvent( provider, message, autoLogin, userPayload) ); },
+					///* cancel */	() => {  ProfileEvents.OnLoginCancelled(new LoginCancelledEvent(provider, autoLogin, userPayload) ); }
 				);
 			}
 		}
 
 
 		/// <summary>
-		/// Logs the user out of the given provider. 
+		/// Logs the user out of the given provider.
 		/// Supported platforms: Facebook, Twitter, Google+
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The provider to log out from.</param>
 		public static void Logout(Provider provider) {
 
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			AuthProvider targetProvider = GetProviderImplementation(provider);
 			if (targetProvider == null)
 				return;
 
-			if (targetProvider.IsNativelyImplemented ()) 
+			if (targetProvider.IsNativelyImplemented ())
 			{
 				//fallback to native
 				instance._logout(provider);
@@ -195,16 +220,32 @@ namespace Soomla.Profile
 			else
 			{
 				ProfileEvents.OnLogoutStarted(provider);
+				//ProfileEvents.OnLogoutStarted(new LogoutStartedEvent(provider));
 				targetProvider.Logout(
-					/* success */	() => { 
+					/* success */	() => {
 					UserProfile userProfile = GetStoredUserProfile(provider);
 					if (userProfile != null) {
 						RemoveUserProfile(userProfile);
 					}
-					ProfileEvents.OnLogoutFinished(provider); 
+						ProfileEvents.OnLogoutFinished(provider);
+						//ProfileEvents.OnLogoutFinished(new LogoutFinishedEvent(provider) );
 				},
 					/* fail */		(string message) => {  ProfileEvents.OnLogoutFailed (provider, message); }
+					///* fail */		(string message) => {  ProfileEvents.OnLogoutFailed(new LogoutFailedEvent (provider, message) ); }
 				);
+			}
+		}
+
+		/// <summary>
+		/// Logs the user out of all available providers.
+		///
+		/// </summary>
+		public static void LogoutFromAllProviders() {
+			for (int providerInt = 0; providerInt < Provider.NUM_OF_PROVIDERS; providerInt++) {
+				Provider provider = Provider.fromInt(providerInt);
+				if (provider != null) {
+					Logout(provider);
+				}
 			}
 		}
 
@@ -212,16 +253,16 @@ namespace Soomla.Profile
 		/// Checks if the user is logged into the given provider.
 		/// Supported platforms: Facebook, Twitter, Google+
 		/// </summary>
-		/// <returns>If is logged into the specified provider, returns <c>true</c>; 
+		/// <returns>If is logged into the specified provider, returns <c>true</c>;
 		/// otherwise, <c>false</c>.</returns>
 		/// <param name="provider">The provider to check if the user is logged into.</param>
 		public static bool IsLoggedIn(Provider provider) {
 
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			AuthProvider targetProvider = GetProviderImplementation(provider);
 			if (targetProvider == null)
 				return false;
 
-			if (targetProvider.IsNativelyImplemented ()) 
+			if (targetProvider.IsNativelyImplemented ())
 			{
 				//fallback to native
 				return instance._isLoggedIn(provider);
@@ -231,9 +272,9 @@ namespace Soomla.Profile
 		}
 
 		/// <summary>
-		/// Updates the user's status on the given provider. 
+		/// Updates the user's status on the given provider.
 		/// Supported platforms: Facebook, Twitter, Google+
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The <c>Provider</c> the given status should be posted to.</param>
@@ -242,39 +283,42 @@ namespace Soomla.Profile
 		/// <param name="reward">A <c>Reward</c> to give the user after a successful post.</param>
 		/// <param name="showConfirmation">If true, shows confirmation dialog before the action</param>
 		public static void UpdateStatus(Provider provider, string status, string payload="", Reward reward = null, bool showConfirmation = false) {
-			
-			SocialProvider targetProvider = GetSocialProvider(provider);
+
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
-			
+
 			if (targetProvider == null)
 				return;
-			
+
 			if (targetProvider.IsNativelyImplemented())
 			{
 				//fallback to native
 				string rewardId = reward != null ? reward.ID : "";
 				instance._updateStatus(provider, status, ProfilePayload.ToJSONObj(userPayload, rewardId).ToString(), false, null);
 			}
-			
-			else 
+
+			else
 			{
 				ProfileEvents.OnSocialActionStarted(provider, SocialActionType.UPDATE_STATUS, userPayload);
+				//ProfileEvents.OnSocialActionStarted( new SocialActionStartedEvent(provider, SocialActionType.UPDATE_STATUS, userPayload) );
 				targetProvider.UpdateStatus(status,
 				                            /* success */	() => {
 					if (reward != null) {
 						reward.Give();
 					}
-					ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPDATE_STATUS, userPayload);
+						ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPDATE_STATUS, userPayload);
+						//ProfileEvents.OnSocialActionFinished(new SocialActionFinishedEvent(provider, SocialActionType.UPDATE_STATUS, userPayload) );
 				},
-				/* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPDATE_STATUS, error, userPayload); }
+					/* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPDATE_STATUS, error, userPayload); }
+					///* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed(new SocialActionFailedEvent (provider, SocialActionType.UPDATE_STATUS, error, userPayload) ); }
 				);
 			}
 		}
-		
+
 		/// <summary>
-		/// Updates the user's status with confirmation dialog on the given provider. 
+		/// Updates the user's status with confirmation dialog on the given provider.
 		/// Supported platforms: Facebook, Twitter, Google+
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The <c>Provider</c> the given status should be posted to.</param>
@@ -284,7 +328,7 @@ namespace Soomla.Profile
 		/// <param name="customMessage">The message to show in the dialog</param>
 		public static void UpdateStatusWithConfirmation(Provider provider, string status, string payload="", Reward reward = null, string customMessage = null) {
 
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 
 			if (targetProvider == null)
@@ -297,19 +341,22 @@ namespace Soomla.Profile
 				instance._updateStatus(provider, status, ProfilePayload.ToJSONObj(userPayload, rewardId).ToString(), true, customMessage);
 			}
 
-			else 
+			else
 			{
-				// TODO: Support showConfirmation
 				ProfileEvents.OnSocialActionStarted(provider, SocialActionType.UPDATE_STATUS, userPayload);
-				targetProvider.UpdateStatus(status,
+				//ProfileEvents.OnSocialActionStarted( new SocialActionStartedEvent(provider, SocialActionType.UPDATE_STATUS, userPayload) );
+				ModalDialog.CreateModalWindow("Are you sure you want to update status?",
+				() => targetProvider.UpdateStatus(status,
 				    /* success */	() => {
 					if (reward != null) {
 						reward.Give();
 					}
-					ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPDATE_STATUS, userPayload);
+							ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPDATE_STATUS, userPayload);
+							//ProfileEvents.OnSocialActionFinished( new SocialActionFinishedEvent(provider, SocialActionType.UPDATE_STATUS, userPayload) );
 				},
-					/* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPDATE_STATUS, error, userPayload); }
-				);
+						/* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPDATE_STATUS, error, userPayload); }
+						///* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed(new SocialActionFailedEvent (provider, SocialActionType.UPDATE_STATUS, error, userPayload) ); }
+				) );
 			}
 		}
 
@@ -322,39 +369,42 @@ namespace Soomla.Profile
 		/// <param name="payload">a String to receive when the function returns..</param>
 		/// <param name="reward">The reward to give the user.</param>
 		public static void UpdateStatusDialog(Provider provider, string link, string payload = "", Reward reward = null) {
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
-			
+
 			if (targetProvider == null)
 				return;
-			
+
 			if (targetProvider.IsNativelyImplemented())
 			{
 				//fallback to native
 				string rewardId = reward != null ? reward.ID : "";
 				instance._updateStatusDialog(provider, link, ProfilePayload.ToJSONObj(userPayload, rewardId).ToString());
-			}			
-			else 
+			}
+			else
 			{
 				ProfileEvents.OnSocialActionStarted(provider, SocialActionType.UPDATE_STATUS, userPayload);
+				//ProfileEvents.OnSocialActionStarted( new SocialActionStartedEvent(provider, SocialActionType.UPDATE_STATUS, userPayload) );
 				targetProvider.UpdateStatusDialog(link, () => {
 					if (reward != null) {
 						reward.Give();
 					}
 					ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPDATE_STATUS, userPayload);
+					//ProfileEvents.OnSocialActionFinished( new SocialActionFinishedEvent(provider, SocialActionType.UPDATE_STATUS, userPayload) );
 				},
 				(string error) => {
-					ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPDATE_STATUS, error, userPayload);
+						ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPDATE_STATUS, error, userPayload);
+						//ProfileEvents.OnSocialActionFailed( new SocialActionFailedEvent (provider, SocialActionType.UPDATE_STATUS, error, userPayload) );
 				});
 			}
 		}
 
 		/// <summary>
-		/// Posts a full story to the user's social page on the given Provider. 
+		/// Posts a full story to the user's social page on the given Provider.
 		/// A story contains a title, description, image and more.
-		/// Supported platforms: Facebook (full support), 
+		/// Supported platforms: Facebook (full support),
 		/// Twitter and Google+ (partial support - message and link only)
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The <c>Provider</c> the given story should be posted to.</param>
@@ -367,10 +417,10 @@ namespace Soomla.Profile
 		/// <param name="payload">A string to receive when the function returns.</param>
 		/// <param name="reward">A <c>Reward</c> to give the user after a successful post.</param>
 		public static void UpdateStory(Provider provider, string message, string name,
-		                               string caption, string description, string link, string pictureUrl, 
+		                               string caption, string description, string link, string pictureUrl,
 		                               string payload="", Reward reward = null) {
 
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 			if (targetProvider == null)
 				return;
@@ -379,32 +429,37 @@ namespace Soomla.Profile
 			{
 				//fallback to native
 				string rewardId = reward != null ? reward.ID: "";
-				instance._updateStory(provider, message, name, caption, description, link, pictureUrl, 
+				instance._updateStory(provider, message, name, caption, description, link, pictureUrl,
 				                      ProfilePayload.ToJSONObj(userPayload, rewardId).ToString(), false, null);
 			}
 
 			else
 			{
 				ProfileEvents.OnSocialActionStarted(provider, SocialActionType.UPDATE_STORY, userPayload);
+				//ProfileEvents.OnSocialActionStarted(new SocialActionStartedEvent(provider, SocialActionType.UPDATE_STORY, userPayload) );
 				targetProvider.UpdateStory(message, name, caption, description, link, pictureUrl,
-				    /* success */	() => { 
+				    /* success */	() => {
 					if (reward != null) {
 						reward.Give();
 					}
-					ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPDATE_STORY, userPayload);
+						ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPDATE_STORY, userPayload);
+						//ProfileEvents.OnSocialActionFinished( new SocialActionFinishedEvent(provider, SocialActionType.UPDATE_STORY, userPayload) );
 				},
 					/* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPDATE_STORY, error, userPayload); },
 					/* cancel */	() => {  ProfileEvents.OnSocialActionCancelled(provider, SocialActionType.UPDATE_STORY, userPayload); }
+
+					///* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed( new SocialActionFailedEvent (provider, SocialActionType.UPDATE_STORY, error, userPayload) ); },
+					///* cancel */	() => {  ProfileEvents.OnSocialActionCancelled( new SocialActionCancelledEvent(provider, SocialActionType.UPDATE_STORY, userPayload) ); }
 				);
 			}
 		}
 
 		/// <summary>
-		/// Posts a full story to the user's social page on the given Provider with confirmation dialog. 
+		/// Posts a full story to the user's social page on the given Provider with confirmation dialog.
 		/// A story contains a title, description, image and more.
-		/// Supported platforms: Facebook (full support), 
+		/// Supported platforms: Facebook (full support),
 		/// Twitter and Google+ (partial support - message and link only)
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The <c>Provider</c> the given story should be posted to.</param>
@@ -418,37 +473,42 @@ namespace Soomla.Profile
 		/// <param name="reward">A <c>Reward</c> to give the user after a successful post.</param>
 		/// <param name="customMessage">The message to show in the dialog</param>
 		public static void UpdateStoryWithConfirmation(Provider provider, string message, string name,
-		                               string caption, string description, string link, string pictureUrl, 
-		                                               string payload="", Reward reward = null, 
+		                               string caption, string description, string link, string pictureUrl,
+		                                               string payload="", Reward reward = null,
 		                                               string customMessage = null) {
-			
-			SocialProvider targetProvider = GetSocialProvider(provider);
+
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 			if (targetProvider == null)
 				return;
-			
+
 			if (targetProvider.IsNativelyImplemented())
 			{
 				//fallback to native
 				string rewardId = reward != null ? reward.ID: "";
-				instance._updateStory(provider, message, name, caption, description, link, pictureUrl, 
+				instance._updateStory(provider, message, name, caption, description, link, pictureUrl,
 				                      ProfilePayload.ToJSONObj(userPayload, rewardId).ToString(), true, customMessage);
 			}
-			
+
 			else
 			{
-				// TODO: Support showConfirmation
 				ProfileEvents.OnSocialActionStarted(provider, SocialActionType.UPDATE_STORY, userPayload);
-				targetProvider.UpdateStory(message, name, caption, description, link, pictureUrl,
-				                           /* success */	() => { 
+				//ProfileEvents.OnSocialActionStarted( new SocialActionStartedEvent(provider, SocialActionType.UPDATE_STORY, userPayload) );
+				ModalDialog.CreateModalWindow("Are you sure you want to update story?",
+				() => targetProvider.UpdateStory(message, name, caption, description, link, pictureUrl,
+				                           /* success */	() => {
 					if (reward != null) {
 						reward.Give();
 					}
-					ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPDATE_STORY, userPayload);
+							ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPDATE_STORY, userPayload);
+							//ProfileEvents.OnSocialActionFinished(new SocialActionFinishedEvent(provider, SocialActionType.UPDATE_STORY, userPayload) );
 				},
-				/* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPDATE_STORY, error, userPayload); },
-				/* cancel */	() => {  ProfileEvents.OnSocialActionCancelled(provider, SocialActionType.UPDATE_STORY, userPayload); }
-				);
+						/* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPDATE_STORY, error, userPayload); },
+						/* cancel */	() => {  ProfileEvents.OnSocialActionCancelled(provider, SocialActionType.UPDATE_STORY, userPayload); }
+
+						///* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed( new SocialActionFailedEvent (provider, SocialActionType.UPDATE_STORY, error, userPayload) ); },
+						///* cancel */	() => {  ProfileEvents.OnSocialActionCancelled( new SocialActionCancelledEvent(provider, SocialActionType.UPDATE_STORY, userPayload) ); }
+				) );
 			}
 		}
 
@@ -465,35 +525,39 @@ namespace Soomla.Profile
 		/// <param name="payload">A string to receive when the function returns.</param>
 		/// <param name="reward">The reward which will be granted to the user upon a successful update.</param>
 		public static void UpdateStoryDialog(Provider provider, string name, string caption, string description, string link, string picture, string payload, Reward reward = null) {
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 			if (targetProvider == null) {
 				return;
 			}
-			
+
 			if (targetProvider.IsNativelyImplemented())
 			{
 				//fallback to native
 				string rewardId = reward != null ? reward.ID: "";
-				instance._updateStoryDialog(provider, name, caption, description, link, picture, 
+				instance._updateStoryDialog(provider, name, caption, description, link, picture,
 				                      ProfilePayload.ToJSONObj(userPayload, rewardId).ToString());
 			}
-			
+
 			else
 			{
 				ProfileEvents.OnSocialActionStarted(provider, SocialActionType.UPDATE_STORY, userPayload);
+				//ProfileEvents.OnSocialActionStarted( new SocialActionStartedEvent(provider, SocialActionType.UPDATE_STORY, userPayload) );
 				targetProvider.UpdateStoryDialog(name, caption, description, link, picture,
-				() => { 
+				() => {
 					if (reward != null) {
 						reward.Give();
 					}
-					ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPDATE_STORY, userPayload);
+						ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPDATE_STORY, userPayload);
+						//ProfileEvents.OnSocialActionFinished(new SocialActionFinishedEvent(provider, SocialActionType.UPDATE_STORY, userPayload) );
 				},
-				(string error) => {  
-					ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPDATE_STORY, error, userPayload); 
+				(string error) => {
+						ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPDATE_STORY, error, userPayload);
+						//ProfileEvents.OnSocialActionFailed( new SocialActionFailedEvent (provider, SocialActionType.UPDATE_STORY, error, userPayload));
 				},
-				() => {  
-					ProfileEvents.OnSocialActionCancelled(provider, SocialActionType.UPDATE_STORY, userPayload); 
+				() => {
+						ProfileEvents.OnSocialActionCancelled(provider, SocialActionType.UPDATE_STORY, userPayload);
+						//ProfileEvents.OnSocialActionCancelled(new SocialActionCancelledEvent(provider, SocialActionType.UPDATE_STORY, userPayload));
 				});
 			}
 
@@ -502,7 +566,7 @@ namespace Soomla.Profile
 		/// <summary>
 		/// Uploads an image to the user's social page on the given Provider.
 		/// Supported platforms: Facebook, Twitter, Google+
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The <c>Provider</c> the given image should be uploaded to.</param>
@@ -519,43 +583,48 @@ namespace Soomla.Profile
 		/// <summary>
 		/// Uploads an image to the user's social page on the given Provider.
 		/// Supported platforms: Facebook, Twitter, Google+
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The <c>Provider</c> the given image should be uploaded to.</param>
 		/// <param name="message">Message to post with the image.</param>
 		/// <param name="fileName">Name of image file with extension (jpeg/pgn).</param>
 		/// <param name="imageBytes">Image bytes.</param>
-		/// <param name="jpegQuality">Image quality, number from 0 to 100. 0 meaning compress for small size, 100 meaning compress for max quality. 
+		/// <param name="jpegQuality">Image quality, number from 0 to 100. 0 meaning compress for small size, 100 meaning compress for max quality.
 		/// Some formats, like PNG which is lossless, will ignore the quality setting
 		/// <param name="payload">A string to receive when the function returns.</param>
 		/// <param name="reward">A <c>Reward</c> to give the user after a successful upload.</param>
 		public static void UploadImage(Provider provider, string message, string fileName, byte[] imageBytes,
 		                               int jpegQuality, string payload="", Reward reward = null) {
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 			if (targetProvider == null)
 				return;
-			
+
 			if (targetProvider.IsNativelyImplemented())
 			{
 				string rewardId = reward != null ? reward.ID: "";
 				instance._uploadImage(provider, message, fileName, imageBytes, jpegQuality,
 				                      ProfilePayload.ToJSONObj(userPayload, rewardId).ToString(), false, null);
 			}
-			
-			else 
+
+			else
 			{
 				ProfileEvents.OnSocialActionStarted(provider, SocialActionType.UPLOAD_IMAGE, userPayload);
+				//ProfileEvents.OnSocialActionStarted( new SocialActionStartedEvent(provider, SocialActionType.UPLOAD_IMAGE, userPayload) );
 				targetProvider.UploadImage(imageBytes, fileName, message,
-				                           /* success */	() => { 
+				                           /* success */	() => {
 					if (reward != null) {
 						reward.Give();
 					}
-					ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPLOAD_IMAGE, userPayload);
+						ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPLOAD_IMAGE, userPayload);
+						//ProfileEvents.OnSocialActionFinished( new SocialActionFinishedEvent(provider, SocialActionType.UPLOAD_IMAGE, userPayload) );
 				},
-				/* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPLOAD_IMAGE, error, userPayload); },
-				/* cancel */	() => {  ProfileEvents.OnSocialActionCancelled(provider, SocialActionType.UPLOAD_IMAGE, userPayload); }
+					/* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPLOAD_IMAGE, error, userPayload); },
+					/* cancel */	() => {  ProfileEvents.OnSocialActionCancelled(provider, SocialActionType.UPLOAD_IMAGE, userPayload); }
+
+					///* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed( new SocialActionFailedEvent (provider, SocialActionType.UPLOAD_IMAGE, error, userPayload) ); },
+					///* cancel */	() => {  ProfileEvents.OnSocialActionCancelled(new SocialActionCancelledEvent(provider, SocialActionType.UPLOAD_IMAGE, userPayload) ); }
 				);
 			}
 		}
@@ -563,53 +632,58 @@ namespace Soomla.Profile
 		/// <summary>
 		/// Uploads an image to the user's social page on the given Provider with confirmation dialog.
 		/// Supported platforms: Facebook, Twitter, Google+
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The <c>Provider</c> the given image should be uploaded to.</param>
 		/// <param name="message">Message to post with the image.</param>
 		/// <param name="fileName">Name of image file with extension (jpeg/pgn).</param>
 		/// <param name="imageBytes">Image bytes.</param>
-		/// <param name="jpegQuality">Image quality, number from 0 to 100. 0 meaning compress for small size, 100 meaning compress for max quality. 
+		/// <param name="jpegQuality">Image quality, number from 0 to 100. 0 meaning compress for small size, 100 meaning compress for max quality.
 		/// Some formats, like PNG which is lossless, will ignore the quality setting
 		/// <param name="payload">A string to receive when the function returns.</param>
 		/// <param name="reward">A <c>Reward</c> to give the user after a successful upload.</param>
 		/// <param name="customMessage">The message to show in the dialog</param>
 		public static void UploadImageWithConfirmation(Provider provider, string message, string fileName, byte[] imageBytes,
 		                                               int jpegQuality, string payload="", Reward reward = null, string customMessage = null) {
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 			if (targetProvider == null)
 				return;
-			
+
 			if (targetProvider.IsNativelyImplemented())
 			{
 				string rewardId = reward != null ? reward.ID: "";
 				instance._uploadImage(provider, message, fileName, imageBytes, jpegQuality,
 				                      ProfilePayload.ToJSONObj(userPayload, rewardId).ToString(), true, customMessage);
 			}
-			
-			else 
+
+			else
 			{
-				// TODO: Support showConfirmation
 				ProfileEvents.OnSocialActionStarted(provider, SocialActionType.UPLOAD_IMAGE, userPayload);
-				targetProvider.UploadImage(imageBytes, fileName, message,
-				                           /* success */	() => { 
+				//ProfileEvents.OnSocialActionStarted( new SocialActionStartedEvent(provider, SocialActionType.UPLOAD_IMAGE, userPayload) );
+				ModalDialog.CreateModalWindow("Are you sure you want to upload image?",
+				() => targetProvider.UploadImage(imageBytes, fileName, message,
+				                           /* success */	() => {
 					if (reward != null) {
 						reward.Give();
 					}
-					ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPLOAD_IMAGE, userPayload);
+							ProfileEvents.OnSocialActionFinished(provider, SocialActionType.UPLOAD_IMAGE, userPayload);
+							//ProfileEvents.OnSocialActionFinished( new SocialActionFinishedEvent(provider, SocialActionType.UPLOAD_IMAGE, userPayload) );
 				},
-				/* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPLOAD_IMAGE, error, userPayload); },
-				/* cancel */	() => {  ProfileEvents.OnSocialActionCancelled(provider, SocialActionType.UPLOAD_IMAGE, userPayload); }
-				);
+						/* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed (provider, SocialActionType.UPLOAD_IMAGE, error, userPayload); },
+						/* cancel */	() => {  ProfileEvents.OnSocialActionCancelled(provider, SocialActionType.UPLOAD_IMAGE, userPayload); }
+
+						///* fail */		(string error) => {  ProfileEvents.OnSocialActionFailed( new SocialActionFailedEvent (provider, SocialActionType.UPLOAD_IMAGE, error, userPayload) ); },
+						///* cancel */	() => {  ProfileEvents.OnSocialActionCancelled( new SocialActionCancelledEvent(provider, SocialActionType.UPLOAD_IMAGE, userPayload) ); }
+				) );
 			}
 		}
-		
+
 		/// <summary>
 		/// Uploads the current screen shot image to the user's social page on the given Provider.
 		/// Supported platforms: Facebook
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="mb">Mb.</param>
@@ -627,7 +701,7 @@ namespace Soomla.Profile
 		/// Supported platforms: Facebook, Twitter, Google+.
 		/// Missing contact information for Twitter: email, gender, birthday.
 		/// Missing contact information for Google+: username, email, gender, bithday
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The <c>Provider</c> to fetch contacts from.</param>
@@ -635,7 +709,7 @@ namespace Soomla.Profile
 		/// <param name="payload">A string to receive when the function returns.</param>
 		public static void GetContacts(Provider provider, bool fromStart = false, string payload="") {
 
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 			if (targetProvider == null)
 				return;
@@ -646,14 +720,18 @@ namespace Soomla.Profile
 				instance._getContacts(provider, fromStart, ProfilePayload.ToJSONObj(userPayload).ToString());
 			}
 
-			else 
+			else
 			{
 				ProfileEvents.OnGetContactsStarted(provider, fromStart, userPayload);
+				//ProfileEvents.OnGetContactsStarted( new GetContactsStartedEvent(provider, fromStart, userPayload ));
 				targetProvider.GetContacts(fromStart,
-					/* success */	(SocialPageData<UserProfile> contactsData) => { 
-					ProfileEvents.OnGetContactsFinished(provider, contactsData, userPayload);
+					/* success */	(SocialPageData<UserProfile> contactsData) => {
+						ProfileEvents.OnGetContactsFinished(provider, contactsData, userPayload);
+						//ProfileEvents.OnGetContactsFinished( new GetContactsFinishedEvent(provider, contactsData, userPayload) );
 				},
-				/* fail */		(string message) => {  ProfileEvents.OnGetContactsFailed(provider, message, fromStart, userPayload); }
+					/* fail */		(string message) => {  ProfileEvents.OnGetContactsFailed(provider, message, fromStart, userPayload); }
+
+					///* fail */		(string message) => {  ProfileEvents.OnGetContactsFailed( new GetContactsFailedEvent(provider, message, fromStart, userPayload) ); }
 				);
 			}
 		}
@@ -661,7 +739,7 @@ namespace Soomla.Profile
 		/// <summary>
 		/// Retrieves a list of the user's feed entries from the supplied provider.
 		/// Upon a successful retrieval of feed entries the user will be granted the supplied reward.
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The <c>Provider</c> on which to retrieve a list of feed entries.</param>
@@ -669,7 +747,7 @@ namespace Soomla.Profile
 		/// <param name="payload">A string to receive when the function returns.</param>
 		/// <param name="reward">The reward which will be granted to the user upon a successful retrieval of feed.</param>
 		public static void GetFeed(Provider provider, bool fromStart = false, string payload = "", Reward reward = null) {
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 
 			if (targetProvider == null)
@@ -680,32 +758,35 @@ namespace Soomla.Profile
 				string rewardId = reward != null ? reward.ID: "";
 				//fallback to native
 				instance._getFeed(provider, fromStart, ProfilePayload.ToJSONObj(userPayload, rewardId).ToString());
-			}			
-			else 
+			}
+			else
 			{
 				ProfileEvents.OnGetFeedStarted(provider);
-				targetProvider.GetFeed(fromStart, 
+				//ProfileEvents.OnGetFeedStarted( new GetFeedStartedEvent(provider) );
+				targetProvider.GetFeed(fromStart,
 				/* success */
 				(SocialPageData<String> feeds) => {
 					if (reward != null) {
 						reward.Give();
 					}
-					ProfileEvents.OnGetFeedFinished(provider, feeds);
+						ProfileEvents.OnGetFeedFinished(provider, feeds);
+						//ProfileEvents.OnGetFeedFinished(new GetFeedFinishedEvent(provider, feeds));
 				},
 				/* fail */
 				(string message) => {
-					ProfileEvents.OnGetFeedFailed(provider, message);
+						ProfileEvents.OnGetFeedFailed(provider, message);
+						//ProfileEvents.OnGetFeedFailed( new GetFeedFailedEvent(provider, message) );
 				});
 			}
 		}
 
 		public static void Invite(Provider provider, string inviteMessage, string dialogTitle = null, string payload="", Reward reward = null) {
 
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			string userPayload = (payload == null) ? "" : payload;
 			if (targetProvider == null)
 				return;
-			
+
 			if (targetProvider.IsNativelyImplemented())
 			{
 				//fallback to native
@@ -713,23 +794,27 @@ namespace Soomla.Profile
 				//TODO: add invite implementation when implemented in native
 				instance._invite(provider, inviteMessage, dialogTitle, ProfilePayload.ToJSONObj(userPayload, rewardId).ToString());
 			}
-			
-			else 
+
+			else
 			{
 				ProfileEvents.OnInviteStarted(provider, userPayload);
+				//ProfileEvents.OnInviteStarted( new InviteStartedEvent(provider, userPayload) );
 				targetProvider.Invite(inviteMessage, dialogTitle,
 				                      /* success */ (string requestId, List<string> invitedIds) => {
 
 					if (reward != null) {
 						reward.Give();
 					}
-					ProfileEvents.OnInviteFinished(provider, requestId, invitedIds, userPayload);
+						ProfileEvents.OnInviteFinished(provider, requestId, invitedIds, userPayload);
+						//ProfileEvents.OnInviteFinished(new InviteFinishedEvent(provider, requestId, invitedIds, userPayload) );
 				},
-									     /* fail */ (string message) => {  
-					ProfileEvents.OnInviteFailed(provider, message, userPayload);
+									     /* fail */ (string message) => {
+						ProfileEvents.OnInviteFailed(provider, message, userPayload);
+						//ProfileEvents.OnInviteFailed( new InviteFailedEvent(provider, message, userPayload) );
 				},
-										/* cancel */ () => {  
-					ProfileEvents.OnInviteCancelled(provider, userPayload);
+										/* cancel */ () => {
+						ProfileEvents.OnInviteCancelled(provider, userPayload);
+						//ProfileEvents.OnInviteCancelled( new InviteCancelledEvent(provider, userPayload) );
 				});
 			}
 		}
@@ -769,14 +854,14 @@ namespace Soomla.Profile
 		/// <summary>
 		/// Likes the page (with the given name) of the given provider.
 		/// Supported platforms: Facebook, Twitter, Google+.
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="provider">The provider that the page belongs to.</param>
 		/// <param name="pageName">The name of the page to like.</param>
 		/// <param name="reward">A <c>Reward</c> to give the user after he/she likes the page.</param>
 		public static void Like(Provider provider, string pageId, Reward reward=null) {
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			SocialProvider targetProvider = (SocialProvider)GetProviderImplementation(provider);
 			if (targetProvider != null) {
 				targetProvider.Like(pageId);
 
@@ -785,11 +870,11 @@ namespace Soomla.Profile
 				}
 			}
 		}
-	
+
 		/// <summary>
-		/// Fetches the saved user profile for the given provider. UserProfiles are automatically 
+		/// Fetches the saved user profile for the given provider. UserProfiles are automatically
 		/// saved in the local storage for a provider after a successful login.
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <returns>The stored user profile.</returns>
@@ -800,7 +885,7 @@ namespace Soomla.Profile
 
 		/// <summary>
 		/// Stores the given user profile in the relevant provider (contained internally in the UserProfile).
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="userProfile">User profile to store.</param>
@@ -811,7 +896,7 @@ namespace Soomla.Profile
 
 		/// <summary>
 		/// Removes the given user profile in the relevant provider (contained internally in the UserProfile).
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		/// <param name="userProfile">User profile to store.</param>
@@ -821,13 +906,14 @@ namespace Soomla.Profile
 
 		/// <summary>
 		/// Opens the app rating page.
-		/// 
+		///
 		/// NOTE: This operation requires a successful login.
 		/// </summary>
 		public static void OpenAppRatingPage() {
 			instance._openAppRatingPage ();
 
 			ProfileEvents.OnUserRatingEvent ();
+			//ProfileEvents.OnUserRatingEvent (new UserRatingEvent() );
 		}
 
 		/// <summary>
@@ -840,12 +926,117 @@ namespace Soomla.Profile
 		}
 
 		public static bool IsProviderNativelyImplemented(Provider provider) {
-			SocialProvider targetProvider = GetSocialProvider(provider);
+			AuthProvider targetProvider = GetProviderImplementation(provider);
 			if (targetProvider != null) {
 				return targetProvider.IsNativelyImplemented();
 			}
 
 			return false;
+		}
+
+		/// <summary>
+		/// Fetches Leaderboards for selected provider.
+		/// Supported platforms: GameCenter.
+		///
+		/// NOTE: This operation requires a successful login.
+		/// </summary>
+		/// <param name="provider">The <c>Provider</c> to fetch contacts from.</param>
+		/// <param name="payload">A string to receive when the function returns.</param>
+		public static void GetLeaderboards(Provider provider, string payload = "", Reward reward = null) {
+			GameServicesProvider targetProvider = (GameServicesProvider)GetProviderImplementation(provider);
+			string userPayload = (payload == null) ? "" : payload;
+			if (targetProvider == null)
+				return;
+
+			if (targetProvider.IsNativelyImplemented())
+			{
+				//fallback to native
+				string rewardId = reward != null ? reward.ID: "";
+				instance._getLeaderboards(provider, ProfilePayload.ToJSONObj(userPayload, rewardId).ToString());
+			}
+			else
+			{
+				ProfileEvents.OnGetLeaderboardsStarted(new GetLeaderboardsStartedEvent(provider, payload));
+				targetProvider.GetLeaderboards((SocialPageData<Leaderboard> leaderboards) => {
+					if (reward != null) {
+						reward.Give();
+					}
+					ProfileEvents.OnGetLeaderboardsFinished(new GetLeaderboardsFinishedEvent(provider, leaderboards, payload));
+				}, (string message) => {
+					ProfileEvents.OnGetLeaderboardsFailed(new GetLeaderboardsFailedEvent(provider, message, payload));
+				});
+			}
+		}
+
+		/// <summary>
+		/// Fetches Scores for selected leaderboard.
+		/// Supported platforms: GameCenter.
+		///
+		/// NOTE: This operation requires a successful login.
+		/// </summary>
+		/// <param name="provider">The <c>Provider</c> to fetch contacts from.</param>
+		/// <param name="from">The <c>Leaderboard</c> scores related to.</param>
+		/// <param name="payload">A string to receive when the function returns.</param>
+		public static void GetScores(Provider provider, Leaderboard from, bool fromStart = false, string payload = "", Reward reward = null) {
+			GameServicesProvider targetProvider = (GameServicesProvider)GetProviderImplementation(provider);
+			string userPayload = (payload == null) ? "" : payload;
+			if (targetProvider == null)
+				return;
+
+			if (targetProvider.IsNativelyImplemented())
+			{
+				//fallback to native
+				string rewardId = reward != null ? reward.ID: "";
+				instance._getScores(provider, from, fromStart, ProfilePayload.ToJSONObj(userPayload, rewardId).ToString());
+			}
+			else
+			{
+				ProfileEvents.OnGetScoresStarted(new GetScoresStartedEvent(provider, from, fromStart, payload));
+				targetProvider.GetScores(from, fromStart, (SocialPageData<Score> scores) => {
+					if (reward != null) {
+						reward.Give();
+					}
+					ProfileEvents.OnGetScoresFinished(new GetScoresFinishedEvent(provider, from, scores, payload));
+				}, (string message) => {
+					ProfileEvents.OnGetScoresFailed(new GetScoresFailedEvent(provider, from, fromStart, message, payload));
+				});
+			}
+		}
+
+		/// <summary>
+		/// Submit score into selected leaderboard
+		/// Supported platforms: GameCenter.
+		///
+		/// NOTE: This operation requires a successful login.
+		/// </summary>
+		/// <param name="provider">The <c>Provider</c> to fetch contacts from.</param>
+		/// <param name="where">The <c>Leaderboard</c> score will be written to.</param>
+		/// <param name="score">Value of score will be written to leaderboard.</param>
+		/// <param name="payload">A string to receive when the function returns.</param>
+		public static void ReportScore(Provider provider, Leaderboard where, int score, string payload = "", Reward reward = null) {
+			GameServicesProvider targetProvider = (GameServicesProvider)GetProviderImplementation(provider);
+			string userPayload = (payload == null) ? "" : payload;
+			if (targetProvider == null)
+				return;
+
+			if (targetProvider.IsNativelyImplemented())
+			{
+				//fallback to native
+				string rewardId = reward != null ? reward.ID: "";
+				instance._reportScore(provider, where, score, ProfilePayload.ToJSONObj(userPayload, rewardId).ToString());
+			}
+			else
+			{
+				ProfileEvents.OnReportScoreStarted(new ReportScoreStartedEvent(provider, where, payload));
+				targetProvider.ReportScore(where, score, (Score newScore) => {
+					if (reward != null) {
+						reward.Give();
+					}
+					ProfileEvents.OnReportScoreFinished(new ReportScoreFinishedEvent(provider, where, newScore, payload));
+				}, (string message) => {
+					ProfileEvents.OnReportScoreFailed(new ReportScoreFailedEvent(provider, where, message, payload));
+				});
+			}
 		}
 
 		/// <summary>
@@ -856,57 +1047,66 @@ namespace Soomla.Profile
 			return (unreadyProviders == 0);
 		}
 
-		internal static void ProviderBecameReady(SocialProvider socialProvider) {
+		internal static void ProviderBecameReady(AuthProvider authProvider) {
 			--unreadyProviders;
 
 			TryFireProfileInitialized();
 		}
 
 		internal static void TryFireProfileInitialized () {
-			if (AllProvidersInitialized()) {
+			if (AllProvidersInitialized() && nativeModulesInitialized) {
 				ProfileEvents.OnSoomlaProfileInitialized();
+				//ProfileEvents.OnSoomlaProfileInitialized(new ProfileInitializedEvent() );
 			}
 		}
 
 		/** PROTECTED & PRIVATE FUNCTIONS **/
 
-		protected virtual void _initialize(string customParamsJson) { }
-		
+		protected virtual void _initialize(string customParamsJson) {
+			nativeModulesInitialized = true;
+        }
+
 		protected virtual void _login(Provider provider, string payload) { }
-		
+
 		protected virtual void _logout (Provider provider) { }
-		
+
 		protected virtual bool _isLoggedIn(Provider provider) { return false; }
-		
-		protected virtual void _updateStatus(Provider provider, string status, string payload, bool showConfirmation, 
+
+		protected virtual void _updateStatus(Provider provider, string status, string payload, bool showConfirmation,
 		                                     string customMessage) { }
 
 		protected virtual void _updateStatusDialog(Provider provider, string link, string payload) { }
-		
+
 		protected virtual void _updateStory (Provider provider, string message, string name,
 		                                     string caption, string description, string link,
-		                                     string pictureUrl, string payload, 
+		                                     string pictureUrl, string payload,
 		                                     bool showConfirmation, string customMessage) { }
 
-		protected virtual void _updateStoryDialog(Provider provider, string name, string caption, string description, 
+		protected virtual void _updateStoryDialog(Provider provider, string name, string caption, string description,
 		                                          string link, string picture, string payload) { }
-		
-		protected virtual void _uploadImage(Provider provider, string message, 
-		                                    string fileName, byte[] imageBytes, 
-		                                    int jpegQuality, string payload, 
+
+		protected virtual void _uploadImage(Provider provider, string message,
+		                                    string fileName, byte[] imageBytes,
+		                                    int jpegQuality, string payload,
 		                                    bool showConfirmation, string customMessage) { }
-		
+
 		protected virtual void _getContacts(Provider provider, bool fromStart, string payload) { }
 
 		protected virtual void _getFeed(Provider provider, bool fromStart, string payload) { }
 
 		protected virtual void _invite(Provider provider, string inviteMessage, string dialogTitle, string payload) { }
-		
+
 		protected virtual void _openAppRatingPage() { }
 
 		protected virtual void _multiShare(string text, string imageFilePath) { }
 
-		
+		protected virtual void _getLeaderboards(Provider provider, string payload) { }
+
+		protected virtual void _getScores(Provider provider, Leaderboard from, bool fromStart, string payload) { }
+
+		protected virtual void _reportScore(Provider provider, Leaderboard where, int score, string payload) { }
+
+
 		protected virtual UserProfile _getStoredUserProfile(Provider provider) {
 			#if UNITY_EDITOR
 			string key = keyUserProfile(provider);
@@ -917,16 +1117,17 @@ namespace Soomla.Profile
 			#endif
 			return null;
 		}
-		
+
 		protected virtual void _storeUserProfile(UserProfile userProfile, bool notify) {
 			#if UNITY_EDITOR
 			string key = keyUserProfile(userProfile.Provider);
 			string val = userProfile.toJSONObject().ToString();
 			SoomlaUtils.LogDebug(TAG, "key/val:" + key + "/" + val);
 			PlayerPrefs.SetString(key, val);
-			
+
 			if (notify) {
 				ProfileEvents.OnUserProfileUpdated(userProfile);
+				//ProfileEvents.OnUserProfileUpdated( new UserProfileUpdatedEvent(userProfile) );
 			}
 			#endif
 		}
@@ -938,9 +1139,9 @@ namespace Soomla.Profile
 			#endif
 		}
 
-		private static SocialProvider GetSocialProvider (Provider provider)
+		private static AuthProvider GetProviderImplementation (Provider provider)
 		{
-			SocialProvider result = null;
+			AuthProvider result = null;
 			providers.TryGetValue(provider, out result);
 
 //			if (result == null) {
@@ -957,30 +1158,38 @@ namespace Soomla.Profile
 				{"permissions", ProfileSettings.FBPermissions},
 				{"autoLogin", ProfileSettings.FBAutoLogin.ToString()}
 			};
-			
+
 			Dictionary<string, string> gpParams = new Dictionary<string, string>()
 			{
 				{"clientId", ProfileSettings.GPClientId},
 				{"autoLogin", ProfileSettings.GPAutoLogin.ToString()}
 			};
-			
+
 			Dictionary<string, string> twParams = new Dictionary<string, string> ()
 			{
 				{"consumerKey", ProfileSettings.TwitterConsumerKey},
 				{"consumerSecret", ProfileSettings.TwitterConsumerSecret},
 				{"autoLogin", ProfileSettings.TwitterAutoLogin.ToString()}
 			};
-			
+
+			Dictionary<string, string> gcParams = new Dictionary<string, string> ()
+			{
+				{"autoLogin", ProfileSettings.GameCenterAutoLogin.ToString()}
+			};
+
 			Dictionary<Provider, Dictionary<string, string>> customParams =  new Dictionary<Provider, Dictionary<string, string>> ()
 			{
 				{Provider.FACEBOOK, fbParams},
 				{Provider.GOOGLE, gpParams},
 				{Provider.TWITTER, twParams}
+#if UNITY_IOS || UNITY_EDITOR
+				,{Provider.GAME_CENTER, gcParams}
+#endif
 			};
-			
+
 			return customParams;
 		}
-		
+
 		private static string GetCustomParamsJson(Dictionary<Provider, Dictionary<string, string>> customParams)
 		{
 			JSONObject customParamsJson = JSONObject.Create();
@@ -997,7 +1206,7 @@ namespace Soomla.Profile
 		private static byte[] GetImageBytesFromTexture(string imageFileName, Texture2D imageTexture)
 		{
 			string[] fileNameComponents = imageFileName.Split ('.');
-			if (fileNameComponents.Length < 2) 
+			if (fileNameComponents.Length < 2)
 			{
 				SoomlaUtils.LogError(TAG, "(GetImageBytesFromTexture) image file without extension: " + imageFileName);
 				return null;
@@ -1009,11 +1218,11 @@ namespace Soomla.Profile
 			else
 				return imageTexture.EncodeToJPG();
 		}
-		
+
 		private static IEnumerator TakeScreenshot(Provider provider, string title, string message, string payload, Reward reward)
 		{
 			yield return new WaitForEndOfFrame();
-			
+
 			var width = Screen.width;
 			var height = Screen.height;
 			var tex = new Texture2D(width, height, TextureFormat.RGB24, false);

@@ -206,6 +206,18 @@ namespace Soomla.Profile {
 			AndroidJNI.PopLocalFrame(IntPtr.Zero);
 		}
 
+		protected override void _getLeaderboards(Soomla.Profile.Provider provider, string payload) {
+			Soomla.SoomlaUtils.LogDebug(TAG, "Game services isn't supported in Android yet.");
+		}
+
+		protected override void _getScores(Soomla.Profile.Provider provider, Soomla.Profile.Leaderboard from, bool fromStart, string payload) {
+			Soomla.SoomlaUtils.LogDebug(TAG, "Game services isn't supported in Android yet.");
+		}
+
+		protected override void _reportScore(Soomla.Profile.Provider provider, Soomla.Profile.Leaderboard where, int score, string payload) {
+			Soomla.SoomlaUtils.LogDebug(TAG, "Game services isn't supported in Android yet.");
+		}
+
 #endif
 	}
 }

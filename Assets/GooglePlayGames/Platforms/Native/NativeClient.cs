@@ -67,6 +67,8 @@ namespace GooglePlayGames.Native
         private volatile bool mSilentAuthFailed = false;
         private volatile bool friendsLoading = false;
 
+        private string rationale;
+
         private int webclientWarningFreq = 100000;
         private int noWebClientIdWarningCount = 0;
 
@@ -76,6 +78,7 @@ namespace GooglePlayGames.Native
             PlayGamesHelperObject.CreateObject();
             this.mConfiguration = Misc.CheckNotNull(configuration);
             this.clientImpl = clientImpl;
+            this.rationale = configuration.PermissionRationale;
         }
 
         private GameServices GameServices()
@@ -207,7 +210,7 @@ namespace GooglePlayGames.Native
                         }
 
                         mAuthState = AuthState.SilentPending;
-                        mTokenClient = clientImpl.CreateTokenClient();
+                        mTokenClient = clientImpl.CreateTokenClient(false);
                     }
                 }
             }
@@ -260,7 +263,7 @@ namespace GooglePlayGames.Native
                 }
                 return null;
             }
-
+            mTokenClient.SetRationale(rationale);
             return mTokenClient.GetEmail();
         }
 
@@ -285,7 +288,7 @@ namespace GooglePlayGames.Native
                 }
                 return null;
             }
-
+            mTokenClient.SetRationale(rationale);
             return mTokenClient.GetAccessToken();
         }
 
@@ -312,6 +315,7 @@ namespace GooglePlayGames.Native
                 }
                 return null;
             }
+            mTokenClient.SetRationale(rationale);
             return mTokenClient.GetIdToken(GameInfo.WebClientId);
         }
 
@@ -548,6 +552,7 @@ namespace GooglePlayGames.Native
                 mFriends = null;
                 mAchievements = null;
                 mAuthState = AuthState.Unauthenticated;
+                mTokenClient = clientImpl.CreateTokenClient(true);
                 mAuthGeneration++;
             }
         }

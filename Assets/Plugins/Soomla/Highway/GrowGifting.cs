@@ -31,6 +31,7 @@ namespace Grow.Gifting
 		/// Initializes the gifting manager
 		/// </summary>
 		public static void Initialize() {
+			Highway.HighwayEvents.Initialize();
 			SoomlaUtils.LogDebug (TAG, "SOOMLA/UNITY Initializing Gifting");
 			#if UNITY_ANDROID && !UNITY_EDITOR
 			AndroidJNI.PushLocalFrame(100);

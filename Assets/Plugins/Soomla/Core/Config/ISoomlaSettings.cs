@@ -23,6 +23,9 @@ namespace Soomla
 		void OnSoomlaGUI();
 		void OnModuleGUI();
 		void OnInfoGUI();
+		void OnAndroidGUI();
+		void OnIOSGUI();
+		void OnWP8GUI();
 		void OnEnable();
 #endif
 	}

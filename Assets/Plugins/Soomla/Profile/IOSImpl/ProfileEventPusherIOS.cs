@@ -65,6 +65,26 @@ namespace Soomla.Profile {
 		[DllImport ("__Internal")]
 		private static extern void soomlaProfile_PushEventInviteFailed(string provider, string actionType, string message, string payload);
 
+		[DllImport ("__Internal")]
+		private static extern void soomlaProfile_PushEventGetLeaderboardsStarted(string provider, string payload);
+		[DllImport ("__Internal")]
+		private static extern void soomlaProfile_PushEventGetLeaderboardsFinished(string provider, string leaderboardsJson, string payload);
+		[DllImport ("__Internal")]
+		private static extern void soomlaProfile_PushEventGetLeaderboardsFailed(string provider, string message, string payload);
+
+		[DllImport ("__Internal")]
+		private static extern void soomlaProfile_PushEventGetScoresStarted(string provider, string fromJson, bool fromStart, string payload);
+		[DllImport ("__Internal")]
+		private static extern void soomlaProfile_PushEventGetScoresFinished(string provider, string fromJson, string scoresJson, string payload, bool hasNext);
+		[DllImport ("__Internal")]
+		private static extern void soomlaProfile_PushEventGetScoresFailed(string provider, string fromJson, string message, bool fromStart, string payload);
+
+		[DllImport ("__Internal")]
+		private static extern void soomlaProfile_PushEventReportScoreStarted(string provider, string fromJson, string payload);
+		[DllImport ("__Internal")]
+		private static extern void soomlaProfile_PushEventReportScoreFinished(string provider, string fromJson, string scoreJson, string payload);
+		[DllImport ("__Internal")]
+		private static extern void soomlaProfile_PushEventReportScoreFailed(string provider, string fromJson, string message, string payload);
 
 		// event pushing back to native (when using FB Unity SDK)
 		protected override void _pushEventLoginStarted(Provider provider, bool autoLogin, string payload) {
@@ -72,7 +92,7 @@ namespace Soomla.Profile {
 			soomlaProfile_PushEventLoginStarted(provider.ToString(), autoLogin, payload);
 		}
 
-		protected override void _pushEventLoginFinished(UserProfile userProfile, bool autoLogin, string payload) { 
+		protected override void _pushEventLoginFinished(UserProfile userProfile, bool autoLogin, string payload) {
 			if (SoomlaProfile.IsProviderNativelyImplemented(userProfile.Provider)) return;
 			soomlaProfile_PushEventLoginFinished(userProfile.toJSONObject().print(), autoLogin, payload);
 		}
@@ -165,6 +185,62 @@ namespace Soomla.Profile {
 			if (SoomlaProfile.IsProviderNativelyImplemented(provider)) return;
 			soomlaProfile_PushEventInviteFailed(provider.ToString(), SocialActionType.INVITE.ToString(), message, payload);
 		}
+
+		protected override void _pushEventGetLeaderboardsStarted(GetLeaderboardsStartedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			soomlaProfile_PushEventGetLeaderboardsStarted(ev.Provider.ToString(), ev.Payload);
+		}
+
+		protected override void _pushEventGetLeaderboardsFinished(GetLeaderboardsFinishedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			List<JSONObject> leaderboardList = new List<JSONObject>();
+			foreach (var lb in ev.Leaderboards.PageData) {
+				leaderboardList.Add(lb.toJSONObject());
+			}
+			JSONObject jsonLbs = new JSONObject(leaderboardList.ToArray());
+			soomlaProfile_PushEventGetLeaderboardsFinished(ev.Provider.ToString(), jsonLbs.ToString(), ev.Payload);
+		}
+
+		protected override void _pushEventGetLeaderboardsFailed(GetLeaderboardsFailedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			soomlaProfile_PushEventGetLeaderboardsFailed(ev.Provider.ToString(), ev.ErrorDescription, ev.Payload);
+		}
+
+		protected override void _pushEventGetScoresStarted(GetScoresStartedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			soomlaProfile_PushEventGetScoresStarted(ev.Provider.ToString(), ev.From.toJSONObject().ToString(), ev.FromStart, ev.Payload);
+		}
+
+		protected override void _pushEventGetScoresFinished(GetScoresFinishedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			List<JSONObject> scoreList = new List<JSONObject>();
+			foreach (var sc in ev.Scores.PageData) {
+				scoreList.Add(sc.toJSONObject());
+			}
+			JSONObject jsonSc = new JSONObject(scoreList.ToArray());
+			soomlaProfile_PushEventGetScoresFinished(ev.Provider.ToString(), ev.From.toJSONObject().ToString(), jsonSc.ToString(), ev.Payload, ev.Scores.HasMore);
+		}
+
+		protected override void _pushEventGetScoresFailed(GetScoresFailedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			soomlaProfile_PushEventGetScoresFailed(ev.Provider.ToString(), ev.From.toJSONObject().ToString(), ev.ErrorDescription, ev.FromStart, ev.Payload);
+		}
+
+		protected override void _pushEventReportScoreStarted(ReportScoreStartedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			soomlaProfile_PushEventReportScoreStarted(ev.Provider.ToString(), ev.Destination.toJSONObject().ToString(), ev.Payload);
+		}
+
+		protected override void _pushEventReportScoreFinished(ReportScoreFinishedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			soomlaProfile_PushEventReportScoreFinished(ev.Provider.ToString(), ev.Destination.toJSONObject().ToString(), ev.Score.toJSONObject().ToString(), ev.Payload);
+		}
+
+		protected override void _pushEventReportScoreFailed(ReportScoreFailedEvent ev) {
+			if (SoomlaProfile.IsProviderNativelyImplemented(ev.Provider)) return;
+			soomlaProfile_PushEventReportScoreFailed(ev.Provider.ToString(), ev.Destination.toJSONObject().ToString(), ev.ErrorDescription, ev.Payload);
+		}
+
 #endif
 	}
 }

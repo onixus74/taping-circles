@@ -37,16 +37,20 @@ namespace Soomla.Levelup
 		#if UNITY_EDITOR
 
 		static LevelUpSettings instance = new LevelUpSettings();
+
+		static string currentModuleVersion = "1.1.2";
+
 		static LevelUpSettings()
 		{
 			SoomlaEditorScript.addSettings(instance);
+
+			SoomlaEditorScript.addFileList("LevelUp", "Assets/Soomla/levelup_file_list", new string[] {});
 		}
 
 //		BuildTargetGroup[] supportedPlatforms = { BuildTargetGroup.Android, BuildTargetGroup.iPhone,
 //			BuildTargetGroup.WebPlayer, BuildTargetGroup.Standalone};
 
-		GUIContent profileVersion = new GUIContent("LevelUp Version [?]", "The SOOMLA LevelUp version. ");
-		GUIContent profileBuildVersion = new GUIContent("LevelUp Build [?]", "The SOOMLA LevelUp build.");
+		GUIContent levelUpVersion = new GUIContent("LevelUp Version [?]", "The SOOMLA LevelUp version. ");
 
 		private LevelUpSettings()
 		{
@@ -65,9 +69,21 @@ namespace Soomla.Levelup
 
 		}
 
+		public void OnAndroidGUI() {
+			
+		}
+		
+		public void OnIOSGUI(){
+
+		}
+		
+		public void OnWP8GUI(){
+			
+		}
+
 		public void OnInfoGUI() {
-			SoomlaEditorScript.SelectableLabelField(profileVersion, "1.0.18");
-			SoomlaEditorScript.SelectableLabelField(profileBuildVersion, "1");
+			SoomlaEditorScript.RemoveSoomlaModuleButton(levelUpVersion, currentModuleVersion, "LevelUp");
+			SoomlaEditorScript.LatestVersionField ("unity3d-levelup", currentModuleVersion, "New version available!", "http://library.soom.la/fetch/unity3d-levelup-only/latest?cf=unity");
 			EditorGUILayout.Space();
 		}
 

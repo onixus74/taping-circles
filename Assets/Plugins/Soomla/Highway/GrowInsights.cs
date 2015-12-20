@@ -32,6 +32,7 @@ namespace Grow.Insights
 		/// Initializes insights
 		/// </summary>
 		public static void Initialize() {
+			Highway.HighwayEvents.Initialize();
 			SoomlaUtils.LogDebug (TAG, "SOOMLA/UNITY Initializing Insights");
 			#if UNITY_ANDROID && !UNITY_EDITOR
 			AndroidJNI.PushLocalFrame(100);

@@ -5,6 +5,7 @@ namespace Soomla
 		{
 #if UNITY_EDITOR
 			void UpdateManifest();
+			void ClearManifest();
 #endif
 		}
 }

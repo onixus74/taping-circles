@@ -11,25 +11,23 @@ using System.Collections.Generic;
 namespace Soomla
 {
 	public class SoomlaManifestTools
-    {
+	{
 #if UNITY_EDITOR
-
-        public static void GenerateManifest()
-        {
-            var outputFile = Path.Combine(Application.dataPath, "Plugins/Android/AndroidManifest.xml");
-
-            // only copy over a fresh copy of the AndroidManifest if one does not exist
-            if (!File.Exists(outputFile))
-            {
+	static string outputFile = Path.Combine(Application.dataPath, "Plugins/Android/AndroidManifest.xml");
+	public static void GenerateManifest()
+	{
+		// only copy over a fresh copy of the AndroidManifest if one does not exist
+		if (!File.Exists(outputFile))
+		{
 #if UNITY_4_5 || UNITY_4_6 || UNITY_5_0 || UNITY_5_1
-                var inputFile = Path.Combine(EditorApplication.applicationContentsPath, "PlaybackEngines/androidplayer/AndroidManifest.xml");
+		var inputFile = Path.Combine(EditorApplication.applicationContentsPath, "PlaybackEngines/androidplayer/AndroidManifest.xml");
 #else
-				var inputFile = Path.Combine(EditorApplication.applicationContentsPath, "PlaybackEngines/androidplayer/Apk/AndroidManifest.xml");
+		var inputFile = Path.Combine(EditorApplication.applicationContentsPath, "PlaybackEngines/androidplayer/Apk/AndroidManifest.xml");
 #endif
-                File.Copy(inputFile, outputFile);
-            }
-            UpdateManifest(outputFile);
-        }
+		File.Copy(inputFile, outputFile);
+	}
+		UpdateManifest();
+	}
 
 		private static string _namespace = "";
 		private static XmlDocument _document = null;
@@ -37,36 +35,66 @@ namespace Soomla
 		private static XmlNode _applicationNode = null;
 		public static List<ISoomlaManifestTools> ManTools = new List<ISoomlaManifestTools>();
 
-		public static void UpdateManifest(string fullPath) {
+		private static void LoadManifest(){
 			_document = new XmlDocument();
-			_document.Load(fullPath);
+			_document.Load(outputFile);
 			
 			if (_document == null)
 			{
-				Debug.LogError("Couldn't load " + fullPath);
+				Debug.LogError("Couldn't load " + outputFile);
 				return;
 			}
-
+			
 			_manifestNode = FindChildNode(_document, "manifest");
 			_namespace = _manifestNode.GetNamespaceOfPrefix("android");
 			_applicationNode = FindChildNode(_manifestNode, "application");
 			
 			if (_applicationNode == null) {
-				Debug.LogError("Error parsing " + fullPath);
+				Debug.LogError("Error parsing " + outputFile);
 				return;
 			}
+		}
+
+		private static void SaveManifest(){
+			_document.Save(outputFile);
+		}
+
+		public static void UpdateManifest() {
+			LoadManifest ();
 
 			SetPermission("android.permission.INTERNET");
 
 			XmlElement applicationElement = FindChildElement(_manifestNode, "application");
 			applicationElement.SetAttribute("name", _namespace, "com.soomla.SoomlaApp");
 
-
 			foreach(ISoomlaManifestTools manifestTool in ManTools) {
 				manifestTool.UpdateManifest();
 			}
 			
-			_document.Save(fullPath);
+			SaveManifest ();
+		}
+
+		public static void ClearManifest() {
+			LoadManifest ();
+
+			foreach(ISoomlaManifestTools manifestTool in ManTools) {
+				manifestTool.ClearManifest();
+			}
+
+			XmlElement applicationElement = FindChildElement(_manifestNode, "application");
+			applicationElement.RemoveAttribute("name", _namespace);
+				
+			SaveManifest ();
+		}
+
+		public static void ClearManifest(string moduleId) {
+			LoadManifest ();
+			foreach(ISoomlaManifestTools manifestTool in ManTools) {
+				if(manifestTool.GetType().ToString().Contains( moduleId ) ){
+					manifestTool.ClearManifest();
+				}
+			}
+			SaveManifest ();
 		}
 
 		public static void AddActivity(string activityName, Dictionary<string, string> attributes) {

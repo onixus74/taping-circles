@@ -17,6 +17,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Soomla.Singletons;
 #if UNITY_WP8 && !UNITY_EDITOR
 using SoomlaWpCore.util;
 using SoomlaWpCore.events;
@@ -27,7 +28,7 @@ namespace Soomla {
 	/// <summary>
 	/// This class provides functions for event handling.
 	/// </summary>
-	public class CoreEvents : MonoBehaviour {
+	public class CoreEvents : CodeGeneratedSingleton {
 
 #if UNITY_IOS && !UNITY_EDITOR
 		[DllImport ("__Internal")]
@@ -36,49 +37,42 @@ namespace Soomla {
 
 		private const string TAG = "SOOMLA CoreEvents";
 
-		private static CoreEvents instance = null;
+		public static CoreEvents Instance = null;		
 
-		/// <summary>
-		/// Initializes game state before the game starts.
-		/// </summary>
-		void Awake(){
-			if(instance == null){ 	// making sure we only initialize one instance.
-				instance = this;
-                gameObject.name = "CoreEvents";
-				GameObject.DontDestroyOnLoad(this.gameObject);
-				Initialize();
-			} else {				// Destroying unused instances.
-				GameObject.Destroy(this.gameObject);
-			}
-		}
+		protected override bool DontDestroySingleton
+        {
+            get { return true; }
+        }
 
 		public static void Initialize() {
-			SoomlaUtils.LogDebug(TAG, "Initializing CoreEvents and Soomla Core ...");
+			if (Instance == null) {
+				Instance = GetSynchronousCodeGeneratedInstance<CoreEvents>();
+				SoomlaUtils.LogDebug(TAG, "Initializing CoreEvents and Soomla Core ...");
 #if UNITY_ANDROID && !UNITY_EDITOR
-			AndroidJNI.PushLocalFrame(100);
-
-			using(AndroidJavaClass jniStoreConfigClass = new AndroidJavaClass("com.soomla.SoomlaConfig")) {
-				jniStoreConfigClass.SetStatic("logDebug", CoreSettings.DebugMessages);
-			}
-
-			// Initializing SoomlaEventHandler
-			using(AndroidJavaClass jniEventHandler = new AndroidJavaClass("com.soomla.core.unity.SoomlaEventHandler")) {
-				jniEventHandler.CallStatic("initialize");
-			}
-
-			// Initializing Soomla Secret
-			using(AndroidJavaClass jniSoomlaClass = new AndroidJavaClass("com.soomla.Soomla")) {
-				jniSoomlaClass.CallStatic("initialize", CoreSettings.SoomlaSecret);
-			}
-			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+				AndroidJNI.PushLocalFrame(100);
+				
+				using(AndroidJavaClass jniStoreConfigClass = new AndroidJavaClass("com.soomla.SoomlaConfig")) {
+					jniStoreConfigClass.SetStatic("logDebug", CoreSettings.DebugMessages);
+				}
+				
+				// Initializing SoomlaEventHandler
+				using(AndroidJavaClass jniEventHandler = new AndroidJavaClass("com.soomla.core.unity.SoomlaEventHandler")) {
+					jniEventHandler.CallStatic("initialize");
+				}
+				
+				// Initializing Soomla Secret
+				using(AndroidJavaClass jniSoomlaClass = new AndroidJavaClass("com.soomla.Soomla")) {
+					jniSoomlaClass.CallStatic("initialize", CoreSettings.SoomlaSecret);
+				}
+				AndroidJNI.PopLocalFrame(IntPtr.Zero);
 #elif UNITY_IOS && !UNITY_EDITOR
-			soomlaCore_Init(CoreSettings.SoomlaSecret, CoreSettings.DebugMessages);
+				soomlaCore_Init(CoreSettings.SoomlaSecret, CoreSettings.DebugMessages);
 #elif UNITY_WP8 && !UNITY_EDITOR
-            SoomlaWpCore.SoomlaConfig.logDebug = CoreSettings.DebugMessages;
-            SoomlaWpCore.Soomla.initialize(CoreSettings.SoomlaSecret);
-            BusProvider.Instance.Register(CoreEvents.instance);
+				SoomlaWpCore.SoomlaConfig.logDebug = CoreSettings.DebugMessages;
+				SoomlaWpCore.Soomla.initialize(CoreSettings.SoomlaSecret);
+				BusProvider.Instance.Register(CoreEvents.instance);
 #endif
-
+			}
         }
 
 
@@ -108,6 +102,7 @@ namespace Soomla {
 			string rewardId = eventJSON["rewardId"].str;
 
 			CoreEvents.OnRewardGiven(Reward.GetReward(rewardId));
+			//CoreEvents.OnRewardGiven(new RewardGivenEvent(rewardId));
 		}
 
 		/// <summary>
@@ -121,6 +116,7 @@ namespace Soomla {
 			string rewardId = eventJSON["rewardId"].str;
 			
 			CoreEvents.OnRewardTaken(Reward.GetReward(rewardId));
+			//CoreEvents.OnRewardTaken(new RewardTakenEvent(rewardId));
 		}
 
 		/// <summary>
@@ -134,13 +130,19 @@ namespace Soomla {
 			Dictionary<string, string> extra = eventJSON["extra"].ToDictionary();
 
 			CoreEvents.OnCustomEvent(name, extra);
+			//CoreEvents.OnCustomEvent(new CustomEvent(name, extra));
 		}
 
 		public delegate void Action();
 
+		//public static Action<RewardGivenEvent> OnRewardGiven = delegate {};
 		public static Action<Reward> OnRewardGiven = delegate {};
+		//public static Action<RewardTakenEvent> OnRewardTaken = delegate {};
 		public static Action<Reward> OnRewardTaken = delegate {};
+		//public static Action<CustomEvent> OnCustomEvent = delegate {};
 		public static Action<string, Dictionary<string, string>> OnCustomEvent = delegate {};
+
+
 
 	}
 }

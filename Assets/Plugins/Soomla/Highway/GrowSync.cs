@@ -55,6 +55,7 @@ namespace Grow.Sync
 		/// <param name="modelSync">Should Soomla Sync synchronize model for integrated modules</param>
 		/// <param name="stateSync">Should Soomla Sync synchronize state for integrated modules</param>
 		public static void Initialize(bool modelSync, bool stateSync) {
+			HighwayEvents.Initialize();
 			SoomlaUtils.LogDebug (TAG, "SOOMLA/UNITY Initializing Sync");
 #if UNITY_ANDROID && !UNITY_EDITOR
 			AndroidJNI.PushLocalFrame(100);
@@ -135,6 +136,28 @@ namespace Grow.Sync
 			}
 		}
 
+		internal static void HandleStateSyncFailed ()
+		{
+			if (IsProfileAvailable()) {
+				try {
+					// Call SoomlaProfile.LogoutFromAllProviders() using reflection to prevent coupling
+					Type soomlaProfileType = Type.GetType("Soomla.Profile.SoomlaProfile");
+					if (soomlaProfileType != null) {
+						MethodInfo logoutFromAllProvidersMethod = soomlaProfileType.GetMethod("LogoutFromAllProviders", BindingFlags.Public | BindingFlags.Static);
+						if (logoutFromAllProvidersMethod != null) {
+							SoomlaUtils.LogDebug(TAG, "Logging out from all providers");
+							logoutFromAllProvidersMethod.Invoke(null, null);
+						}
+					}
+				} catch (Exception ex) {
+					// This should not happen
+					String message = "Unable to logout from all providers: " + ex.Message;
+					SoomlaUtils.LogError(TAG, message);
+					throw new InvalidOperationException(message);
+				}
+			}
+		}
+
 		internal static void HandleStateSyncConflict(JSONObject remoteState, JSONObject currentState, JSONObject stateDiff) {
 #if !UNITY_EDITOR
 			JSONObject resolvedState = CurrentStateConflictResolver(remoteState, currentState, stateDiff);
@@ -158,8 +181,16 @@ namespace Grow.Sync
 		}
 
 		private static bool IsStoreAvailable() {
+			return IsComponentAvailable("Soomla.Store.SoomlaStore");
+		}
+
+		private static bool IsProfileAvailable() {
+			return IsComponentAvailable("Soomla.Profile.SoomlaProfile");
+		}
+
+		private static bool IsComponentAvailable(String componentName) {
 			try {
-				Type result = Type.GetType("Soomla.Store.SoomlaStore");
+				Type result = Type.GetType(componentName);
 				return (result != null);
 			} catch (Exception) {
 				return false;

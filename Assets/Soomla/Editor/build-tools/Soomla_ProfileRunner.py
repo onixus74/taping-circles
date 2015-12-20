@@ -47,6 +47,7 @@ using_google_sdk = False
 google_bundle_id = ""
 using_twitter_sdk = False
 twitter_consumer_key = ""
+using_gamecenter_sdk = False
 
 parsed_metadata = meta_data.split('~')
 itunes_app_id = parsed_metadata[0]
@@ -60,8 +61,10 @@ for social_platform in social_platform_data:
     elif parsed_social_platform[0] == "google":
         using_google_sdk = True
         google_bundle_id = parsed_social_platform[1]
+    elif parsed_social_platform[0] == "gameCenter":
+        using_gamecenter_sdk = True
 
-print ("echo {0} {1} {2} {3}".format(using_google_sdk, google_bundle_id, using_twitter_sdk, twitter_consumer_key))
+print ("echo {0} {1} {2} {3} {4}".format(using_google_sdk, google_bundle_id, using_twitter_sdk, twitter_consumer_key, using_gamecenter_sdk))
 
 pbx_file_path = build_path + '/Unity-iPhone.xcodeproj/project.pbxproj'
 pbx_object = XcodeProject.Load(pbx_file_path)
@@ -112,5 +115,13 @@ if using_twitter_sdk:
 if using_google_sdk:
     google_schemes = { "CFBundleURLSchemes" : [google_bundle_id], "CFBundleURLName" : google_bundle_id }
     plist_types_arr.append(google_schemes);
+
+device_capabilities = plist_data.get("UIRequiredDeviceCapabilities")
+if device_capabilities == None:
+    device_capabilities = []
+    plist_data["UIRequiredDeviceCapabilities"] = device_capabilities
+
+if using_gamecenter_sdk:
+    device_capabilities.append("gamekit")
 
 plistlib.writePlist(plist_data, os.path.join(build_path, 'Info.plist'))

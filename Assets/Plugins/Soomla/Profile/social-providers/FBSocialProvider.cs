@@ -18,6 +18,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Facebook.MiniJSON;
+using Facebook.Unity;
 using System.Text.RegularExpressions;
 using System.Linq;
 
@@ -37,7 +38,7 @@ namespace Soomla.Profile
 		private int lastPageNumber = 0;
 
 		private List<string> permissions = null;
-		private string loginPermissionsStr;
+		private string[] loginPermissions;
 
 		private bool autoLogin;
 
@@ -55,7 +56,7 @@ namespace Soomla.Profile
 		/// <param name="success">Callback function that is called if logout was successful.</param>
 		/// <param name="fail">Callback function that is called if logout failed.</param>
 		public override void Logout(LogoutSuccess success, LogoutFailed fail) {
-			FB.Logout();
+			FB.LogOut();
 			success();
 		}
 		
@@ -66,7 +67,7 @@ namespace Soomla.Profile
 		/// <param name="fail">Callback function that is called if login failed.</param>
 		/// <param name="cancel">Callback function that is called if login was cancelled.</param>
 		public override void Login(LoginSuccess success, LoginFailed fail, LoginCancelled cancel) {
-			FB.Login(this.loginPermissionsStr, (FBResult result) => {
+			FB.LogInWithReadPermissions(this.loginPermissions, (ILoginResult result) => {
 				if (result.Error != null) {
 					SoomlaUtils.LogDebug (TAG, "LoginCallback[result.Error]: " + result.Error);
 					fail(result.Error);
@@ -84,15 +85,15 @@ namespace Soomla.Profile
 		public override void GetUserProfile(GetUserProfileSuccess success, GetUserProfileFailed fail) {
 			this.fetchPermissions(() => {
 				FB.API("/me?fields=id,name,email,first_name,last_name,picture,languages,gender,location",
-				       Facebook.HttpMethod.GET, (FBResult meResult) => {
+				       HttpMethod.GET, (IGraphResult meResult) => {
 					if (meResult.Error != null) {
 						SoomlaUtils.LogDebug (TAG, "ProfileCallback[result.Error]: " + meResult.Error);
 						fail(meResult.Error);
 					}
 					else {
-						SoomlaUtils.LogDebug(TAG, "ProfileCallback[result.Text]: "+meResult.Text);
+						SoomlaUtils.LogDebug(TAG, "ProfileCallback[result.Text]: "+meResult.RawResult);
 						SoomlaUtils.LogDebug(TAG, "ProfileCallback[result.Texture]: "+meResult.Texture);
-						string fbUserJson = meResult.Text;
+						string fbUserJson = meResult.RawResult;
 						UserProfile userProfile = UserProfileFromFBJsonString(fbUserJson, this);
 
 						SoomlaProfile.StoreUserProfile (userProfile, true);
@@ -128,19 +129,19 @@ namespace Soomla.Profile
 		/// <param name="success">Callback function that is called if the status update was successful.</param>
 		/// <param name="fail">Callback function that is called if the status update failed.</param>
 		public override void UpdateStatus(string status, SocialActionSuccess success, SocialActionFailed fail) {
-			checkPermission("publish_actions", ()=> {
+			checkPublishPermission( ()=> {
 				var formData = new Dictionary<string, string>
 				{
 					{ "message", status }
 				};
-				FB.API ("/me/feed", Facebook.HttpMethod.POST, 
-				        (FBResult postFeedResult) => {
+				FB.API ("/me/feed", HttpMethod.POST, 
+				        (IGraphResult postFeedResult) => {
 					
 					if (postFeedResult.Error != null) {
 						SoomlaUtils.LogDebug(TAG, "UpdateStatusCallback[result.Error]:"+postFeedResult.Error);
 						fail(postFeedResult.Error);
 					} else {
-						SoomlaUtils.LogDebug(TAG, "UpdateStatusCallback[result.Text]:"+postFeedResult.Text);
+						SoomlaUtils.LogDebug(TAG, "UpdateStatusCallback[result.Text]:"+postFeedResult.RawResult);
                         SoomlaUtils.LogDebug(TAG, "UpdateStatusCallback[result.Texture]:"+postFeedResult.Texture);
                         success();
                     }
@@ -158,17 +159,16 @@ namespace Soomla.Profile
 		/// <param name="success">Callback function that is called if the status update was successful.</param>
 		/// <param name="fail">Callback function that is called if the status update failed.</param>
 		public override void UpdateStatusDialog(string link, SocialActionSuccess success, SocialActionFailed fail) {
-			FB.Feed(
-				link: link,
-				callback: (FBResult result) => {
+			FB.FeedShare(
+				link: new Uri(link),
+				callback: (IShareResult result) => {
 				
 				if (result.Error != null) {
 					fail(result.Error);
 				}
 				else {
-					SoomlaUtils.LogDebug(TAG, "FeedCallback[result.Text]:"+result.Text);
-					SoomlaUtils.LogDebug(TAG, "FeedCallback[result.Texture]:"+result.Texture);
-					var responseObject = Json.Deserialize(result.Text) as Dictionary<string, object>;
+					SoomlaUtils.LogDebug(TAG, "FeedCallback[result.Text]:"+result.RawResult);
+					var responseObject = Json.Deserialize(result.RawResult) as Dictionary<string, object>;
 					object obj = 0;
 					success();						
 				}				
@@ -188,7 +188,7 @@ namespace Soomla.Profile
 		/// <param name="cancel">Callback function that is called if the story update was cancelled.</param>
 		public override void UpdateStory(string message, string name, string caption, string description,
 		                                 string link, string pictureUrl, SocialActionSuccess success, SocialActionFailed fail, SocialActionCancel cancel) {
-			checkPermission("publish_actions", ()=> {
+			checkPublishPermission( ()=> {
 				var formData = new Dictionary<string, string>
 				{
 					{ "message", message },
@@ -198,14 +198,14 @@ namespace Soomla.Profile
 					{ "link", link },
 					{ "picture", pictureUrl }
 				};
-				FB.API ("/me/feed", Facebook.HttpMethod.POST, 
-				        (FBResult postFeedResult) => {
+				FB.API ("/me/feed", HttpMethod.POST, 
+				        (IGraphResult postFeedResult) => {
 					
 					if (postFeedResult.Error != null) {
 						SoomlaUtils.LogDebug(TAG, "UpdateStatusCallback[result.Error]:"+postFeedResult.Error);
 						fail(postFeedResult.Error);
 					} else {
-						SoomlaUtils.LogDebug(TAG, "UpdateStatusCallback[result.Text]:"+postFeedResult.Text);
+						SoomlaUtils.LogDebug(TAG, "UpdateStatusCallback[result.Text]:"+postFeedResult.RawResult);
 						SoomlaUtils.LogDebug(TAG, "UpdateStatusCallback[result.Texture]:"+postFeedResult.Texture);
 						success();
 					}
@@ -227,21 +227,20 @@ namespace Soomla.Profile
 		/// <param name="cancel">Callback function that is called if the story update was cancelled.</param>
 		public override void UpdateStoryDialog(string name, string caption, string description, string link, string picture, 
 		                                       SocialActionSuccess success, SocialActionFailed fail, SocialActionCancel cancel) {
-			FB.Feed(
-				link: link,
+			FB.FeedShare(
+				link: new Uri(link),
 				linkName: name,
 				linkCaption: caption,
 				linkDescription: description,
-				picture: picture,
-				callback: (FBResult result) => {
+				picture: new Uri(picture),
+				callback: (IShareResult result) => {
 				
 					if (result.Error != null) {
 						fail(result.Error);
 					}
 					else {
-						SoomlaUtils.LogDebug(TAG, "FeedCallback[result.Text]:"+result.Text);
-						SoomlaUtils.LogDebug(TAG, "FeedCallback[result.Texture]:"+result.Texture);
-						var responseObject = Json.Deserialize(result.Text) as Dictionary<string, object>;
+						SoomlaUtils.LogDebug(TAG, "FeedCallback[result.Text]:"+result.RawResult);
+					var responseObject = Json.Deserialize(result.RawResult) as Dictionary<string, object>;
 						object obj = 0;
 						if (responseObject.TryGetValue("cancelled", out obj)) {
 							cancel();
@@ -264,22 +263,22 @@ namespace Soomla.Profile
 		/// <param name="cancel">Callback function that is called if the image upload was cancelled.</param>
 		public override void UploadImage(byte[] texBytes, string fileName, string message, SocialActionSuccess success, SocialActionFailed fail, SocialActionCancel cancel) {
 			
-			checkPermission("publish_actions", ()=> {
+			checkPublishPermission( ()=> {
 				var wwwForm = new WWWForm();
 				wwwForm.AddBinaryData("image", texBytes, fileName);
 				wwwForm.AddField("message", message);
 				
-				FB.API("/me/photos", Facebook.HttpMethod.POST, 
-				       (FBResult result) => {
+				FB.API("/me/photos", HttpMethod.POST, 
+				       (IGraphResult result) => {
 					
 					if (result.Error != null) {
 						SoomlaUtils.LogDebug(TAG, "UploadImageCallback[result.Error]: "+result.Error);
 						fail(result.Error);
 					}
 					else {
-						SoomlaUtils.LogDebug(TAG, "UploadImageCallback[result.Text]: "+result.Text);
+						SoomlaUtils.LogDebug(TAG, "UploadImageCallback[result.Text]: "+result.RawResult);
 						SoomlaUtils.LogDebug(TAG, "UploadImageCallback[result.Texture]: "+result.Texture);
-						var responseObject = Json.Deserialize(result.Text) as Dictionary<string, object>;
+						var responseObject = Json.Deserialize(result.RawResult) as Dictionary<string, object>;
 						object obj = 0;
                         if (responseObject.TryGetValue("cancelled", out obj)) {
                             cancel();
@@ -314,16 +313,16 @@ namespace Soomla.Profile
 
 
 				FB.API ("/me/friends?fields=id,name,picture,email,first_name,last_name&limit=" + DEFAULT_CONTACTS_PAGE_SIZE + "&offset=" + DEFAULT_CONTACTS_PAGE_SIZE * (pageNumber - 1),
-				        Facebook.HttpMethod.GET,
-				        (FBResult result) => {
+				        HttpMethod.GET,
+				        (IGraphResult result) => {
 					if (result.Error != null) {
 						SoomlaUtils.LogDebug(TAG, "GetContactsCallback[result.Error]: "+result.Error);
 						fail(result.Error);
 					}
 					else {
-						SoomlaUtils.LogDebug(TAG, "GetContactsCallback[result.Text]: "+result.Text);
+						SoomlaUtils.LogDebug(TAG, "GetContactsCallback[result.Text]: "+result.RawResult);
 						SoomlaUtils.LogDebug(TAG, "GetContactsCallback[result.Texture]: "+result.Texture);
-						JSONObject jsonContacts = new JSONObject(result.Text);
+						JSONObject jsonContacts = new JSONObject(result.RawResult);
 						
 						SocialPageData<UserProfile> resultData = new SocialPageData<UserProfile>(); 
 						resultData.PageData = UserProfilesFromFBJsonObjs(jsonContacts["data"].list);
@@ -356,16 +355,16 @@ namespace Soomla.Profile
 				this.lastPageNumber = 0;
 
 				FB.API("/me/feed?limit=" + DEFAULT_FEED_PAGE_SIZE + "&offset=" + DEFAULT_FEED_PAGE_SIZE * (pageNumber - 1),
-				        Facebook.HttpMethod.GET,
-				        (FBResult result) => {
+				        HttpMethod.GET,
+				        (IGraphResult result) => {
 					if (result.Error != null) {
 						SoomlaUtils.LogDebug(TAG, "GetFeedCallback[result.Error]: " + result.Error);
 						fail(result.Error);
 					}
 					else {
-						SoomlaUtils.LogDebug(TAG, "GetFeedCallback[result.Text]: " + result.Text);
+						SoomlaUtils.LogDebug(TAG, "GetFeedCallback[result.Text]: " + result.RawResult);
 						SoomlaUtils.LogDebug(TAG, "GetFeedCallback[result.Texture]: "+result.Texture);
-						JSONObject jsonFeed = new JSONObject(result.Text);
+						JSONObject jsonFeed = new JSONObject(result.RawResult);
 						
 						SocialPageData<String> resultData = new SocialPageData<String>(); 
 						resultData.PageData = StoriesFromFBJsonObjs(jsonFeed["data"].list);
@@ -390,15 +389,15 @@ namespace Soomla.Profile
         public override void Invite(string inviteMessage, string dialogTitle, InviteSuccess success, InviteFailed fail, InviteCancelled cancel)
 		{
 			FB.AppRequest(inviteMessage, null, null, null, null, "", dialogTitle, 
-			              (FBResult result) => {
+			              (IAppRequestResult result) => {
 				if (result.Error != null) {
 					SoomlaUtils.LogError(TAG, "Invite[result.Error]: "+result.Error);
 					fail(result.Error);
 				}
 				else {
-					SoomlaUtils.LogDebug(TAG, "Invite[result.Text]: "+result.Text);
+					SoomlaUtils.LogDebug(TAG, "Invite[result.Text]: "+result.RawResult);
 
-					JSONObject jsonResponse = new JSONObject(result.Text);
+					JSONObject jsonResponse = new JSONObject(result.RawResult);
 					if (jsonResponse.HasField("cancelled")) {
 						bool cancelled = jsonResponse["cancelled"].b;
 						if (cancelled) {
@@ -438,15 +437,14 @@ namespace Soomla.Profile
 			              null, null, null,
 			              extraData,
 			              dialogTitle,
-			              (FBResult result) => {
+			              (IAppRequestResult result) => {
 								if (result.Error != null) {
 									SoomlaUtils.LogError(TAG, "AppRequest[result.Error]: "+result.Error);
 									fail(result.Error);
 								}
 								else {
-									SoomlaUtils.LogDebug(TAG, "AppRequest[result.Text]: "+result.Text);
-									SoomlaUtils.LogDebug(TAG, "AppRequest[result.Texture]: "+result.Texture);
-									JSONObject jsonResponse = new JSONObject(result.Text);
+									SoomlaUtils.LogDebug(TAG, "AppRequest[result.Text]: "+result.RawResult);
+									JSONObject jsonResponse = new JSONObject(result.RawResult);
 									List<JSONObject> jsonRecipinets = jsonResponse["to"].list;
 									List<string> recipients = new List<string>();
 									foreach (JSONObject o in jsonRecipinets) {
@@ -476,11 +474,11 @@ namespace Soomla.Profile
 		public override void Configure(Dictionary<string, string> providerParams) {
 			if (providerParams != null) {
 				if (providerParams.ContainsKey("permissions")) {
-					this.loginPermissionsStr = providerParams["permissions"];
+					this.loginPermissions = providerParams["permissions"].Split(',');
 				}
 				this.autoLogin = providerParams.ContainsKey("autoLogin") ? Boolean.Parse(providerParams["autoLogin"]) : false;
 			} else {
-				this.loginPermissionsStr = DEFAULT_LOGIN_PERMISSIONS;
+				this.loginPermissions = DEFAULT_LOGIN_PERMISSIONS.Split(',');
 			}
 		}
 
@@ -502,7 +500,7 @@ namespace Soomla.Profile
 
 		/** Login Callbacks **/
 		
-		private void ProfileCallback(FBResult result) {
+		private void ProfileCallback(IGraphResult result) {
 		}
 
 		private static UserProfile UserProfileFromFBJsonString(string fbUserJsonStr, FBSocialProvider provider) {
@@ -540,13 +538,13 @@ namespace Soomla.Profile
 
 			if (provider != null) { //let us to know if method called during own profile receiving
 				Dictionary<String, JSONObject> extraDict = new Dictionary<String, JSONObject>();
-				extraDict.Add("access_token", JSONObject.StringObject(FB.AccessToken));
+				extraDict.Add("access_token", JSONObject.StringObject(AccessToken.CurrentAccessToken.TokenString));
 				JSONObject permissionsObject = JSONObject.Create(JSONObject.Type.ARRAY);
 				foreach (String permission in provider.permissions) {
 					permissionsObject.Add(permission);
 				}
 				extraDict.Add("permissions", permissionsObject);
-				extraDict.Add("expiration_date", new JSONObject((FB.AccessTokenExpiresAt - new DateTime(1970, 1, 1)).TotalSeconds));
+				extraDict.Add("expiration_date", new JSONObject((AccessToken.CurrentAccessToken.ExpirationTime - new DateTime(1970, 1, 1)).TotalSeconds));
 				soomlaJsonObject.AddField(PJSONConsts.UP_EXTRA, new JSONObject(extraDict));
 			}
 
@@ -585,7 +583,7 @@ namespace Soomla.Profile
 		}
 
 		private void fetchPermissions(Action success, Action<string> fail) {
-			FB.API("/me/permissions", Facebook.HttpMethod.GET, delegate (FBResult getPermissionsResult) {
+			FB.API("/me/permissions", HttpMethod.GET, delegate (IGraphResult getPermissionsResult) {
 				if (getPermissionsResult.Error != null) {
 					fail(getPermissionsResult.Error);
 					return;
@@ -593,15 +591,36 @@ namespace Soomla.Profile
 				
 				// inspect the response and adapt your UI as appropriate
 				// check response.Text and response.Error
-				SoomlaUtils.LogWarning(TAG, "me/permissions " + getPermissionsResult.Text);
+				SoomlaUtils.LogWarning(TAG, "me/permissions " + getPermissionsResult.RawResult);
 				
-				JSONObject permissionsJson = new JSONObject(getPermissionsResult.Text);
+				JSONObject permissionsJson = new JSONObject(getPermissionsResult.RawResult);
 				this.permissions = this.parsePermissionsFromJson(permissionsJson);
 				
 				SoomlaUtils.LogDebug(TAG, "fetched the following permissions: " + String.Join(",", this.permissions.ToArray()));
 
 				success();
 			});
+		}
+		private void checkPublishPermission(Action success, Action<string> fail){
+				if (AccessToken.CurrentAccessToken.Permissions.Contains ("publish_actions")) {
+					success ();
+					return;
+				} else {
+					FB.LogInWithPublishPermissions (new List<string>(){"publish_actions"}, (ILoginResult result) => {
+						if (result.Error != null) {
+							SoomlaUtils.LogDebug (TAG, "LoginCallback[result.Error]: " + result.Error);
+							fail (result.Error);
+							return;
+						}
+						
+						if (!FB.IsLoggedIn) {
+							SoomlaUtils.LogDebug (TAG, "LoginCallback[cancelled]");
+							fail ("User has not granter the permissions");
+							return;
+						}
+						success ();
+					});
+				}
 		}
 
         private void checkPermission(string requestedPermission, Action success, Action<string> fail) {
@@ -622,9 +641,7 @@ namespace Soomla.Profile
 					return;
 				}
 				
-				string permissionsStr = String.Join(",", missedPermissions.ToArray());
-				
-				FB.Login(permissionsStr, (FBResult result) => {
+				FB.LogInWithReadPermissions(missedPermissions, (ILoginResult result) => {
 					if (result.Error != null) {
 						SoomlaUtils.LogDebug (TAG, "LoginCallback[result.Error]: " + result.Error);
 						fail(result.Error);

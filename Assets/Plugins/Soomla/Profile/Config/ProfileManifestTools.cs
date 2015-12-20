@@ -29,7 +29,12 @@ namespace Soomla.Profile
 		{
 			SoomlaManifestTools.ManTools.Add(instance);
 		}
-		
+
+		public void ClearManifest(){
+			RemoveGoogleFromManifest ();
+			RemoveTwitterFromManifest ();
+		}
+
 		public void UpdateManifest(){
 			//general Manifest tags
 			
@@ -46,32 +51,40 @@ namespace Soomla.Profile
 			//check if google+ is enabled in settings
 			if (value && (enabled != null) && enabled.Value)
 			{
-				//google+ permissions
-				SoomlaManifestTools.SetPermission("android.permission.INTERNET");
-				SoomlaManifestTools.SetPermission("android.permission.GET_ACCOUNTS");
-				SoomlaManifestTools.SetPermission("android.permission.USE_CREDENTIALS");
-				SoomlaManifestTools.SetPermission("android.permission.WRITE_EXTERNAL_STORAGE");
-				
-				//google+ activity
-				SoomlaManifestTools.AddActivity("com.soomla.profile.social.google.SoomlaGooglePlus$SoomlaGooglePlusActivity",
-				                                new Dictionary<string, string>() {
-					{"theme", "@android:style/Theme.Translucent.NoTitleBar.Fullscreen"}
-				});
-				
-				//google play services version
-				SoomlaManifestTools.AddMetaDataTag("com.google.android.gms.version", "@integer/google_play_services_version");
+				AddGoogleToManifest();
 			}
 			else 
 			{
-				// NOTE: We don't remove permissions or general purpose meta-data tags b/c other modules might need them.
-				// 		This is why they are commented out
-
-//				SoomlaManifestTools.RemovePermission("android.permission.INTERNET");
-//				SoomlaManifestTools.RemovePermission("android.permission.GET_ACCOUNTS");
-//				SoomlaManifestTools.RemovePermission("android.permission.USE_CREDENTIALS");
-				SoomlaManifestTools.RemoveActivity("com.soomla.profile.social.google.SoomlaGooglePlus$SoomlaGooglePlusActivity");
-//				SoomlaManifestTools.RemoveApplicationElement("meta-data", "com.google.android.gms.version");
+				RemoveGoogleFromManifest();
 			}
+		}
+
+		private void AddGoogleToManifest(){
+			//google+ permissions
+			SoomlaManifestTools.SetPermission("android.permission.INTERNET");
+			SoomlaManifestTools.SetPermission("android.permission.GET_ACCOUNTS");
+			SoomlaManifestTools.SetPermission("android.permission.USE_CREDENTIALS");
+			SoomlaManifestTools.SetPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+			
+			//google+ activity
+			SoomlaManifestTools.AddActivity("com.soomla.profile.social.google.SoomlaGooglePlus$SoomlaGooglePlusActivity",
+			                                new Dictionary<string, string>() {
+				{"theme", "@android:style/Theme.Translucent.NoTitleBar.Fullscreen"}
+			});
+			
+			//google play services version
+			SoomlaManifestTools.AddMetaDataTag("com.google.android.gms.version", "@integer/google_play_services_version");
+		}
+
+		private void RemoveGoogleFromManifest(){
+			// NOTE: We don't remove permissions or general purpose meta-data tags b/c other modules might need them.
+			// 		This is why they are commented out
+			
+			//SoomlaManifestTools.RemovePermission("android.permission.INTERNET");
+			//SoomlaManifestTools.RemovePermission("android.permission.GET_ACCOUNTS");
+			//SoomlaManifestTools.RemovePermission("android.permission.USE_CREDENTIALS");
+			SoomlaManifestTools.RemoveActivity("com.soomla.profile.social.google.SoomlaGooglePlus$SoomlaGooglePlusActivity");
+			SoomlaManifestTools.RemoveApplicationElement("meta-data", "com.google.android.gms.version");
 		}
 		
 		public void HandleTwitterManifest()
@@ -82,16 +95,24 @@ namespace Soomla.Profile
 			//check if twitter is enabled in settings
 			if (value && (enabled != null) && enabled.Value)
 			{
-				//twitter activity
-				SoomlaManifestTools.AddActivity("com.soomla.profile.social.twitter.SoomlaTwitter$SoomlaTwitterActivity",
-				                                new Dictionary<string, string>() {
-					{"theme", "@android:style/Theme.Translucent.NoTitleBar.Fullscreen"}
-				});
+				AddTwitterToManifest();
 			}
 			else 
 			{
-				SoomlaManifestTools.RemoveActivity("com.soomla.profile.social.twitter.SoomlaTwitter$SoomlaTwitterActivity");
+				RemoveTwitterFromManifest();
 			}
+		}
+
+		private void AddTwitterToManifest(){
+			//twitter activity
+			SoomlaManifestTools.AddActivity("com.soomla.profile.social.twitter.SoomlaTwitter$SoomlaTwitterActivity",
+			                                new Dictionary<string, string>() {
+				{"theme", "@android:style/Theme.Translucent.NoTitleBar.Fullscreen"}
+			});
+		}
+
+		private void RemoveTwitterFromManifest(){
+			SoomlaManifestTools.RemoveActivity("com.soomla.profile.social.twitter.SoomlaTwitter$SoomlaTwitterActivity");
 		}
 		#endif
 	}

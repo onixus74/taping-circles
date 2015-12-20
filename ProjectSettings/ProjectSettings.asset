@@ -323,10 +323,10 @@ PlayerSettings:
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: 
   scriptingDefineSymbols:
-    1: SOOMLA_FACEBOOK;SOOMLA_TWITTER
-    2: SOOMLA_FACEBOOK;SOOMLA_TWITTER
-    4: NO_GPGS;SOOMLA_FACEBOOK;SOOMLA_TWITTER
-    7: SOOMLA_FACEBOOK;SOOMLA_TWITTER
+    1: SOOMLA_FACEBOOK;SOOMLA_TWITTER;SOOMLA_GOOGLE;SOOMLA_GAMECENTER
+    2: SOOMLA_FACEBOOK;SOOMLA_TWITTER;SOOMLA_GOOGLE;SOOMLA_GAMECENTER
+    4: NO_GPGS;SOOMLA_FACEBOOK;SOOMLA_TWITTER;SOOMLA_GOOGLE;SOOMLA_GAMECENTER
+    7: SOOMLA_FACEBOOK;SOOMLA_TWITTER;SOOMLA_GOOGLE;SOOMLA_GAMECENTER
   metroPackageName: Taping Circles
   metroPackageLogo: 
   metroPackageLogo140: 
@@ -471,9 +471,9 @@ PlayerSettings:
   WebGL::audioCompressionFormat: 4
   WebGL::exceptionSupport: 0
   WebGL::memorySize: 256
-  iOS::Architecture: 0
+  iOS::Architecture: 2
   iOS::EnableIncrementalBuildSupportForIl2cpp: 0
-  iOS::ScriptingBackend: 0
+  iOS::ScriptingBackend: 1
   boolPropertyNames:
   - WebGL::analyzeBuildSize
   - WebGL::dataCaching

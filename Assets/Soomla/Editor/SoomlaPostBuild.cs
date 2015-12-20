@@ -20,7 +20,7 @@ using System.Diagnostics;
 using System.IO;
 
 public class PostProcessScriptStarter : MonoBehaviour {
-	[PostProcessBuild(1000)]
+    [PostProcessBuild(1000)]
 	public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject) {
 #if UNITY_IOS
 		string buildToolsDir = Application.dataPath + @"/Soomla/Editor/build-tools";
@@ -60,12 +60,12 @@ public class PostProcessScriptStarter : MonoBehaviour {
 #endif
 #if UNITY_WP8
         //Copy IAPMock.xml in the target VS Project for WP8
-        string pathToIAPMock = Application.dataPath + "\\Plugins\\WP8\\IAPMock.xml";
+        string pathToIAPMock = Application.dataPath + "\\Plugins\\WP8\\Soomla\\IAPMock.xml";
         string productName = PlayerSettings.productName.Replace(" ", string.Empty);
         string targetPathToIAPMock = pathToBuiltProject + "\\" + productName + "\\IAPMock.xml";
         FileUtil.DeleteFileOrDirectory(targetPathToIAPMock);
         FileUtil.CopyFileOrDirectory(pathToIAPMock, targetPathToIAPMock);
-        
+
         //Add IAPMock.xml to the VS Project for WP8
         string pathToCsproj = pathToBuiltProject + "\\" + productName + "\\" + productName + ".csproj";
         string[] csprojContent = File.ReadAllLines(pathToCsproj);

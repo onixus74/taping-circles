@@ -44,6 +44,7 @@ namespace Grow.Dlc
 		/// the <c>OnDLCPackagesStatusUpdate</c>
 		/// </summary>
 		public static void Initialize() {
+			Highway.HighwayEvents.Initialize();
 			SoomlaUtils.LogDebug (TAG, "SOOMLA/UNITY Initializing DLC");
 			#if UNITY_ANDROID && !UNITY_EDITOR
 			AndroidJNI.PushLocalFrame(100);

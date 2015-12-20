@@ -17,45 +17,51 @@ MonoBehaviour:
       value: 534554204f4e4c59204f4e4345
     - name: 4465627567556e6974794d65737361676573
       value: 54727565
-    - name: SoomlaSecret
+    - name: Soomla.Profile.SocialIntegration
+      value: facebook,1;twitter,1;google,1;gameCenter,1
+    - name: Soomla.Store.GPlayBP
+      value: True
+    - name: Soomla.Store.AmazonBP
+      value: 
+    - name: Soomla.Core.SoomlaSecret
       value: carthagames
-    - name: DebugUnityMessages
+    - name: Soomla.Core.DebugMessages
+      value: 
+    - name: Soomla.Core.DebugUnityMessages
       value: False
-    - name: HighwayGameKey
+    - name: Soomla.Highway.HighwayGameKey
       value: f61c14c4-a058-4960-8516-2d5c4b64b36c
-    - name: HighwayEnvKey
+    - name: Soomla.Highway.HighwayEnvKey
       value: 9d9ff9ef-57a2-48de-8457-20499d9c3216
-    - name: iTunesAppId
-      value: 1035284486
-    - name: FBPermissions
-      value: email,user_birthday,user_photos,user_friends,user_posts,publish_actions,user_location,user_likes
-    - name: TwitterConsumerKey
+    - name: Soomla.Profile.FBPermissions
+      value: email,user_birthday,user_photos,user_friends,user_posts
+    - name: Soomla.Profile.FBAutoLogin
+      value: True
+    - name: Soomla.Profile.TwitterConsumerKey
       value: UB2OEcD8cFlFr6P18f4Un07hQ
-    - name: TwitterConsumerSecret
-      value: 'wTIQmoHtR5h8QpC3PtZQng8iKFqzqj5BDW4MKnfWV1kMgEgvlh '
-    - name: GPClientId
-      value: YOUR GOOGLE+ CLIENT ID
-    - name: GPlayBP
+    - name: Soomla.Profile.TwitterConsumerSecret
+      value: wTIQmoHtR5h8QpC3PtZQng8iKFqzqj5BDW4MKnfWV1kMgEgvlh
+    - name: Soomla.Profile.TwitterAutoLogin
       value: True
-    - name: AndroidPublicKey
+    - name: Soomla.Profile.GPClientId
+      value: 173597230991-k451af8pas3d4lsds5ni98agt4nfp2v0.apps.googleusercontent.com
+    - name: Soomla.Profile.GoogleAutoLogin
+      value: True
+    - name: Soomla.Profile.GameCenterAutoLogin
+      value: True
+    - name: Soomla.Profile.iTunesAppId
+      value: 1035284486
+    - name: Soomla.Store.IosSSV
+      value: 
+    - name: Soomla.Store.NoneBP
+      value: 
+    - name: Soomla.Store.AndroidPublicKey
       value: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg7AviujrOCFQ/JvW9eudm6+526KIfIAFoZhAuWIGPSWoA6QmpEsT6FxESWm3gmuAUKg+M4/M7Q8msliDCiABevgupqJOphE7JgShpi7vLbrcHfQDpV0ZLU3OFi+dZbGyLV60ihc7Omv6O2Jr7gG6IlhXWrSdebnmvR7HiOKYvbo6mpTy6ESr1T5QA+Y4ExHpplx+sb4Og7Bkq2Zg7fR67tm5/TLDCPYE4AFmdpVd7d0jMMDfxpiwD0OyIHCsZD3T5LoUcCPgUB0z+7GYnzsWCVaY9UaeDr75u083wppQwB1seDikEdsXtj2ffFIcN5LtrcOdEiFb1AaGjP0oJ5SGtQIDAQAB
-    - name: AndroidTestPurchases
-      value: False
-    - name: FBAutoLogin
-      value: True
-    - name: SocialIntegration
-      value: facebook,1;twitter,1;google,0
-    - name: TwitterAutoLogin
-      value: True
-    - name: PlaySsvValidation
-      value: False
-    - name: PlayClientId
-      value: YOUR CLIENT ID
-    - name: PlayClientSecret
-      value: YOUR CLIENT SECRET
-    - name: PlayRefreshToken
-      value: YOUR REFRESH TOKEN
-    - name: DebugMessages
-      value: False
-    - name: IosSSV
-      value: False
+    - name: Soomla.Store.AndroidTestPurchases
+      value: 
+    - name: Soomla.Store.PlaySsvValidation
+      value: 
+    - name: Soomla.Store.WP8SimulatorBuild
+      value: 
+    - name: Soomla.Store.WP8TestMode
+      value: 

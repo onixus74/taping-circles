@@ -28,17 +28,23 @@ namespace Grow.Highway
 	public class HighwaySettings : ISoomlaSettings
 	{
 
+		private static string HighwaySettingsPrefix = "Highway";
+
 		#if UNITY_EDITOR
 		static HighwaySettings instance = new HighwaySettings();
+
+		static string currentModuleVersion = "2.1.3";
+
 		static HighwaySettings()
 		{
 			SoomlaEditorScript.addSettings(instance);
+
+			SoomlaEditorScript.addFileList("Highway", "Assets/Soomla/highway_file_list", new string[] {});
 		}
 
 		GUIContent highwayGameKeyLabel = new GUIContent("Game Key [?]:", "The GROW Highway game key for your game");
 		GUIContent highwayEnvKeyLabel = new GUIContent("Env Key [?]:", "The GROW Highway environment key for your game");
 		GUIContent frameworkVersion = new GUIContent("Highway Version [?]", "The GROW Framework Highway Module version. ");
-		GUIContent buildVersion = new GUIContent("Highway Build [?]", "The GROW Framework Highway Module build.");
 
 		public void OnEnable() {
 			// No enabling, leave empty and let StoreManifestTools do the work
@@ -48,8 +54,9 @@ namespace Grow.Highway
 		}
 
 		public void OnInfoGUI() {
-			SoomlaEditorScript.SelectableLabelField(frameworkVersion, "2.0.1");
-			SoomlaEditorScript.SelectableLabelField(buildVersion, "1");
+			SoomlaEditorScript.RemoveSoomlaModuleButton(frameworkVersion, currentModuleVersion, "Highway");
+			SoomlaEditorScript.LatestVersionField("unity3d-highway", currentModuleVersion, "New version available!", "http://library.soom.la/fetch/unity3d-highway/latest?cf=unity");
+
 			EditorGUILayout.Space();
 		}
 
@@ -69,6 +76,20 @@ namespace Grow.Highway
 			EditorGUILayout.EndHorizontal();
 			EditorGUILayout.Space();
 		}
+
+		public void OnIOSGUI() {
+
+		}
+		
+		public void OnAndroidGUI() {
+
+		}
+		
+		
+		public void OnWP8GUI() {
+
+		}
+
 		#endif
 
 		public static string HIGHWAY_GAME_KEY_DEFAULT_MESSAGE = "[YOUR GAME KEY]";
@@ -76,16 +97,15 @@ namespace Grow.Highway
 		public static string HighwayGameKey
 		{
 			get {
-				string value;
-				return SoomlaEditorScript.Instance.SoomlaSettings.TryGetValue("HighwayGameKey", out value) ? value : HIGHWAY_GAME_KEY_DEFAULT_MESSAGE;
+				string value = SoomlaEditorScript.GetConfigValue(HighwaySettingsPrefix, "HighwayGameKey");
+				return value != null ? value : HIGHWAY_GAME_KEY_DEFAULT_MESSAGE;
 			}
 			set
 			{
-				string v;
-				SoomlaEditorScript.Instance.SoomlaSettings.TryGetValue("HighwayGameKey", out v);
+				string v = SoomlaEditorScript.GetConfigValue(HighwaySettingsPrefix, "HighwayGameKey");
 				if (v != value)
 				{
-					SoomlaEditorScript.Instance.setSettingsValue("HighwayGameKey",value);
+					SoomlaEditorScript.SetConfigValue(HighwaySettingsPrefix, "HighwayGameKey", value);
 					SoomlaEditorScript.DirtyEditor ();
 				}
 			}
@@ -96,16 +116,15 @@ namespace Grow.Highway
 		public static string HighwayEnvKey
 		{
 			get {
-				string value;
-				return SoomlaEditorScript.Instance.SoomlaSettings.TryGetValue("HighwayEnvKey", out value) ? value : HIGHWAY_ENV_KEY_DEFAULT_MESSAGE;
+				string value =  SoomlaEditorScript.GetConfigValue(HighwaySettingsPrefix, "HighwayEnvKey");
+				return value != null ? value : HIGHWAY_ENV_KEY_DEFAULT_MESSAGE;
 			}
 			set
 			{
-				string v;
-				SoomlaEditorScript.Instance.SoomlaSettings.TryGetValue("HighwayEnvKey", out v);
+				string v = SoomlaEditorScript.GetConfigValue(HighwaySettingsPrefix, "HighwayEnvKey");
 				if (v != value)
 				{
-					SoomlaEditorScript.Instance.setSettingsValue("HighwayEnvKey",value);
+					SoomlaEditorScript.SetConfigValue(HighwaySettingsPrefix, "HighwayEnvKey", value);
 					SoomlaEditorScript.DirtyEditor ();
 				}
 			}

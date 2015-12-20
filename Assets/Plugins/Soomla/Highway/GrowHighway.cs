@@ -28,6 +28,7 @@ namespace Grow.Highway
 #endif
 
 		public static void Initialize() {
+			HighwayEvents.Initialize();
 			SoomlaUtils.LogDebug (TAG, "SOOMLA/UNITY Initializing Highway");
 #if UNITY_ANDROID && !UNITY_EDITOR
 			AndroidJNI.PushLocalFrame(100);

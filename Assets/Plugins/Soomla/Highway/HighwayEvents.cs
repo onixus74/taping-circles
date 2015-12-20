@@ -18,10 +18,11 @@ using Grow.Gifting;
 using Grow.Leaderboards;
 using Grow.Insights;
 using System.Runtime.InteropServices;
+using Soomla.Singletons;
 
 namespace Grow.Highway {
 
-	public class HighwayEvents : MonoBehaviour {
+	public class HighwayEvents : CodeGeneratedSingleton {
 
 		#if UNITY_IOS 
 		//&& !UNITY_EDITOR
@@ -30,38 +31,34 @@ namespace Grow.Highway {
 		#endif
 
 		private const string TAG = "SOOMLA HighwayEvents";
+
+		public static HighwayEvents Instance = null;		
 		
-		private static HighwayEvents instance = null;
-		
-		/// <summary>
-		/// Initializes the game state before the game starts.
-		/// </summary>
-		void Awake(){
-			if(instance == null){ 	// making sure we only initialize one instance.
-				SoomlaUtils.LogDebug(TAG, "Initializing HighwayEvents (Awake)");
-				instance = this;
-				GameObject.DontDestroyOnLoad(this.gameObject);
-				Initialize();
-			} else {				// Destroying unused instances.
-				GameObject.Destroy(this.gameObject);
-			}
+		protected override bool DontDestroySingleton
+		{
+			get { return true; }
 		}
 
 		/// <summary>
 		/// Initializes the different native event handlers in Android / iOS
 		/// </summary>
 		public static void Initialize() {
-			SoomlaUtils.LogDebug (TAG, "Initializing StoreEvents ...");
-			#if UNITY_ANDROID && !UNITY_EDITOR
-			AndroidJNI.PushLocalFrame(100);
-			using(AndroidJavaClass jniEventHandler = new AndroidJavaClass("com.soomla.highway.unity.HighwayEventHandler")) {
-				jniEventHandler.CallStatic("initialize");
-			}
-			AndroidJNI.PopLocalFrame(IntPtr.Zero);
+			if (Instance == null) {
+				Instance = GetSynchronousCodeGeneratedInstance<HighwayEvents>();
+				CoreEvents.Initialize();
 
-			#elif UNITY_IOS && !UNITY_EDITOR
-			unityHighwayEventDispatcher_Init();
-			#endif
+				SoomlaUtils.LogDebug (TAG, "Initializing HighwayEvents...");
+#if UNITY_ANDROID && !UNITY_EDITOR
+				AndroidJNI.PushLocalFrame(100);
+				using(AndroidJavaClass jniEventHandler = new AndroidJavaClass("com.soomla.highway.unity.HighwayEventHandler")) {
+					jniEventHandler.CallStatic("initialize");
+				}
+				AndroidJNI.PopLocalFrame(IntPtr.Zero);
+				
+#elif UNITY_IOS && !UNITY_EDITOR
+				unityHighwayEventDispatcher_Init();
+#endif
+			}
 		}
 
 		public void onGrowSyncInitialized() {
@@ -133,6 +130,8 @@ namespace Grow.Highway {
 			JSONObject eventJSON = new JSONObject(message);
 			int errorCode = (int)eventJSON["errorCode"].n;
 			string errorMessage = eventJSON["errorMessage"].str;
+
+			GrowSync.HandleStateSyncFailed();
 			
 			HighwayEvents.OnStateSyncFailed((StateSyncErrorCode)errorCode, errorMessage);
 		}
@@ -567,7 +566,11 @@ namespace Grow.Highway {
 		/// <summary>
 		/// The state was not able to update
 		/// </summary>
-		UpdateStateError = 2
+		UpdateStateError = 2,
+		/// <summary>
+		/// The user is already connected on another device
+		/// </summary>
+		UserAlreadyConnected = 3
 	}
 
 	/// <summary>
