@@ -136,7 +136,7 @@ public class GPGManager : MonoBehaviour
         // {
         //     Login();       
         // }
-        // Login(); 
+        Login(); 
     }
     
 }

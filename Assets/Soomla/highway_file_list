@@ -1,0 +1,9 @@
+Assets/Plugins/Android/Soomla/libs/AndroidViper.jar
+Assets/Plugins/Android/Soomla/libs/UnityAndroidHighway.jar
+Assets/Plugins/Android/google-play-services_lib
+Assets/Plugins/iOS/Soomla/libSoomlaiOSRoadster.a
+Assets/Plugins/iOS/Soomla/libUnityiOSHighway.a
+Assets/Plugins/iOS/Soomla/libAFNetworking.a
+Assets/Soomla/highway_file_list
+Assets/Plugins/Soomla/Highway
+Assets/Soomla/Editor/build-tools/Soomla_HighwayRunner.py

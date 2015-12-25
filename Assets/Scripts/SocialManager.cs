@@ -40,13 +40,13 @@ public class SocialManager : MonoBehaviour
                                                     //  new BadgeReward("loggedIn", "Logged In!") // Reward
         );
     }
-    public void GameCenterLogin()
-    {
-        SoomlaProfile.Login(
-            Provider.GAME_CENTER                        // Social Provider
-			                    //  new BadgeReward("loggedIn", "Logged In!") // Reward
-        );
-    }
+    // public void GameCenterLogin()
+    // {
+    //     SoomlaProfile.Login(
+    //         Provider.GAME_CENTER                        // Social Provider
+	// 		                    //  new BadgeReward("loggedIn", "Logged In!") // Reward
+    //     );
+    // }
     public void ShareStatusFacebook()
     {
         if (SoomlaProfile.IsLoggedIn(Provider.FACEBOOK))
@@ -86,7 +86,7 @@ public class SocialManager : MonoBehaviour
     {
         SoomlaProfile.MultiShare(
             "I Reached Level " + GameManager.instance.levelShow + " On Frog Smash !",
-            ""
+            null
         );
     }
 

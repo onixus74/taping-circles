@@ -55,7 +55,7 @@ namespace Soomla.Store.IAP                                                      
                 "remove_ads",                         // Name of IAP
                 "This will remove the ads",     // Description of IAP
                 "remove_ads_item_id",                 // Item ID (different from 'product id" used by itunes, this is used by soomla                                             3.
-            new PurchaseWithVirtualItem(COIN_CURRENCY_ITEM_ID, 50000));
+            new PurchaseWithVirtualItem(COIN_CURRENCY_ITEM_ID, 500000));
 
         public static VirtualGood REVEAL_FROGS = new SingleUseVG(
             "Reveal Frogs",         // Name
