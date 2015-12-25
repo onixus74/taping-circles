@@ -156,7 +156,7 @@ namespace Soomla.Store.IAP
             frogCounter = 0;
             levelProgress++;
             levelShow++;
-
+            Achievements();
             current = start;
 
             if (levelProgress == 10)

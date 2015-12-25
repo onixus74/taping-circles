@@ -36,7 +36,6 @@ public static class GPGConstant
         public const string achievement_bronze_frog_hunter = "CgkIj4_O2YYFEAIQDA"; // <GPGSID>
         public const string achievement_bronze_smasher = "CgkIj4_O2YYFEAIQCQ"; // <GPGSID>
         public const string achievement_sliver_frog_hunter = "CgkIj4_O2YYFEAIQEQ"; // <GPGSID>
-        public const string BUNDLE_ID = "com.carthagames.FrogSmash"; // <GPGSID>
         public const string achievement_bronze_frog_champion = "CgkIj4_O2YYFEAIQDQ"; // <GPGSID>
         public const string achievement_bronze_frog_slayer = "CgkIj4_O2YYFEAIQCw"; // <GPGSID>
         public const string achievement_frog_champion = "CgkIj4_O2YYFEAIQBQ"; // <GPGSID>

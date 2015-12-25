@@ -8,17 +8,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4e0a197f1a5042dc8fb2cd6ad519b70, type: 3}
+  m_Script: {fileID: 0}
   m_Name: SoomlaEditorScript
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp-firstpass:Soomla:SoomlaEditorScript
   SoomlaSettings:
     values:
-    - name: 536f6f6d6c61536563726574
-      value: 534554204f4e4c59204f4e4345
-    - name: 4465627567556e6974794d65737361676573
-      value: 54727565
     - name: Soomla.Profile.SocialIntegration
-      value: facebook,1;twitter,1;google,1;gameCenter,1
+      value: facebook,1;twitter,1;google,1;gameCenter,0
     - name: Soomla.Store.GPlayBP
       value: True
     - name: Soomla.Store.AmazonBP
@@ -36,23 +32,19 @@ MonoBehaviour:
     - name: Soomla.Profile.FBPermissions
       value: email,user_birthday,user_photos,user_friends,user_posts
     - name: Soomla.Profile.FBAutoLogin
-      value: True
+      value: False
     - name: Soomla.Profile.TwitterConsumerKey
       value: UB2OEcD8cFlFr6P18f4Un07hQ
     - name: Soomla.Profile.TwitterConsumerSecret
       value: wTIQmoHtR5h8QpC3PtZQng8iKFqzqj5BDW4MKnfWV1kMgEgvlh
     - name: Soomla.Profile.TwitterAutoLogin
-      value: True
+      value: False
     - name: Soomla.Profile.GPClientId
       value: 173597230991-k451af8pas3d4lsds5ni98agt4nfp2v0.apps.googleusercontent.com
     - name: Soomla.Profile.GoogleAutoLogin
-      value: True
+      value: False
     - name: Soomla.Profile.GameCenterAutoLogin
       value: True
-    - name: Soomla.Profile.iTunesAppId
-      value: 1035284486
-    - name: Soomla.Store.IosSSV
-      value: 
     - name: Soomla.Store.NoneBP
       value: 
     - name: Soomla.Store.AndroidPublicKey

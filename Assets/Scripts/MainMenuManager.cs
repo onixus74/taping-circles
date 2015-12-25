@@ -16,7 +16,10 @@ namespace Soomla.Store.IAP
     public class MainMenuManager : MonoBehaviour
     {
         AsyncOperation async;
-
+        
+        bool cred = false;
+        
+        public GameObject creditsPanel;
         void Start()
         {
 
@@ -38,6 +41,11 @@ namespace Soomla.Store.IAP
         }
         public void loadGameNotAsync(){
             Application.LoadLevel(2);
+        }
+        
+        public void showCredits(){
+            creditsPanel.SetActive(!cred);
+            cred= !cred;
         }
 
     }

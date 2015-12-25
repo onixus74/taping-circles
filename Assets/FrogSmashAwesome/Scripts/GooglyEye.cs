@@ -5,7 +5,7 @@ public class GooglyEye : MonoBehaviour {
 	public static Transform LookAt;
 	public Transform DefaultLookAt;
 	public float range = 5;
-
+    
 	float currentAngle = 0f;
 	float targetAngle = -1200f;
 	Vector3 cross;
@@ -40,4 +40,5 @@ public class GooglyEye : MonoBehaviour {
 		currentAngle = Mathf.Lerp (currentAngle, targetAngle, Time.deltaTime*5);
 
 	}
+    
 }

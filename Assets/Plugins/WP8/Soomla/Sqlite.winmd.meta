@@ -1,23 +1,4 @@
 fileFormatVersion: 2
-guid: 4eeb7764fab20433b9eb7aa4e7c6d5f1
-timeCreated: 1448543578
-licenseType: Free
-PluginImporter:
-  serializedVersion: 1
-  iconMap: {}
-  executionOrder: {}
-  isPreloaded: 0
-  platformData:
-    Any:
-      enabled: 0
-      settings: {}
-    Editor:
-      enabled: 0
-      settings:
-        DefaultValueInitialized: true
-    WP8:
-      enabled: 1
-      settings: {}
+guid: 6e66da34f446c3b489230efd3d30d78b
+DefaultImporter:
   userData: 
-  assetBundleName: 
-  assetBundleVariant: 

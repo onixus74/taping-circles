@@ -3,6 +3,8 @@ using System.Collections;
 
 [RequireComponent(typeof(Collider2D))]
 public class Bug : MonoBehaviour {
+    
+
 
 	void Start(){
 		GooglyEye.LookAt = transform;
@@ -26,4 +28,11 @@ public class Bug : MonoBehaviour {
 			transform.position = Vector3.Lerp(transform.position,transform.parent.position,Time.deltaTime*10);
 		}
 	}
+    void OnDestroy(){
+       GameObject FrogFace = GameObject.Find("FrogFace");
+       if(FrogFace){
+           FrogFace.GetComponent<Spawner>().SpawnBug();
+       }
+    }
+    
 }

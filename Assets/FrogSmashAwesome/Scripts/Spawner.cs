@@ -5,10 +5,12 @@ public class Spawner : MonoBehaviour {
 
 
 	public GameObject BugPrefab;
-
-	void OnGUI(){
-		if (GUI.Button (new Rect (0, 0, 100, 50), "Spawn Bug")) {
-			Instantiate(BugPrefab);
-		}
-	}
+ 
+    public void SpawnBug(){
+      Invoke("SpawnNow",1f);
+    }
+    void SpawnNow(){
+         GameObject go = Instantiate(BugPrefab);
+         GooglyEye.LookAt = go.transform;
+    }
 }
