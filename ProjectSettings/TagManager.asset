@@ -13,6 +13,7 @@ TagManager:
   - unityads manager
   - spawners
   - charboostads manager
+  - pause_panel
   layers:
   - Default
   - TransparentFX

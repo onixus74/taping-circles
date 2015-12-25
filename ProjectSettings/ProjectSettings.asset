@@ -49,7 +49,7 @@ PlayerSettings:
   forceSingleInstance: 0
   resizableWindow: 0
   useMacAppStoreValidation: 0
-  gpuSkinning: 0
+  gpuSkinning: 1
   xboxPIXTextureCapture: 0
   xboxEnableAvatar: 0
   xboxEnableKinect: 0
@@ -86,21 +86,21 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: com.carthagames.FrogSmash
-  bundleVersion: 2.3
+  bundleVersion: 2.4
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   metroEnableLowLatencyPresentationAPI: 0
   xboxOneDisableKinectGpuReservation: 0
   virtualRealitySupported: 0
   productGUID: c6d30a6053528054284b5ad6a81f2692
-  AndroidBundleVersionCode: 5
-  AndroidMinSdkVersion: 10
+  AndroidBundleVersionCode: 6
+  AndroidMinSdkVersion: 9
   AndroidPreferredInstallLocation: 0
   aotOptions: 
   apiCompatibilityLevel: 2
   stripEngineCode: 1
   iPhoneStrippingLevel: 0
-  iPhoneScriptCallOptimization: 0
+  iPhoneScriptCallOptimization: 1
   iPhoneBuildNumber: 1
   ForceInternetPermission: 0
   ForceSDCardPermission: 0
@@ -111,10 +111,11 @@ PlayerSettings:
   VertexChannelCompressionMask:
     serializedVersion: 2
     m_Bits: 238
-  iPhoneSdkVersion: 988
+  iPhoneSdkVersion: 989
   iPhoneTargetOSVersion: 22
   uIPrerenderedIcon: 0
   uIRequiresPersistentWiFi: 0
+  uIRequiresFullScreen: 1
   uIStatusBarHidden: 1
   uIExitOnSuspend: 0
   uIStatusBarStyle: 0
@@ -265,6 +266,8 @@ PlayerSettings:
   ps4ReprojectionSupport: 0
   ps4UseAudio3dBackend: 0
   ps4Audio3dVirtualSpeakerCount: 14
+  ps4attribCpuUsage: 0
+  ps4SocialScreenEnabled: 0
   ps4attribUserManagement: 0
   ps4attribMoveSupport: 0
   ps4attrib3DSupport: 0
@@ -318,12 +321,12 @@ PlayerSettings:
   psp2InfoBarOnStartup: 0
   psp2InfoBarColor: 0
   psmSplashimage: {fileID: 0}
-  spritePackerPolicy: 
+  spritePackerPolicy: DefaultPackerPolicy
   scriptingDefineSymbols:
-    1: SOOMLA_FACEBOOK;SOOMLA_TWITTER
-    2: SOOMLA_FACEBOOK;SOOMLA_TWITTER
-    4: SOOMLA_FACEBOOK;SOOMLA_TWITTER
-    7: SOOMLA_FACEBOOK;SOOMLA_TWITTER
+    1: SOOMLA_FACEBOOK;SOOMLA_TWITTER;SOOMLA_GOOGLE
+    2: SOOMLA_FACEBOOK;SOOMLA_TWITTER;SOOMLA_GOOGLE
+    4: NO_GPGS;SOOMLA_FACEBOOK;SOOMLA_TWITTER;SOOMLA_GOOGLE
+    7: SOOMLA_FACEBOOK;SOOMLA_TWITTER;SOOMLA_GOOGLE
   metroPackageName: Taping Circles
   metroPackageLogo: 
   metroPackageLogo140: 
@@ -470,7 +473,7 @@ PlayerSettings:
   WebGL::memorySize: 256
   iOS::Architecture: 2
   iOS::EnableIncrementalBuildSupportForIl2cpp: 0
-  iOS::ScriptingBackend: 1
+  iOS::ScriptingBackend: 0
   boolPropertyNames:
   - WebGL::analyzeBuildSize
   - WebGL::dataCaching

@@ -16,28 +16,19 @@ namespace Soomla.Store.IAP
     public class MainMenuManager : MonoBehaviour
     {
         AsyncOperation async;
-
+        
+        bool cred = false;
+        
+        public GameObject creditsPanel;
         void Start()
         {
-            StoreEvents.OnSoomlaStoreInitialized += onSoomlaStoreInitialized;
 
-            StoreEvents.OnUnexpectedStoreError += onUnexpectedStoreError;
-
-           
-            GrowHighway.Initialize();
-            bool modelSync = true;
-            bool stateSync = true;
-            GrowSync.Initialize(modelSync, stateSync);
-            GrowGifting.Initialize();
-            SoomlaProfile.Initialize();
-            GrowInsights.Initialize();
-            SoomlaStore.Initialize(new IAPAssets());
             StartCoroutine("loadMainScene");
 
         }
         IEnumerator loadMainScene()
         {
-            async = Application.LoadLevelAsync(1);
+            async = Application.LoadLevelAsync(2);
             async.allowSceneActivation = false;
             yield return async;
         }
@@ -49,33 +40,14 @@ namespace Soomla.Store.IAP
             async.allowSceneActivation = true;
         }
         public void loadGameNotAsync(){
-            Application.LoadLevel(1);
+            Application.LoadLevel(2);
+        }
+        
+        public void showCredits(){
+            creditsPanel.SetActive(!cred);
+            cred= !cred;
         }
 
-        public void onUnexpectedStoreError(int errorCode)
-        {
-            SoomlaUtils.LogError("ExampleEventHandler", "error with code: " + errorCode);
-        }
-        public void onSoomlaStoreInitialized()
-        {
-
-            // some usage examples for add/remove currency
-            // some examples
-            if (StoreInfo.Currencies.Count > 0)
-            {
-                try
-                {
-                    //How to give currency
-                    //StoreInventory.GiveItem(StoreInfo.Currencies[0].ItemId,4000);
-                    SoomlaUtils.LogDebug("SOOMLA ExampleEventHandler", "Currency balance:" + StoreInventory.GetItemBalance(StoreInfo.Currencies[0].ItemId));
-                }
-                catch (VirtualItemNotFoundException ex)
-                {
-                    SoomlaUtils.LogError("SOOMLA ExampleWindow", ex.Message);
-                }
-            }
-
-        }
     }
 }
 

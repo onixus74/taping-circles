@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using Soomla.Profile;
 namespace Soomla.Store.IAP
 {
 public class GameOver : MonoBehaviour {
@@ -33,7 +33,7 @@ public class GameOver : MonoBehaviour {
 			anim.SetBool("check",true);
 			//  admobManager.ShowInterstitialAds();
 			GameManager.instance.canClick=false;
-		
+				
 		}
 	}
 	
@@ -54,6 +54,11 @@ public class GameOver : MonoBehaviour {
 	}
 	public void playGameOver(){
 		AudioManager.instance.GameOver();
+		GPGManager.instance.ReportScoreToLeaderboard(GameManager.instance.levelShow);
+		if (GameManager.instance.levelShow>10)
+		{
+			SoomlaProfile.OpenAppRatingPage();
+		}
 	}
 }
 }

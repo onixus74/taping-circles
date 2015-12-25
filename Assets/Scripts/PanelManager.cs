@@ -16,28 +16,30 @@ public class PanelManager : MonoBehaviour {
 	Animator animShop;
 	GameManager gameManager;
 	void Start () {
-		gameManager = GameObject.FindGameObjectWithTag("game manager").GetComponent<GameManager>();
-		gamePanel = GameObject.Find("Game_Panel");
-		shopPanel = GameObject.Find("Shop_Panel");
+		// gameManager = GameObject.FindGameObjectWithTag("game manager").GetComponent<GameManager>();
+		// gamePanel = GameObject.Find("Game_Panel");
+		// shopPanel = GameObject.Find("Shop_Panel");
 		gameOverPanel = GameObject.FindGameObjectWithTag("gameover_panel");
 		
 		animGameOver = gameOverPanel.GetComponent<Animator>();
-		animShop = shopPanel.GetComponent<Animator>();
+		// animShop = shopPanel.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(gameManager.isGameOver){
+		if(GameManager.instance.isGameOver){
 			animGameOver.SetBool("isShowing",true);
 		}
 	}
 	
 	public void showShopPanel(){
-		animShop.SetBool("isShowing",true);
+		// animShop.SetBool("isShowing",true);
+		shopPanel.SetActive(true);
 	}
 	
 	public void hideShopPanel(){
-		animShop.SetBool("isShowing",false);
+		// animShop.SetBool("isShowing",false);
+		shopPanel.SetActive(false);
 	}
 
 }

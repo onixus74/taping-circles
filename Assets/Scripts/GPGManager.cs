@@ -14,6 +14,8 @@ public class GPGManager : MonoBehaviour
     //achievement strings
     private string achievement = "CgkIj4_O2YYFEAIQAw";
     private string incremental = "Your unique achievement id";
+    
+    public static GPGManager instance = null;
 
     // Use this for initialization
 
@@ -34,11 +36,11 @@ public class GPGManager : MonoBehaviour
           });
     }
 
-    public void UnlockAchievement()
+    public void UnlockAchievement(string ach)
     {
         if (Social.localUser.authenticated)
         {
-            Social.ReportProgress(achievement, 200.0f, (bool success) =>
+            Social.ReportProgress(ach, 200.0f, (bool success) =>
             {
                 if (success)
                 {
@@ -66,19 +68,12 @@ public class GPGManager : MonoBehaviour
     }
     
     
-    public void ReportScoreToLeaderboard(){
+    public void ReportScoreToLeaderboard(int score){
       if (Social.localUser.authenticated)
             {
-                Social.ReportScore(50, leaderboard, (bool success) =>
+                Social.ReportScore(score, leaderboard, (bool success) =>
                 {
-                    if (success)
-                    {
-                        ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderboard);
-                    }
-                    else
-                    {
-                //Debug.Log("Login failed for some reason");
-            }
+                    
                 });
             }
     }
@@ -106,18 +101,42 @@ public class GPGManager : MonoBehaviour
     }
     
     public void ShowAchievements(){
-      Social.ShowAchievementsUI();
+        if (Social.localUser.authenticated)
+        {
+            Social.ShowAchievementsUI();
+        }
+        else 
+        {
+            Login();
+        }
     }
     
     public void SignOut(){
       ((PlayGamesPlatform)Social.Active).SignOut();
     }
     
-    void Start()
+    void Awake()
     {
-        PlayGamesPlatform.Activate();
+
         
-            Login();       
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+        
+        DontDestroyOnLoad(gameObject);
+    }
+    void Start (){
+        PlayGamesPlatform.Activate();
+        // if (!Social.localUser.authenticated) 
+        // {
+        //     Login();       
+        // }
+        // Login(); 
     }
     
 }
