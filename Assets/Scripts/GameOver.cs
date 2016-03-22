@@ -41,12 +41,12 @@ public class GameOver : MonoBehaviour {
 		GameManager.instance.gameOverCounter++;
 			
 			
-			if(GameManager.instance.gameOverCounter>=3){
+			if(GameManager.instance.gameOverCounter>=1){
 				GameManager.instance.gameOverCounter=0;
 				if (StoreInventory.GetItemBalance("remove_ads_item_id")==0)
 				{
-					//  unityAdsManager.ShowAds();		
-					charboostAdsManager.ShowRewardedVideo();	
+					 unityAdsManager.ShowAds();		
+					// charboostAdsManager.ShowRewardedVideo();	
 				}
 			}
 			PlayerPrefs.SetInt("gameOverCounter",GameManager.instance.gameOverCounter);

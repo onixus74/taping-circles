@@ -45,11 +45,11 @@ PlayerSettings:
   Prepare IOS For Recording: 0
   submitAnalytics: 1
   usePlayerLog: 1
-  bakeCollisionMeshes: 1
+  bakeCollisionMeshes: 0
   forceSingleInstance: 0
   resizableWindow: 0
   useMacAppStoreValidation: 0
-  gpuSkinning: 1
+  gpuSkinning: 0
   xboxPIXTextureCapture: 0
   xboxEnableAvatar: 0
   xboxEnableKinect: 0
@@ -90,14 +90,14 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: com.carthagames.FrogSmash
-  bundleVersion: 2.5
+  bundleVersion: 1.2
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   metroEnableLowLatencyPresentationAPI: 0
   xboxOneDisableKinectGpuReservation: 0
   virtualRealitySupported: 0
   productGUID: c6d30a6053528054284b5ad6a81f2692
-  AndroidBundleVersionCode: 7
+  AndroidBundleVersionCode: 10
   AndroidMinSdkVersion: 9
   AndroidPreferredInstallLocation: 0
   aotOptions: 
@@ -110,11 +110,11 @@ PlayerSettings:
   ForceSDCardPermission: 0
   CreateWallpaper: 0
   APKExpansionFiles: 0
-  preloadShaders: 1
+  preloadShaders: 0
   StripUnusedMeshComponents: 1
   VertexChannelCompressionMask:
     serializedVersion: 2
-    m_Bits: 238
+    m_Bits: 4294967295
   iPhoneSdkVersion: 989
   iPhoneTargetOSVersion: 22
   uIPrerenderedIcon: 0
@@ -180,7 +180,10 @@ PlayerSettings:
   - m_BuildTarget: Android
     m_StaticBatching: 1
     m_DynamicBatching: 1
-  m_BuildTargetGraphicsAPIs: []
+  m_BuildTargetGraphicsAPIs:
+  - m_BuildTarget: AndroidPlayer
+    m_APIs: 0b00000008000000
+    m_Automatic: 1
   webPlayerTemplate: APPLICATION:Default
   m_TemplateCustomTags: {}
   wiiUTitleID: 0005000011000000
@@ -334,10 +337,10 @@ PlayerSettings:
   psmSplashimage: {fileID: 0}
   spritePackerPolicy: DefaultPackerPolicy
   scriptingDefineSymbols:
-    1: SOOMLA_FACEBOOK
-    2: SOOMLA_FACEBOOK
-    4: NO_GPGS;SOOMLA_FACEBOOK
-    7: SOOMLA_FACEBOOK
+    1: 
+    2: 
+    4: NO_GPGS
+    7: 
   metroPackageName: Taping Circles
   metroPackageVersion: 
   metroCertificatePath: 
@@ -446,7 +449,7 @@ PlayerSettings:
   WebGL::memorySize: 256
   iOS::Architecture: 2
   iOS::EnableIncrementalBuildSupportForIl2cpp: 0
-  iOS::ScriptingBackend: 0
+  iOS::ScriptingBackend: 1
   tvOS::Architecture: 1
   tvOS::EnableIncrementalBuildSupportForIl2cpp: 0
   tvOS::ScriptingBackend: 1
@@ -467,10 +470,10 @@ PlayerSettings:
   - WebGL::emscriptenArgs
   - WebGL::template
   - additionalIl2CppArgs::additionalIl2CppArgs
-  Build_ServiceEnabled::Build_ServiceEnabled: False
+  Build_ServiceEnabled::Build_ServiceEnabled: True
   ErrorHub_ServiceEnabled::ErrorHub_ServiceEnabled: False
   Hub_ServiceEnabled::Hub_ServiceEnabled: False
-  UNet_ServiceEnabled::UNet_ServiceEnabled: False
+  UNet_ServiceEnabled::UNet_ServiceEnabled: True
   WebGL::emscriptenArgs: 
   WebGL::template: APPLICATION:Default
   additionalIl2CppArgs::additionalIl2CppArgs: 
